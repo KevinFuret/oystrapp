@@ -1,7 +1,5 @@
-
 dist
 node_modules
-db
 .idea/
 idea/
 static/manifest*.json
