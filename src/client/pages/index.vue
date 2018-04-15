@@ -27,6 +27,10 @@ export default {
     return {
       vueniverseLogo
     }
+  },
+  // copied from pages/users/index
+  fetch ({ store }) {
+    return store.dispatch('fetchContentfulEntries')
   }
 }
 </script>
