@@ -21,7 +21,7 @@ module.exports = {
     HOST: process.env.HOST,
     PORT: process.env.PORT,
     CTF_SPACE_ID: config.CTF_SPACE_ID,
-    CTF_CDA_ACCESS_TOKEN: config.CTF_CDA_ACCESS_TOKEN,
+    CTF_CDA_ACCESS_TOKEN: config.CTF_CDA_ACCESS_TOKEN
   },
   head: {
     title: 'oystrapp',
