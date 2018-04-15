@@ -1,7 +1,6 @@
 .dev.env
 dist
 node_modules
-secrets.json
 db
 .idea/
 idea/
