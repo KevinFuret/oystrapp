@@ -1,0 +1,12 @@
+.dev.env
+dist
+node_modules
+secrets.json
+db
+.idea/
+idea/
+static/manifest*.json
+static/sw.js
+static/workbox-sw*.js
+demo/dump.rdb
+demo/.dev.env
