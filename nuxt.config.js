@@ -38,8 +38,7 @@ module.exports = {
   },
   modules: [
     '@nuxtjs/pwa',
-    '@nuxtjs/component-cache',
-    '@nuxtjs/localforage'
+    '@nuxtjs/component-cache'
   ],
   plugins: ['~/plugins/vuetify.js'],
   render: {
