@@ -1,5 +1,4 @@
 const path = require('path')
-const config = require('./.contentful.json')
 
 require('dotenv').config({
   silent: true,
@@ -19,9 +18,7 @@ module.exports = {
   ],
   env: {
     HOST: process.env.HOST,
-    PORT: process.env.PORT,
-    CTF_SPACE_ID: config.CTF_SPACE_ID,
-    CTF_CDA_ACCESS_TOKEN: config.CTF_CDA_ACCESS_TOKEN
+    PORT: process.env.PORT
   },
   head: {
     title: 'oystrapp',
@@ -41,7 +38,8 @@ module.exports = {
   },
   modules: [
     '@nuxtjs/pwa',
-    '@nuxtjs/component-cache'
+    '@nuxtjs/component-cache',
+    '@nuxtjs/localforage'
   ],
   plugins: ['~/plugins/vuetify.js'],
   render: {

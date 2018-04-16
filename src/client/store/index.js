@@ -57,10 +57,13 @@ export const actions = {
   },
   //copied from fetchAllUsers
   async fetchContentfulEntries ({ commit, state }) {
-    if (window.localStorage.getItem("contentfulSyncToken") === null) {
-      console.log('no localstorage')
-    } else {
-      console.log('yes localstorage')
+    if (process.browser) {
+      console.log("process browser is ok")
+      if (window.localStorage.getItem("contentfulSyncToken") === null) {
+        console.log('no localstorage')
+      } else {
+        console.log('yes localstorage')
+      }
     }
   }
 }
