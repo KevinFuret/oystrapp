@@ -1,4 +1,5 @@
 const path = require('path')
+const config = require('./.contentful.json')
 
 require('dotenv').config({
   silent: true,
@@ -8,7 +9,7 @@ require('dotenv').config({
 module.exports = {
   build: {
     extractCSS: true,
-    vendor: ['vuetify', 'jwt-decode', 'axios']
+    vendor: ['vuetify', 'jwt-decode', 'axios', 'vuex-persistedstate']
   },
   buildDir: 'dist/client',
   cache: true,
@@ -18,7 +19,9 @@ module.exports = {
   ],
   env: {
     HOST: process.env.HOST,
-    PORT: process.env.PORT
+    PORT: process.env.PORT,
+    CTF_SPACE_ID: config.CTF_SPACE_ID,
+    CTF_CDA_ACCESS_TOKEN: config.CTF_CDA_ACCESS_TOKEN
   },
   head: {
     title: 'oystrapp',
@@ -40,7 +43,7 @@ module.exports = {
     '@nuxtjs/pwa',
     '@nuxtjs/component-cache'
   ],
-  plugins: ['~/plugins/vuetify.js'],
+  plugins: ['~/plugins/vuetify.js', { src: '~/plugins/persistedState.js', ssr: false }, '~/plugins/contentful.js'],
   render: {
     static: {
       maxAge: '1y',

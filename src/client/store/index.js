@@ -54,16 +54,5 @@ export const actions = {
     } catch (error) {
       commit('FETCH_ALL_USERS_FAILURE', error)
     }
-  },
-  //copied from fetchAllUsers
-  async fetchContentfulEntries ({ commit, state }) {
-    if (process.browser) {
-      console.log("process browser is ok")
-      if (window.localStorage.getItem("contentfulSyncToken") === null) {
-        console.log('no localstorage')
-      } else {
-        console.log('yes localstorage')
-      }
-    }
   }
 }

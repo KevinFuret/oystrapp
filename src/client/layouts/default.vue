@@ -129,7 +129,7 @@ export default {
           ]
         }
       ],
-      name: 'oystrapp',
+      name: 'OYSTR',
       mini: true,
       right: null
     }

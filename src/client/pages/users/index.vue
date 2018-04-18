@@ -17,6 +17,7 @@ export default {
   middleware: 'authenticated',
   fetch ({ store }) {
     if (store.state.user.isAuthenticated) {
+      console.log("fetching");
       return store.dispatch('fetchAllUsers')
     }
   }
