@@ -78,15 +78,10 @@
       </v-menu>
     </v-toolbar>
     <v-content app clipped-left>
-      <v-container fluid fill-height>
-        <v-layout>
+      <v-container fluid>
           <nuxt></nuxt>
-        </v-layout>
       </v-container>
     </v-content>
-    <v-footer light app>
-      <span>&copy; 2017</span>
-    </v-footer>
     <v-snackbar
       :timeout="3000"
       :bottom="true"
@@ -149,3 +144,8 @@ export default {
   }
 }
 </script>
+<style>
+  .application{
+    overflow-y: hidden;
+  }
+</style>

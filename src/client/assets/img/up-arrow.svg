@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="13px" viewBox="0 0 21 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>left-arrow-chevron</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Details-liste-ouverte" transform="translate(-178.000000, -585.000000)" fill="#B5B5B5" fill-rule="nonzero">
+            <g id="First_card" transform="translate(8.000000, 135.000000)">
+                <g id="left-arrow-chevron" transform="translate(180.000000, 456.500000) rotate(90.000000) translate(-180.000000, -456.500000) translate(174.000000, 446.000000)">
+                    <path d="M11.3264318,0.693743716 L11.3264318,0.693743716 C10.9546019,0.310776331 10.3427178,0.301747606 9.95975045,0.673577494 C9.95964383,0.67368101 9.95953724,0.673784552 9.95943067,0.673888117 L0.737916503,9.63548827 C0.34185042,10.020391 0.332800725,10.6534913 0.717703443,11.0495574 C0.724336965,11.0563833 0.731067605,11.0631141 0.737893305,11.0697479 L9.95938064,20.031902 C10.3421532,20.40391 10.9540237,20.3951835 11.3260317,20.012411 C11.3261651,20.0122737 11.3262985,20.0121364 11.3264318,20.011999 L11.3264318,20.011999 C11.6985037,19.6287053 11.6896055,19.0164186 11.3065525,18.6440989 L2.77603069,10.3526061 L11.3066096,2.06141934 C11.6896174,1.68915987 11.6984904,1.07694663 11.3264318,0.693743716 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
