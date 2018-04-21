@@ -1,74 +1,46 @@
 <template>
     <v-layout>
-        <place-card></place-card>
+      <!-- display 'lieuN1' -->
+        <ul>
+          <li v-for="placeN1 in placesN1">
+            {{ placeN1.fields.name.fr }}
+          </li>
+          <!-- TODO : display informations for each places -->
+          <place-card v-for="placeN1 in placesN1" :key="placeN1.id"></place-card>
+        </ul>
+
     </v-layout>
 </template>
 
 <script>
-// import myPlugin from '~/plugins/persistedState'
-// import { mapActions } from 'vuex'
 import placeCard from '../components/placeCard.vue'
 
 export default {
   components: {
     'place-card': placeCard
   },
-  fetch ({ store }) {
-    // if the localStorage corresponding to oystrPlace is empty
-    if (store.state.places['lieux'].length === 0) {
-      console.log("doesnt exist");
+  async fetch ({ store }) {
+    // if the store is empty
+    if (store.state.places['entries'].length === 0) {
       // call the Contentful API to get entries and use store management
-      return store.dispatch('places/fetchAllPlaces')
+      const data = await store.dispatch('places/fetchAllPlaces')
     } else {
       // sync modifications
-      console.log("exist");
+      const savedToken = store.state.places['token']
+      const data = await store.dispatch('places/updateContent', { savedToken })
     }
   },
   computed: {
-    lieux () {
-      return this.$store.state.places['lieux']
+    entries () {
+      return this.$store.state.places['entries']
     },
-    token () {
-      return this.$store.state.places['token']
+    // return array of all entries with id = lieuN1
+    placesN1 () {
+      let entries = this.$store.state.places['entries']
+      return entries.filter( function (placeN1) {
+        return placeN1['sys']['contentType']['sys']['id'] === "lieuN1"
+      })
     }
   }
-
-  // async mounted () {
-  //   let demo = document.querySelector('.localstorage')
-  //
-  //   if (window.localStorage.getItem('contentfulSyncToken') === null) {
-  //     console.log("localStorage is empty")
-  //     // retrieve content of the space and push it in localStorage
-  //     client.sync({initial: true})
-  //       .then((response) => {
-  //          const responseObj = JSON.parse(response.stringifySafe());
-  //          // console.log(responseObj);
-  //          const entries = responseObj.entries;
-  //          window.localStorage.setItem('contentfulEntries', JSON.stringify(entries))
-  //          // store le token, important pour la prochaine synchronisation
-  //          window.localStorage.setItem('contentfulSyncToken', response.nextSyncToken)
-  //       })
-  //   } else {
-  //     // sync modifications
-  //     client.sync({nextSyncToken: window.localStorage.getItem('contentfulSyncToken')})
-  //     .then((response) => {
-  //       console.log('localstorage is not empty ');
-  //       console.log(response.entries)
-  //       console.log(response.assets)
-  //       console.log(response.deletedEntries)
-  //       console.log(response.deletedAssets)
-  //       demo.value = localStorage['contentfulEntries']
-  //
-  //       // store the new token
-  //       window.localStorage.setItem('contentfulSyncToken', response.nextSyncToken)
-  //     })
-  //   }
-  //
-  //   // clear localstorage
-  //   document.querySelector('.empty').onclick = function () {
-  //     demo.value = ""
-  //     localStorage.clear()
-  //   }
-  // }
 }
 </script>

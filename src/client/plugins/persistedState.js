@@ -7,7 +7,8 @@ export default ({store, isHMR}) => {
     createPersistedState({
       key: 'oystrPlaces',
       // add path that we want to be persisted
-      paths: ['places', 'token']
+      // here only entries are stored
+      paths: ['places.entries']
     })(store)
   })
 }
