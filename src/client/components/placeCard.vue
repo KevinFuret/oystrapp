@@ -2,14 +2,13 @@
     <section class="placeCard">
         <header class="card__header">
             <img class="card__image" :src="imagePlaceholder" alt="Image du lieu">
-            <div class="card__categories">
-                <span class="card__category category-tag">Architecture</span>
-                <span class="card__category category-tag">Musée</span>
+            <div class="card__categories" v-for="category in placeN1.placeCategory.fr">
+                <span class="card__category category-tag">{{ category.fields.nom.fr }}</span>
             </div>
         </header>
         <div class="placeCard__content">
             <span class="open-dot open-dot--open"></span>
-            <h2 class="placeCard__title">musée des beaux arts</h2>
+            <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
             <p class="placeCard__details">
                 <span class="placeCard__detail"><img :src="location" alt="Distance"> 300m</span>
@@ -17,7 +16,7 @@
             </p>
         </div>
         <div class="placeCard__content placeCard__morecontent">
-            <p class="placeCard__description">Un château, un musée, des expos, des jardins aménagés et les remparts pour se promener… passage obligatoire pour les non-initiés !</p>
+            <p class="placeCard__description">{{ placeN1.description.fr }}</p>
             <hr class="placeCard__separator">
             <div class="placeCard__suggestions">
                 <h3 class="subsection__title">Et pour la suite ?</h3>
@@ -47,7 +46,7 @@ import smallCard from './smallCard.vue'
 
 export default {
   name: 'placeCard',
-  props: ['redirect'],
+  props: ['redirect', 'placeN1'],
   components: {
     'small-card': smallCard
   },

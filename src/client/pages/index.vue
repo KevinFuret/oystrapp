@@ -1,14 +1,10 @@
 <template>
     <v-layout>
-      <!-- display 'lieuN1' -->
-        <ul>
-          <li v-for="placeN1 in placesN1">
-            {{ placeN1.fields.name.fr }}
-          </li>
-          <!-- TODO : display informations for each places -->
-          <place-card v-for="placeN1 in placesN1" :key="placeN1.id"></place-card>
-        </ul>
-
+      <ul>
+        <li class="container" v-for="placeN1 in placesN1" :key="placeN1.id">
+          <place-card v-bind:placeN1="placeN1.fields"></place-card>
+        </li>
+      </ul>
     </v-layout>
 </template>
 
