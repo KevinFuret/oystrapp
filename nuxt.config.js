@@ -15,6 +15,7 @@ module.exports = {
   cache: true,
   css: [
     { src: 'vuetify/dist/vuetify.min.css', lang: 'css' },
+    { src: 'swiper/dist/css/swiper.min.css', lang: 'css' },
     { src: '~/assets/style/app.styl', lang: 'styl' }
   ],
   env: {
@@ -43,7 +44,12 @@ module.exports = {
     '@nuxtjs/pwa',
     '@nuxtjs/component-cache'
   ],
-  plugins: ['~/plugins/vuetify.js', { src: '~/plugins/persistedState.js', ssr: false }, '~/plugins/contentful.js'],
+  plugins: [
+    '~/plugins/vuetify.js',
+    { src: '~/plugins/persistedState.js', ssr: false },
+    '~/plugins/contentful.js',
+    { src: '~/plugins/swiper.js', ssr: false }
+  ],
   render: {
     static: {
       maxAge: '1y',

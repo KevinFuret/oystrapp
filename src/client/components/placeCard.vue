@@ -21,10 +21,12 @@
             <div class="placeCard__suggestions">
                 <h3 class="subsection__title">Et pour la suite ?</h3>
                 <div class="suggestions__slider">
-                    <div class="slider__container">
-                        <small-card class="slider__element"></small-card>
-                        <small-card class="slider__element"></small-card>
-                        <small-card class="slider__element"></small-card>
+                    <div v-swiper:mySwiper="swiperOption" class="my-swiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" v-for="banner in banners">
+                                <small-card>banner</small-card>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,6 +39,7 @@
 
 <script>
 import imagePlaceholder from '~/assets/img/musee-placeholder.png'
+import smallImagePlaceholder from '~/assets/img/musee-small-placeholder.png'
 import heart from '~/assets/img/heart.svg'
 import location from '~/assets/img/location.svg'
 import pedestrian from '~/assets/img/walk.svg'
@@ -53,11 +56,31 @@ export default {
   data () {
     return {
       imagePlaceholder,
+      smallImagePlaceholder,
       heart,
       location,
       pedestrian,
       downArrow,
-      upArrow
+      upArrow,
+      banners: [
+        smallImagePlaceholder,
+        smallImagePlaceholder,
+        smallImagePlaceholder
+      ],
+      swiperOption: {
+        slidesPerView: 'auto',
+        loop: true,
+        spaceBetween: 8,
+        freeMode: true, // ne fonctionne pas si loop = false... trouver un workaround
+        on: {
+          slideChange() {
+            console.log('onSlideChangeEnd', this);
+          },
+          tap() {
+            console.log('onTap', this);
+          }
+        }
+      }
     }
   }
 }
@@ -66,6 +89,7 @@ export default {
     .placeCard{
         background:white;
         box-shadow:0 2px 4px 0 rgba(0, 0, 0, 0.05);
+        margin-bottom:1rem;
     }
     .card__header{
         position: relative;
@@ -74,6 +98,7 @@ export default {
         position: absolute;
         bottom:1rem;
     }
+
     .category-tag{
         background: white;
         margin:0 0.5rem;
@@ -163,5 +188,20 @@ export default {
         padding:0.5rem 0;
         border-top:1px solid #f5f5f5;
         //margin-top:1rem;
+    }
+    .my-swiper {
+        height: auto;
+        width: 100%;
+
+    }
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width:auto;
+    }
+    .swiper-container{
+        overflow: visible;
+        position: absolute;
     }
 </style>

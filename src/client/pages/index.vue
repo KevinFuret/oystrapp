@@ -1,7 +1,7 @@
 <template>
     <v-layout>
-      <ul>
-        <li class="container" v-for="placeN1 in placesN1" :key="placeN1.id">
+      <ul class="placesList">
+        <li class="place" v-for="placeN1 in placesN1" :key="placeN1.id">
           <place-card v-bind:placeN1="placeN1.fields"></place-card>
         </li>
       </ul>
@@ -40,3 +40,8 @@ export default {
   }
 }
 </script>
+<style>
+    .placesList{
+        max-width: 100%;
+    }
+</style>
