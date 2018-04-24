@@ -17,14 +17,14 @@
         </div>
         <div class="placeCard__content placeCard__morecontent">
             <p class="placeCard__description">{{ placeN1.description.fr }}</p>
-            <hr class="placeCard__separator">
-            <div class="placeCard__suggestions">
+            <hr class="placeCard__separator" v-if="placeN1.lieuxN2">
+            <div class="placeCard__suggestions" v-if="placeN1.lieuxN2">
                 <h3 class="subsection__title">Et pour la suite ?</h3>
                 <div class="suggestions__slider">
                     <div v-swiper:mySwiper="swiperOption" class="my-swiper">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide" v-for="banner in banners">
-                                <small-card>banner</small-card>
+                            <div class="swiper-slide" v-for="place in placeN1.lieuxN2">
+                                <small-card :placeDetails="place"></small-card>
                             </div>
                         </div>
                     </div>
@@ -62,26 +62,31 @@ export default {
       pedestrian,
       downArrow,
       upArrow,
-      banners: [
+      placesN2: [
         smallImagePlaceholder,
         smallImagePlaceholder,
         smallImagePlaceholder
       ],
       swiperOption: {
         slidesPerView: 'auto',
-        loop: true,
         spaceBetween: 8,
-        freeMode: true, // ne fonctionne pas si loop = false... trouver un workaround
+        grabCursor: true,
+        freeMode: true,
+        slidesOffsetAfter: 100, // empêche que le slider s'arrête au milieu de la dernière card
         on: {
-          slideChange() {
-            console.log('onSlideChangeEnd', this);
+          slideChange () {
+            console.log('translate', this.translate)
+            console.log('active index', this.activeIndex
+            )
           },
-          tap() {
-            console.log('onTap', this);
+          tap () {
+            console.log('onTap', this)
           }
         }
       }
     }
+  },
+  mounted () {
   }
 }
 </script>

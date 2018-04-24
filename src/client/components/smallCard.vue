@@ -3,12 +3,12 @@
         <header class="card__header">
             <img class="card__image smallCard__image" :src="smallImagePlaceholder" alt="Image du lieu">
             <div class="card__categories">
-                <span class="card__category category-tag">Architecture</span>
+                <span class="card__category category-tag">{{ placeDetails[0].fields.category.fr.fields.name.fr }}</span>
             </div>
         </header>
         <div class="smallCard__content">
             <span class="open-dot open-dot--open"></span>
-            <p class="smallCard__title">musée des beaux arts</p>
+            <p class="smallCard__title">{{ placeDetails[0].fields.name.fr }}</p>
         </div>
     </div>
 </template>
@@ -16,10 +16,14 @@
   import smallImagePlaceholder from '~/assets/img/musee-small-placeholder.png'
   export default {
     name: 'placeCard',
+    props: ['placeDetails'],
     data () {
       return {
         smallImagePlaceholder
       }
+    },
+    mounted () {
+      console.log('place details', this.placeDetails[0].fields)
     }
   }
 </script>
