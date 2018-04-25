@@ -37,14 +37,18 @@ export default {
     placesN1 () {
       let entries = this.$store.state.places['entries']
       return entries.filter( function (placeN1) {
-        return placeN1['sys']['contentType']['sys']['id'] === "lieuN1"
+        return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
       })
     }
+  },
+  mounted () {
+    console.log('all space', this.$store.state.places['entries'])
   }
 }
 </script>
 <style>
     .placesList{
         max-width: 100%;
+        list-style-type: none;
     }
 </style>

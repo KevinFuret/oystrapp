@@ -6,6 +6,7 @@ const client = createClient()
 
 export const state = () => ({
   entries: [],
+  assets: [],
   token: ''
 })
 
@@ -16,6 +17,10 @@ export const mutations = {
   SET_ALL_ENTRIES_SUCCESS (state, data) {
     state.entries = data
     console.log('Set all places success !')
+  },
+  SET_ALL_ASSETS_SUCCESS (state, data) {
+    state.assets = data
+    console.log('Set all assets success !')
   },
   FETCH_PLACE_ERROR (state, error) {
     console.log(error);
@@ -38,9 +43,11 @@ export const actions = {
           .then((response) => {
             const responseObj = JSON.parse(response.stringifySafe())
             const entries = responseObj.entries
+            const assets = responseObj.assets
             // let data = JSON.stringify(entries)
             let token = response.nextSyncToken
             commit('SET_ALL_ENTRIES_SUCCESS', entries)
+            commit('SET_ALL_ASSETS_SUCCESS', assets)
             commit('SET_TOKEN', token)
           })
       } catch (e) {
@@ -48,6 +55,7 @@ export const actions = {
       }
   },
   async updateContent ({ commit }, { savedToken } ) {
+    console.log('in update content')
     try {
       commit('UPDATE_SYNC')
       console.log(savedToken);
