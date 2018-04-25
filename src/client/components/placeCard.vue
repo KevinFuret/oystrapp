@@ -15,8 +15,8 @@
                 <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> 4min</span>
             </p>
         </div>
-        <div class="placeCard__content placeCard__morecontent">
-
+        <transition name="fade">
+            <div class="placeCard__content placeCard__morecontent" v-show="isOpen">
             <p class="placeCard__description">{{ placeN1.description.fr }}</p>
             <hr class="placeCard__separator" v-if="placeN1.lieuxN2">
             <div class="placeCard__suggestions" v-if="placeN1.lieuxN2">
@@ -39,16 +39,15 @@
                 </div>
             </div>
         </div>
+        </transition>
 
-        <div class="placeCard__toggle">
-            <img class="toggle__arrow" :src="downArrow" alt="plus / moins d'infos">
+        <div class="placeCard__toggle" @click="toggleCardOpen">
+            <img class="toggle__arrow" :src="isOpen ? upArrow : downArrow" :alt="isOpen ? 'plus d\'infos' : 'moins d\'infos'">
         </div>
     </section>
 </template>
 
 <script>
-import imagePlaceholder from '~/assets/img/musee-placeholder.png'
-import smallImagePlaceholder from '~/assets/img/musee-small-placeholder.png'
 import heart from '~/assets/img/heart.svg'
 import location from '~/assets/img/location.svg'
 import pedestrian from '~/assets/img/walk.svg'
@@ -64,13 +63,12 @@ export default {
   },
   data () {
     return {
-      imagePlaceholder,
-      smallImagePlaceholder,
       heart,
       location,
       pedestrian,
       downArrow,
       upArrow,
+      isOpen: false,
       swiperOption: {
         // init:false,
         slidesPerView: 'auto',
@@ -98,6 +96,12 @@ export default {
         // this.placeN1.image.name.fr
         return image['sys']['id'] === imageId // mettre l'id de la placecard
       })
+    }
+  },
+  methods: {
+    toggleCardOpen () {
+      console.log('click on toggle')
+      this.isOpen = !this.isOpen
     }
   }
 }
