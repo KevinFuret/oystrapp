@@ -1,7 +1,7 @@
 <template>
     <section class="placeCard">
         <header class="card__header">
-            <img class="card__image" :src="imagePlaceholder" alt="Image du lieu">
+            <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
             <div class="card__categories" v-for="category in placeN1.placeCategory.fr">
                 <span class="card__category category-tag">{{ category.fields.nom.fr }}</span>
             </div>
@@ -16,14 +16,22 @@
             </p>
         </div>
         <div class="placeCard__content placeCard__morecontent">
+
             <p class="placeCard__description">{{ placeN1.description.fr }}</p>
             <hr class="placeCard__separator" v-if="placeN1.lieuxN2">
             <div class="placeCard__suggestions" v-if="placeN1.lieuxN2">
                 <h3 class="subsection__title">Et pour la suite ?</h3>
                 <div class="suggestions__slider">
-                    <div v-swiper:mySwiper="swiperOption" class="my-swiper">
+                    <div v-swiper:mySwiper="swiperOption" class="my-swiper" v-if="placeN1.lieuxN2.fr.length > 1">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide" v-for="place in placeN1.lieuxN2">
+                            <div class="swiper-slide" v-for="place in placeN1.lieuxN2.fr">
+                                <small-card :placeDetails="place"></small-card>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-swiper--notswiper" v-else>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" v-for="place in placeN1.lieuxN2.fr">
                                 <small-card :placeDetails="place"></small-card>
                             </div>
                         </div>
@@ -31,6 +39,7 @@
                 </div>
             </div>
         </div>
+
         <div class="placeCard__toggle">
             <img class="toggle__arrow" :src="downArrow" alt="plus / moins d'infos">
         </div>
@@ -62,17 +71,12 @@ export default {
       pedestrian,
       downArrow,
       upArrow,
-      placesN2: [
-        smallImagePlaceholder,
-        smallImagePlaceholder,
-        smallImagePlaceholder
-      ],
       swiperOption: {
+        // init:false,
         slidesPerView: 'auto',
-        spaceBetween: 8,
-        grabCursor: true,
+        spaceBetween: 0,
         freeMode: true,
-        slidesOffsetAfter: 100, // empêche que le slider s'arrête au milieu de la dernière card
+        slidesOffsetAfter: 85, // empêche que le slider s'arrête au milieu de la dernière card
         on: {
           slideChange () {
             console.log('translate', this.translate)
@@ -86,7 +90,15 @@ export default {
       }
     }
   },
-  mounted () {
+  computed: {
+    image () {
+      let assets = this.$store.state.places['assets']
+      const imageId = this.placeN1.images.fr[0].sys.id
+      return assets.filter(function (image) {
+        // this.placeN1.image.name.fr
+        return image['sys']['id'] === imageId // mettre l'id de la placecard
+      })
+    }
   }
 }
 </script>
@@ -140,6 +152,10 @@ export default {
     }
     .open-dot--closed{
         background:red;
+    }
+    .card__image--big {
+        height: 10rem;
+        object-fit: cover;
     }
     .card__image{
         width:100%;
@@ -197,7 +213,9 @@ export default {
     .my-swiper {
         height: auto;
         width: 100%;
-
+    }
+    .my-swiper--notswiper{
+        position: absolute;
     }
     .swiper-slide {
         display: flex;
