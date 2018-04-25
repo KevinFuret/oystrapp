@@ -20,6 +20,9 @@ export const mutations = {
   FETCH_PLACE_ERROR (state, error) {
     console.log(error);
   },
+  UPDATE_SYNC (state) {
+    console.log("Sync content")
+  },
   SET_TOKEN (state, token) {
     state.token = token
     console.log('Set token success !')
@@ -46,11 +49,13 @@ export const actions = {
   },
   async updateContent ({ commit }, { savedToken } ) {
     try {
+      commit('UPDATE_SYNC')
+      console.log(savedToken);
       // update store if changes have been made in contentful
       await client.sync({ nextSyncToken: savedToken })
         .then((response) => {
-          console.log(response.entries)
-          console.log(response.assets)
+          console.log("Entries : " + response.entries)
+          console.log("Assets : " + response.assets)
           commit('SET_TOKEN', response.nextSyncToken)
         })
     } catch (e) {

@@ -11,6 +11,10 @@ router.use('/', handleServerErrors())
 router.use('/users', usersRoutes)
 router.use('/admin', authenticate(), adminRoutes)
 
+router.get('/places', (req, res) => {
+  res.json('test')
+})
+
 router.get('/', (req, res) => {
   res.json(listEndpoints(router))
 })
