@@ -2,7 +2,7 @@
     <v-layout>
         <section>
             <filters></filters>
-            <button type="button" name="button" v-on:click="getlocalStorage">Click</button>
+            <!--<button type="button" name="button" v-on:click="getlocalStorage">Click</button>-->
             <ul class="placesList">
                 <li class="place" v-for="place in selectedPlaces" :key="place.id" v-if="selectedPlaces.length !== 0">
                     <place-card v-bind:placeN1="place.fields"></place-card>
