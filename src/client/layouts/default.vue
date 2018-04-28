@@ -52,7 +52,7 @@
     </v-navigation-drawer>
     <v-toolbar app fixed>
       <v-toolbar-side-icon v-if="$store.state.user.isAuthenticated" light @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>{{name}}</v-toolbar-title>
+      <v-toolbar-title >{{name}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu bottom left>
         <v-btn icon="icon" slot="activator" light>

@@ -1,19 +1,28 @@
 <template>
     <v-layout>
-      <ul class="placesList">
-        <li class="place" v-for="placeN1 in placesN1" :key="placeN1.id">
-          <place-card v-bind:placeN1="placeN1.fields"></place-card>
-        </li>
-      </ul>
+        <section>
+            <filters></filters>
+            <ul class="placesList">
+                <li class="place" v-for="place in selectedPlaces" :key="place.id" v-if="selectedPlaces.length !== 0">
+                    <place-card v-bind:placeN1="place.fields"></place-card>
+                </li>
+                <li class="place" v-for="place in placesN1" :key="place.id" v-if="selectedPlaces.length === 0">
+                    <place-card v-bind:placeN1="place.fields"></place-card>
+                </li>
+            </ul>
+        </section>
+
     </v-layout>
 </template>
 
 <script>
 import placeCard from '../components/placeCard.vue'
+import filters from '../components/filters.vue'
 
 export default {
   components: {
-    'place-card': placeCard
+    'place-card': placeCard,
+    filters
   },
   async fetch ({ store }) {
     // if the store is empty
@@ -33,13 +42,16 @@ export default {
     // return array of all entries with id = lieuN1
     placesN1 () {
       let entries = this.$store.state.places['entries']
-      return entries.filter( function (placeN1) {
+      return entries.filter(function (placeN1) {
         return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
       })
+    },
+    selectedPlaces () {
+      return this.$store.state.places['selectedPlaces']
     }
   },
   mounted () {
-    console.log('all space', this.$store.state.places['entries'])
+    // console.log('all space', this.$store.state.places['entries'])
   }
 }
 </script>

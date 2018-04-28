@@ -2,8 +2,10 @@
     <section class="placeCard">
         <header class="card__header">
             <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
-            <div class="card__categories" v-for="category in placeN1.placeCategory.fr">
-                <span class="card__category category-tag">{{ category.fields.nom.fr }}</span>
+            <div class="card__categories">
+                <span class="card__category category-tag" v-for="category in placeN1.placeCategory.fr">
+                    {{ category.fields.nom.fr }}
+                </span>
             </div>
         </header>
         <div class="placeCard__content">
