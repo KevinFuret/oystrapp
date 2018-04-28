@@ -2,6 +2,7 @@
     <v-layout>
         <section>
             <filters></filters>
+            <button type="button" name="button" v-on:click="getlocalStorage">Click</button>
             <ul class="placesList">
                 <li class="place" v-for="place in selectedPlaces" :key="place.id" v-if="selectedPlaces.length !== 0">
                     <place-card v-bind:placeN1="place.fields"></place-card>
@@ -11,7 +12,6 @@
                 </li>
             </ul>
         </section>
-
     </v-layout>
 </template>
 
@@ -24,6 +24,7 @@ export default {
     'place-card': placeCard,
     filters
   },
+  // populate store before page rendering
   async fetch ({ store }) {
     // if the store is empty
     if (store.state.places['entries'].length === 0) {
@@ -31,7 +32,8 @@ export default {
       const data = await store.dispatch('places/fetchAllPlaces')
     } else {
       // sync modifications
-      const savedToken = store.state.places['token']
+      let savedToken = store.state.places['token']
+      console.log(savedToken)
       const data = await store.dispatch('places/updateContent', { savedToken })
     }
   },
