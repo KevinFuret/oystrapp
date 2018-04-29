@@ -36,7 +36,8 @@ export default {
       const data = await store.dispatch('places/fetchAllPlaces')
     } else {
       // sync modifications
-      const savedToken = store.state.places['token']
+      let savedToken = store.state.places['token']
+      console.log('saved token', savedToken)
       const data = await store.dispatch('places/updateContent', { savedToken })
     }
   },
@@ -48,6 +49,7 @@ export default {
   },
   mounted () {
     // console.log('all space', this.$store.state.places['entries'])
+
   }
 }
 </script>
