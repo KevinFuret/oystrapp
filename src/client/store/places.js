@@ -1,5 +1,5 @@
 import { createClient } from '~/plugins/contentful'
-import axios from '~/plugins/axios'
+import createPersistedState from 'vuex-persistedstate'
 
 // initialize contentful client
 const client = createClient()
@@ -9,6 +9,14 @@ export const state = () => ({
   assets: [],
   token: ''
 })
+
+export const getters = {
+  getPlacesN1 (state) {
+    return state.entries.filter(function (placeN1) {
+      return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
+    })
+  }
+}
 
 export const mutations = {
   FETCH_ALL_PLACES_REQUEST (state) {
@@ -24,9 +32,6 @@ export const mutations = {
   },
   FETCH_PLACE_ERROR (state, error) {
     console.log(error);
-  },
-  UPDATE_SYNC (state) {
-    console.log("Sync content")
   },
   SET_TOKEN (state, token) {
     state.token = token
@@ -57,13 +62,11 @@ export const actions = {
   async updateContent ({ commit }, { savedToken } ) {
     console.log('in update content')
     try {
-      commit('UPDATE_SYNC')
-      console.log(savedToken);
       // update store if changes have been made in contentful
       await client.sync({ nextSyncToken: savedToken })
         .then((response) => {
-          console.log("Entries : " + response.entries)
-          console.log("Assets : " + response.assets)
+          console.log(response.entries)
+          console.log(response.assets)
           commit('SET_TOKEN', response.nextSyncToken)
         })
     } catch (e) {

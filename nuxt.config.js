@@ -9,7 +9,7 @@ require('dotenv').config({
 module.exports = {
   build: {
     extractCSS: true,
-    vendor: ['vuetify', 'jwt-decode', 'axios', 'vuex-persistedstate']
+    vendor: ['vuetify', 'jwt-decode', 'axios', 'vuex-persistedstate', 'vue-googlemaps']
   },
   buildDir: 'dist/client',
   cache: true,
@@ -48,7 +48,8 @@ module.exports = {
     '~/plugins/vuetify.js',
     { src: '~/plugins/persistedState.js', ssr: false },
     '~/plugins/contentful.js',
-    { src: '~/plugins/swiper.js', ssr: false }
+    { src: '~/plugins/swiper.js', ssr: false },
+    { src: '~/plugins/vue-googlemaps.js', ssr: false }
   ],
   render: {
     static: {
