@@ -23,7 +23,7 @@
       }
     },
     mounted () {
-      console.log('place details', this.placeDetails.fields)
+      // console.log('place details', this.placeDetails.fields)
     },
     computed: {
       image () {

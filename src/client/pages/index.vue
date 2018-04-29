@@ -1,20 +1,31 @@
 <template>
     <v-layout>
-      <ul class="placesList">
-        <li class="place" v-for="placeN1 in placesN1" :key="placeN1.id">
-          <place-card v-bind:placeN1="placeN1.fields"></place-card>
-        </li>
-      </ul>
+      <nuxt-link to="/mapPlaces">Map</nuxt-link>
+        <section>
+            <filters></filters>
+            <!--<button type="button" name="button" v-on:click="getlocalStorage">Click</button>-->
+            <ul class="placesList">
+                <li class="place" v-for="place in selectedPlaces" :key="place.id" v-if="$store.state.places.selectedCategories.length !== 0">
+                    <place-card v-bind:placeN1="place.fields"></place-card>
+                </li>
+                <li class="place" v-for="place in placesN1" :key="place.id" v-if="$store.state.places.selectedCategories.length === 0">
+                    <place-card v-bind:placeN1="place.fields"></place-card>
+                </li>
+            </ul>
+        </section>
     </v-layout>
 </template>
 
 <script>
 import placeCard from '../components/placeCard.vue'
+import filters from '../components/filters.vue'
 import { mapGetters } from 'vuex'
+
 
 export default {
   components: {
-    'place-card': placeCard
+    'place-card': placeCard,
+    filters
   },
   // populate store before page rendering
   async fetch ({ store }) {
@@ -31,22 +42,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      lieuxN1: 'places/getPlacesN1'
+      placesN1: 'places/getPlacesN1',
+      selectedPlaces: 'places/getSelectedPlaces'
     })
   },
   mounted () {
-    console.log('all space', this.$store.state.places['entries'])
+    // console.log('all space', this.$store.state.places['entries'])
   }
-  // methods: {
-  //   readLocalStorage () {
-  //     if (process.client) {
-  //       console.log(localStorage.getItem('oystrPlaces'));
-  //     }
-  //   }
-  // },
-  // beforeMount () {
-  //   this.readLocalStorage()
-  // }
 }
 </script>
 <style>
