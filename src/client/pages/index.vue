@@ -33,7 +33,7 @@ export default {
     } else {
       // sync modifications
       let savedToken = store.state.places['token']
-      console.log(savedToken)
+      console.log('saved token', savedToken)
       const data = await store.dispatch('places/updateContent', { savedToken })
     }
   },
@@ -54,6 +54,7 @@ export default {
   },
   mounted () {
     // console.log('all space', this.$store.state.places['entries'])
+
   }
 }
 </script>

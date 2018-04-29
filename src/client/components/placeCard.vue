@@ -8,8 +8,9 @@
                 </span>
             </div>
         </header>
+
         <div class="placeCard__content">
-            <span class="open-dot open-dot--open"></span>
+            <span class="open-dot" :class="isPlaceOpen"></span>
             <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
             <p class="placeCard__details">
@@ -17,6 +18,7 @@
                 <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> 4min</span>
             </p>
         </div>
+        <p>est-ce ouvert selon google? {{ isPlaceOpen }}</p>
         <transition name="slide-down" mode="in-out">
             <div class="placeCard__content placeCard__morecontent" v-show="isOpen">
             <p class="placeCard__description">{{ placeN1.description.fr }}</p>
@@ -56,6 +58,8 @@ import pedestrian from '~/assets/img/walk.svg'
 import downArrow from '~/assets/img/down-arrow.svg'
 import upArrow from '~/assets/img/up-arrow.svg'
 import smallCard from './smallCard.vue'
+
+import axios from 'axios'
 
 export default {
   name: 'placeCard',
@@ -98,12 +102,48 @@ export default {
         // this.placeN1.image.name.fr
         return image['sys']['id'] === imageId // mettre l'id de la placecard
       })
+    },
+    googlePlaceId () {
+      return this.placeN1.googlePlaceId.fr
+    },
+    googleInfos () {
+      return this.placeN1.googleInfos
+    },
+    isPlaceOpen () {
+      if (this.googleInfos) {
+        if (!this.googleInfos.opening_hours) return 'open-dot--uncertain'
+        else if (this.placeN1.googleInfos.opening_hours.open_now) return 'open-dot--open'
+        else return 'open-dot--closed'
+      }
     }
   },
   methods: {
     toggleCardOpen () {
-      console.log('click on toggle')
       this.isOpen = !this.isOpen
+      console.log('google ifnos', this.placeN1.googleInfos)
+    },
+    getGoogleInfos () {
+      if (this.placeN1.googleInfos === undefined) {
+        console.log('on fait la requete google places...', this.placeN1.googlePlaceId.fr)
+        const placeId = this.placeN1.googlePlaceId.fr
+        const proxyurl = 'https://cors-anywhere.herokuapp.com/'
+        const url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeId + '&key=AIzaSyAbP1t4UE9cfSuNYsmOXkRaHLVMJQHV2rQ'
+        fetch(proxyurl + url)
+          .then(response => response.text())
+          // .then(contents => console.log('contents', contents))
+          .then(contents => this.storeGoogleInfos(placeId, contents))
+          // .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
+      } else { console.log('google infos already set : ', this.placeN1.googleInfos) }
+    },
+    storeGoogleInfos (placeId, infos) {
+      const payload = {placeId: placeId, infos: JSON.parse(infos).result}
+      this.$store.dispatch('places/updateGoogleInfos', payload)
+    }
+  },
+  mounted () {
+    this.getGoogleInfos()
+    if (this.placeN1.googleInfos === undefined) {
+      // this.$store.dispatch('places/getGoogleInfos')
     }
   }
 }

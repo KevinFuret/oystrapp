@@ -1,5 +1,6 @@
 import { createClient } from '~/plugins/contentful'
-import axios from '~/plugins/axios'
+// import fetch from 'node-fetch'
+// import axios from '~/plugins/axios'
 
 // initialize contentful client
 const client = createClient()
@@ -49,6 +50,9 @@ export const mutations = {
   ALL_ALL_TO_SELECTED_PLACES (state, places) {
     state.selectedPlaces = places
     console.log('added all places to selected')
+  },
+  ADD_GOOGLE_INFOS (state, {index, infos}) {
+    state.entries[index].fields.googleInfos = infos
   }
 }
 
@@ -68,7 +72,8 @@ export const actions = {
             commit('SET_ALL_ASSETS_SUCCESS', assets)
             commit('SET_TOKEN', token)
             // enlever la ligne ci dessous quand on aura fait l'inscription
-            dispatch('addAllPlacesAsSelected', entries)
+            dispatch('addAllPlacesAsSelected')
+            // dispatch('getGoogleInfos')
           })
       } catch (e) {
         commit('FETCH_PLACE_ERROR', e)
@@ -77,7 +82,7 @@ export const actions = {
   async updateContent ({ commit }, { savedToken }) {
     try {
       commit('UPDATE_SYNC')
-      console.log(savedToken);
+      console.log(savedToken)
       // update store if changes have been made in contentful
       await client.sync({ nextSyncToken: savedToken })
         .then((response) => {
@@ -113,10 +118,38 @@ export const actions = {
     })
     commit('UPDATE_SELECTED_PLACES', selectedEntries)
   },
-  addAllPlacesAsSelected ({commit}, { entries }) {
-    let placesN1 = entries.filter(function (placeN1) {
+  addAllPlacesAsSelected ({commit, state} ) {
+    let placesN1 = state.entries.filter(function (placeN1) {
       return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
     })
     commit('ALL_ALL_TO_SELECTED_PLACES', placesN1)
+  },
+  getGoogleInfos ({state}) {
+    // DEPRECATED FUNCTION //
+    // get only places of type lieuN1
+    let placesN1 = state.entries.filter(function (placeN1) {
+      return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
+    })
+    // for each lieuN1 type of place, get google infos via google places api
+    placesN1.forEach(function (element) {
+      // check if googleInfos is set or not, query if not set, log it if set
+      if (element.fields.googleInfos === undefined) {
+        const proxyurl = 'https://cors-anywhere.herokuapp.com/'
+        const url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + element.fields.googlePlaceId.fr + '&key=AIzaSyAbP1t4UE9cfSuNYsmOXkRaHLVMJQHV2rQ'
+        fetch(proxyurl + url, )
+          .then(response => response.text())
+          .then(contents => console.log('contents', contents))
+          // .then(contents => element.fields.googleInfos = JSON.parse(contents).result)
+          // .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
+      } else { console.log(element.fields.googleInfos) }
+    })
+  },
+  updateGoogleInfos ({ state, commit }, payload) {
+    const infos = payload.infos
+    state.entries.forEach(function (place, index) {
+      if (payload.placeId === place.fields.googlePlaceId.fr) {
+        commit('ADD_GOOGLE_INFOS', {index, infos})
+      }
+    })
   }
 }
