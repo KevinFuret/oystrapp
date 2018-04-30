@@ -1,30 +1,27 @@
 <template>
-  <v-layout>
-    <no-ssr>
-      <googlemaps-map
-        ref="map"
-        :center.sync="center"
-        :zoom="zoom"
-        :options="options"
-        @ready="ready"
-        style="width: 100%; height: 90vh"
-      >
+  <no-ssr>
+    <googlemaps-map
+      ref="map"
+      :center.sync="center"
+      :zoom="zoom"
+      :options="options"
+      @ready="ready"
+      style="width: 100%; height: 90vh"
+    >
+      <!-- User Position -->
+      <googlemaps-user-position
+        @update:position="setUserPosition"
+      />
 
-        <!-- User Position -->
-        <googlemaps-user-position
-          @update:position="setUserPosition"
-        />
-
-        <googlemaps-marker
-          v-for="(marker, index) of markers"
-          :key="index"
-          :icon="icon"
-          :position="marker.position"
-          @click="center=marker.position"
-        />
-      </googlemaps-map>
-    </no-ssr>
-  </v-layout>
+      <googlemaps-marker
+        v-for="(marker, index) of markers"
+        :key="index"
+        :icon="icon"
+        :position="marker.position"
+        @click="center=marker.position"
+      />
+    </googlemaps-map>
+  </no-ssr>
 </template>
 
 <script>
