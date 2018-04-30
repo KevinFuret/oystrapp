@@ -1,5 +1,6 @@
 <template>
     <v-layout>
+      <nuxt-link to="/mapPlaces">Map</nuxt-link>
         <section>
             <filters></filters>
             <!--<button type="button" name="button" v-on:click="getlocalStorage">Click</button>-->
@@ -18,6 +19,8 @@
 <script>
 import placeCard from '../components/placeCard.vue'
 import filters from '../components/filters.vue'
+import { mapGetters } from 'vuex'
+
 
 export default {
   components: {
@@ -27,6 +30,7 @@ export default {
   // populate store before page rendering
   async fetch ({ store }) {
     // if the store is empty
+    // console.log(store.getters.entries);
     if (store.state.places['entries'].length === 0) {
       // call the Contentful API to get entries and use store management
       const data = await store.dispatch('places/fetchAllPlaces')
@@ -38,19 +42,10 @@ export default {
     }
   },
   computed: {
-    entries () {
-      return this.$store.state.places['entries']
-    },
-    // return array of all entries with id = lieuN1
-    placesN1 () {
-      let entries = this.$store.state.places['entries']
-      return entries.filter(function (placeN1) {
-        return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
-      })
-    },
-    selectedPlaces () {
-      return this.$store.state.places['selectedPlaces']
-    }
+    ...mapGetters({
+      placesN1: 'places/getPlacesN1',
+      selectedPlaces: 'places/getSelectedPlaces'
+    })
   },
   mounted () {
     // console.log('all space', this.$store.state.places['entries'])
