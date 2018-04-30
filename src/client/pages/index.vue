@@ -1,7 +1,8 @@
 <template>
     <v-layout>
-      <nuxt-link to="/mapPlaces">Map</nuxt-link>
         <section>
+            <nuxt-link to="/mapPlaces"><h2>Map</h2></nuxt-link>
+            <hr>
             <filters></filters>
             <!--<button type="button" name="button" v-on:click="getlocalStorage">Click</button>-->
             <ul class="placesList">

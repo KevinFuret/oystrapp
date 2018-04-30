@@ -120,7 +120,7 @@ export default {
   methods: {
     toggleCardOpen () {
       this.isOpen = !this.isOpen
-      // console.log('google infos', this.placeN1.googleInfos)
+      console.log('google infos', this.placeN1.googleInfos)
     },
     getGoogleInfos () {
       if (this.placeN1.googleInfos === undefined) {
@@ -189,6 +189,7 @@ export default {
         border-radius: 100%;
         align-self: center;
         margin-right:0.5rem;
+        background:lightgrey;
     }
     .open-dot--open{
         background:#76bb71;
