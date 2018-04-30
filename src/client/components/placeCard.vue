@@ -10,6 +10,7 @@
         </header>
 
         <div class="placeCard__content">
+            <!-- BUG: open dot permet d'afficher via la couleur si le lieu est ouvert ou fermé actuellement. La classe est mise via la prorpiété computed isPlaceOpen -->
             <span class="open-dot" :class="isPlaceOpen"></span>
             <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
@@ -18,6 +19,7 @@
                 <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> 4min</span>
             </p>
         </div>
+        <!-- BUG: j'affiche la valeur de isPlaceOpen en texte pour débugger -->
         <p>est-ce ouvert selon google? {{ isPlaceOpen }}</p>
         <transition name="slide-down" mode="in-out">
             <div class="placeCard__content placeCard__morecontent" v-show="isOpen">
@@ -110,17 +112,27 @@ export default {
       return this.placeN1.googleInfos
     },
     isPlaceOpen () {
-      if (this.googleInfos) {
-        if (!this.googleInfos.opening_hours) return 'open-dot--uncertain'
-        else if (this.placeN1.googleInfos.opening_hours.open_now) return 'open-dot--open'
-        else return 'open-dot--closed'
+      if (this.googleInfos === undefined || this.googleInfos.opening_hours === undefined) {
+        // BUG : si il n'y a pas de googleInfos pour le lieu, OU si il n'y a aucun horaires dans les google Infos du lieu, on affiche la classe open-dot--uncertain (orange)
+        console.log('place open ? is uncertain')
+        return {'open-dot--uncertain': true}
+      } else if (this.placeN1.googleInfos.opening_hours.open_now) {
+        // BUG : sinon si le lieu est ouvert actuellement on renvoie open-dot--open (vert)
+        return {'open-dot--open': true}
+      } else {
+        // BUG : sinon  on renvoie open-dot--closed (rouge)
+        return {'open-dot--closed': true}
       }
     }
   },
   methods: {
+    getIsPlaceOpen () {
+      // test
+      return this.isPlaceOpen
+    },
     toggleCardOpen () {
       this.isOpen = !this.isOpen
-      console.log('google infos', this.placeN1.googleInfos)
+      // console.log('google infos', this.placeN1.googleInfos)
     },
     getGoogleInfos () {
       if (this.placeN1.googleInfos === undefined) {
@@ -133,7 +145,7 @@ export default {
           // .then(contents => console.log('contents', contents))
           .then(contents => this.storeGoogleInfos(placeId, contents))
           // .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
-      } else { console.log('google infos already set : ', this.placeN1.googleInfos) }
+      }
     },
     storeGoogleInfos (placeId, infos) {
       const payload = {placeId: placeId, infos: JSON.parse(infos).result}
@@ -141,10 +153,9 @@ export default {
     }
   },
   mounted () {
-    this.getGoogleInfos()
     if (this.placeN1.googleInfos === undefined) {
-      // this.$store.dispatch('places/getGoogleInfos')
-    }
+      this.getGoogleInfos()
+    } else { console.log('google infos already set : ', this.placeN1.googleInfos) }
   }
 }
 </script>
