@@ -53,6 +53,7 @@ export const mutations = {
   },
   ADD_GOOGLE_INFOS (state, {index, infos}) {
     state.entries[index].fields.googleInfos = infos
+    console.log('add google infos to store')
   }
 }
 
@@ -145,8 +146,11 @@ export const actions = {
     })
   },
   updateGoogleInfos ({ state, commit }, payload) {
+    let placesN1 = state.entries.filter(function (placeN1) {
+      return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
+    })
     const infos = payload.infos
-    state.entries.forEach(function (place, index) {
+    placesN1.forEach(function (place, index) {
       if (payload.placeId === place.fields.googlePlaceId.fr) {
         commit('ADD_GOOGLE_INFOS', {index, infos})
       }

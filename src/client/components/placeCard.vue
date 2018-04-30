@@ -120,7 +120,7 @@ export default {
   methods: {
     toggleCardOpen () {
       this.isOpen = !this.isOpen
-      console.log('google ifnos', this.placeN1.googleInfos)
+      // console.log('google infos', this.placeN1.googleInfos)
     },
     getGoogleInfos () {
       if (this.placeN1.googleInfos === undefined) {
