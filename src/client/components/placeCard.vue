@@ -18,6 +18,7 @@
                 <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> 4min</span>
             </p>
         </div>
+        <p>{{ isPlaceOpen }}</p>
         <transition name="slide-down" mode="in-out">
             <div class="placeCard__content placeCard__morecontent" v-show="isOpen">
             <p class="placeCard__description">{{ placeN1.description.fr }}</p>
@@ -43,7 +44,6 @@
             </div>
         </div>
         </transition>
-
         <div class="placeCard__toggle" @click="toggleCardOpen">
             <img class="toggle__arrow" :src="isOpen ? upArrow : downArrow" :alt="isOpen ? 'plus d\'infos' : 'moins d\'infos'">
         </div>
@@ -109,9 +109,10 @@ export default {
       return this.placeN1.googleInfos
     },
     isPlaceOpen () {
-      if (this.googleInfos === undefined || this.googleInfos.opening_hours === undefined) return {'open-dot--uncertain': true}
-      else if (this.placeN1.googleInfos.opening_hours.open_now === true) return {'open-dot--open': true}
-      else return {'open-dot--closed': true}
+      if (this.googleInfos === undefined) console.log(this.googleInfos)
+      else if (this.googleInfos.opening_hours === undefined) return 'open-dot--uncertain'
+      else if (this.placeN1.googleInfos.opening_hours.open_now === true) return 'open-dot--open'
+      else return 'open-dot--closed'
     }
   },
   methods: {
@@ -120,7 +121,8 @@ export default {
       // console.log('google infos', this.placeN1.googleInfos)
     },
     getGoogleInfos () {
-      if (this.placeN1.googleInfos === undefined) {
+      // true pour recharger les infos tout le temps
+      if (this.placeN1.googleInfos === undefined || true) {
         console.log('on fait la requete google places...', this.placeN1.googlePlaceId.fr)
         const placeId = this.placeN1.googlePlaceId.fr
         const proxyurl = 'https://cors-anywhere.herokuapp.com/'
@@ -129,7 +131,7 @@ export default {
           .then(response => response.text())
           // .then(contents => console.log('contents', contents))
           .then(contents => this.storeGoogleInfos(placeId, contents))
-          // .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
+          .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
       }
     },
     storeGoogleInfos (placeId, infos) {

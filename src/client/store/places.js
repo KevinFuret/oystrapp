@@ -176,9 +176,12 @@ export const actions = {
       return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
     })
     const infos = payload.infos
-    placesN1.forEach(function (place, index) {
-      if (payload.placeId === place.fields.googlePlaceId.fr) {
-        commit('ADD_GOOGLE_INFOS', {index, infos})
+    // placesN1.forEach(function (place, index) {
+    state.entries.forEach(function (place, index) {
+      if (place.fields.googlePlaceId !== undefined) {
+        if (payload.placeId === place.fields.googlePlaceId.fr) {
+          commit('ADD_GOOGLE_INFOS', {index, infos})
+        }
       }
     })
   }
