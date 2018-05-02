@@ -38,13 +38,17 @@ export const mutations = {
   }
 }
 export const actions = {
-  nuxtServerInit ({ commit, state }, { req }) {
+  async nuxtServerInit ({ commit, state, dispatch }, { req }) {
+  // nuxtServerInit (context, { req }) {
     if (req.cookies.token) {
       let token = req.cookies.token
       let user = jwtDecode(token)
       let data = { user, token }
       commit('SET_USER', data)
     }
+
+    // test if persistence exists in app root
+    // console.log(state.places.entries);
   },
   async fetchAllUsers ({ commit, state }) {
     try {

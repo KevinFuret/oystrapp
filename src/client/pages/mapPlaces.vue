@@ -1,14 +1,17 @@
 <template>
   <v-layout>
+    
     <map-component></map-component>
 
     <div class="places-map__slider">
       <div v-swiper:mySwiper="swiperOption" class="swiper-box" ref="mySwiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="place in placesN1" :key="place.id" v-if="$store.state.places.selectedCategories.length === 0">
+          <div class="swiper-slide" v-for="place in placesN1" :key="place.id"
+                v-if="$store.state.places.selectedCategories.length === 0">
             <place-card-map v-bind:placeN1="place.fields"></place-card-map>
           </div>
-          <div class="swiper-slide" v-for="place in selectedPlaces" :key="place.id" v-if="$store.state.places.selectedCategories.length !== 0">
+          <div class="swiper-slide" v-for="place in selectedPlaces" :key="place.id"
+                v-if="$store.state.places.selectedCategories.length !== 0">
             <place-card-map v-bind:placeN1="place.fields"></place-card-map>
           </div>
         </div>
@@ -35,8 +38,7 @@ export default {
         grabCursor: true,
         mousewheel: true,
         spaceBetween: 10,
-        slideToClickedSlide: true,
-        slidesOffsetAfter: 450, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
+        slidesOffsetAfter: 80, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
         on: {
           slideChange () {
             console.log('translate', this.translate)
@@ -66,6 +68,7 @@ export default {
     padding-bottom: 18rem;
   }
   .swiper-box {
+    transform: translateX(-85%);
     width: 100%;
     margin: 0 auto;
   }

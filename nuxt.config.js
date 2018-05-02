@@ -9,7 +9,18 @@ require('dotenv').config({
 module.exports = {
   build: {
     extractCSS: true,
-    vendor: ['vuetify', 'jwt-decode', 'axios', 'vuex-persistedstate', 'vue-googlemaps']
+    vendor: ['vuetify', 'jwt-decode', 'axios', 'vuex-persistedstate', 'vue-googlemaps'],
+    extend(config, {isDev, isClient}) {
+      // extend webpack configs here
+      if (isDev && isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
+    },
   },
   buildDir: 'dist/client',
   cache: true,
@@ -45,11 +56,12 @@ module.exports = {
     '@nuxtjs/component-cache'
   ],
   plugins: [
-    '~/plugins/vuetify.js',
     { src: '~/plugins/persistedState.js', ssr: false },
+    '~/plugins/vuetify.js',
     '~/plugins/contentful.js',
     { src: '~/plugins/swiper.js', ssr: false },
-    { src: '~/plugins/vue-googlemaps.js', ssr: false }
+    { src: '~/plugins/vue-googlemaps.js', ssr: false },
+    { src: '~/plugins/vue-browser-geolocation.js' }
   ],
   render: {
     static: {

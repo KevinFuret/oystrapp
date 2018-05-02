@@ -1,6 +1,6 @@
 import { createClient } from '~/plugins/contentful'
+import Cookies from 'js-cookie'
 // import fetch from 'node-fetch'
-// import axios from '~/plugins/axios'
 
 // initialize contentful client
 const client = createClient()
@@ -21,25 +21,6 @@ export const getters = {
   },
   getSelectedPlaces (state) {
     return state.selectedPlaces
-  },
-  getLocations (state, getters) {
-    let locations = []
-    //if no filters were selected
-    // else all filters are selected by default
-    if (state.selectedPlaces.length !== 0) {
-      state.selectedPlaces.forEach( function(place) {
-        console.log("I've selected some places")
-        locations.push({position: {lat: place.fields.location.fr.lat,
-          lng: place.fields.location.fr.lon}})
-      })
-    } else {
-      console.log("all placesN1 are displayed on the map")
-      getters.getPlacesN1.forEach( function (place) {
-        locations.push({position: {lat: place.fields.location.fr.lat,
-          lng: place.fields.location.fr.lon}})
-      })
-    }
-    return locations
   }
 }
 
@@ -85,8 +66,9 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchAllPlaces ({ commit, dispatch }) {
+  async fetchAllPlaces ({ commit, state, dispatch }) {
       try {
+        console.log(Cookies.get('oystrPlaces'));
         commit('FETCH_ALL_PLACES_REQUEST')
         // get entries from space contentful using Sync API
         await client.sync({ initial: true })
@@ -112,7 +94,7 @@ export const actions = {
       // update store if changes have been made in contentful
       await client.sync({ nextSyncToken: savedToken })
         .then((response) => {
-          console.log(response.entries)
+          console.log('syncing with contentful ', response.entries)
           console.log(response.assets)
           commit('SET_TOKEN', response.nextSyncToken)
         })

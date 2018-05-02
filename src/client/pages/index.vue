@@ -31,7 +31,6 @@ export default {
   // populate store before page rendering
   async fetch ({ store }) {
     // if the store is empty
-    // console.log(store.getters.entries);
     if (store.state.places['entries'].length === 0) {
       // call the Contentful API to get entries and use store management
       const data = await store.dispatch('places/fetchAllPlaces')
@@ -49,8 +48,15 @@ export default {
     })
   },
   mounted () {
+    // ask user location
+    // if he accepts, we populate the store
+    // TODO : ask at the end of the onboarding
+    this.$getLocation()
+      .then(coordinates => {
+        let userPosition = coordinates
+        this.$store.dispatch('geolocation/setUserPosition', { userPosition })
+      });
     // console.log('all space', this.$store.state.places['entries'])
-
   }
 }
 </script>

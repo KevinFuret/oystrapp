@@ -124,7 +124,7 @@ export default {
     },
     getGoogleInfos () {
       if (this.placeN1.googleInfos === undefined) {
-        console.log('on fait la requete google places...', this.placeN1.googlePlaceId.fr)
+        // console.log('on fait la requete google places...', this.placeN1.googlePlaceId.fr)
         const placeId = this.placeN1.googlePlaceId.fr
         const proxyurl = 'https://cors-anywhere.herokuapp.com/'
         const url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeId + '&key=AIzaSyAbP1t4UE9cfSuNYsmOXkRaHLVMJQHV2rQ'
