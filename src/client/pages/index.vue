@@ -22,7 +22,6 @@ import placeCard from '../components/placeCard.vue'
 import filters from '../components/filters.vue'
 import { mapGetters } from 'vuex'
 
-
 export default {
   components: {
     'place-card': placeCard,

@@ -74,6 +74,7 @@ export default {
       downArrow,
       upArrow,
       isOpen: false,
+      isPlaceOpen: null,
       swiperOption: {
         // init:false,
         slidesPerView: 'auto',
@@ -108,11 +109,11 @@ export default {
     googleInfos () {
       return this.placeN1.googleInfos
     },
-    isPlaceOpen () {
-      if (this.googleInfos === undefined) console.log(this.googleInfos)
+    isPlaceOpenOld () {
+      /* if (this.googleInfos === undefined) console.log(this.googleInfos)
       else if (this.googleInfos.opening_hours === undefined) return 'open-dot--uncertain'
       else if (this.placeN1.googleInfos.opening_hours.open_now === true) return 'open-dot--open'
-      else return 'open-dot--closed'
+      else return 'open-dot--closed' */
     }
   },
   methods: {
@@ -143,6 +144,11 @@ export default {
     if (this.placeN1.googleInfos === undefined) {
       this.getGoogleInfos()
     } else { console.log('google infos already set : ', this.placeN1.googleInfos) }
+    // set isPlaceOpen
+    if (this.googleInfos === undefined) console.log(this.googleInfos)
+    else if (this.googleInfos.opening_hours === undefined) this.isPlaceOpen = 'open-dot--uncertain'
+    else if (this.placeN1.googleInfos.opening_hours.open_now === true) this.isPlaceOpen = 'open-dot--open'
+    else this.isPlaceOpen = 'open-dot--closed'
   }
 }
 </script>
