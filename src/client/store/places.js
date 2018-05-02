@@ -1,4 +1,5 @@
 import { createClient } from '~/plugins/contentful'
+import Vue from 'vue'
 // import fetch from 'node-fetch'
 // import axios from '~/plugins/axios'
 
@@ -79,8 +80,8 @@ export const mutations = {
     console.log('added all places to selected')
   },
   ADD_GOOGLE_INFOS (state, {index, infos}) {
-    state.entries[index].fields.googleInfos = infos
-    console.log('add google infos to store')
+    Vue.set(state.entries[index].fields, 'googleInfos', infos)
+    console.log('added google infos to store')
   }
 }
 
