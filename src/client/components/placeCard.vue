@@ -18,7 +18,6 @@
                 <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> 4min</span>
             </p>
         </div>
-        <p>{{ isPlaceOpen }}</p>
         <transition name="slide-down" mode="in-out">
             <div class="placeCard__content placeCard__morecontent" v-show="isOpen">
             <p class="placeCard__description">{{ placeN1.description.fr }}</p>
