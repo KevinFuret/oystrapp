@@ -2,7 +2,7 @@
   <v-layout>
     <map-component></map-component>
 
-    <div class="suggestions__slider">
+    <div class="places-map__slider">
       <div v-swiper:mySwiper="swiperOption" class="swiper-box" ref="mySwiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="place in placesN1" :key="place.id" v-if="$store.state.places.selectedCategories.length === 0">
@@ -34,7 +34,8 @@ export default {
         slidesPerView: 'auto',
         grabCursor: true,
         mousewheel: true,
-        spaceBetween: 20,
+        spaceBetween: 10,
+        slideToClickedSlide: true,
         slidesOffsetAfter: 450, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
         on: {
           slideChange () {
@@ -59,14 +60,17 @@ export default {
 </script>
 
 <style>
+  .places-map__slider {
+    display: flex;
+    align-self: flex-end;
+    padding-bottom: 18rem;
+  }
   .swiper-box {
     width: 100%;
-    height: 100%;
     margin: 0 auto;
   }
   .swiper-slide {
     width: 80%;
     align-items: flex-end;
-    margin-bottom: 10rem;
   }
 </style>

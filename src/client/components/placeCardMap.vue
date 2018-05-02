@@ -26,7 +26,7 @@ import location from '~/assets/img/location.svg'
 import pedestrian from '~/assets/img/walk.svg'
 
 export default {
-  name: 'placeCard',
+  name: 'placeCardMap',
   props: ['redirect', 'placeN1'],
   data () {
     return {
@@ -51,9 +51,9 @@ export default {
   .placeCardMap {
       background:white;
       box-shadow:0 2px 4px 0 rgba(0, 0, 0, 0.05);
-      margin-bottom:1rem;
+      margin-bottom: 0;
   }
   .placeCard__content {
-    min-height: 85px;
+    min-height: 84px;
   }
 </style>
