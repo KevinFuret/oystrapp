@@ -4,30 +4,30 @@
     <hr>
     <button type="button" :disabled="!userPosition"
       @click="centerOnUser">Find me !</button>
-    <!-- <no-ssr> -->
-    <googlemaps-map
-      ref="mapRef"
-      :center.sync="center"
-      :zoom.sync="zoom"
-      :options="mapOptions"
-      @ready="ready"
-      style="width: 100%; height: 80vh"
-    >
-      <!-- User Position -->
-      <googlemaps-user-position
-        :props="propsUserPosition"
-        @update:position="setUserPosition"
-      />
+    <no-ssr>
+      <googlemaps-map
+        ref="mapRef"
+        :center.sync="center"
+        :zoom.sync="zoom"
+        :options="mapOptions"
+        @ready="ready"
+        style="width: 100%; height: 80vh"
+      >
+        <!-- User Position -->
+        <!-- <googlemaps-user-position
+          @update:position="setUserPosition"
+        /> -->
 
-      <googlemaps-marker
-        v-for="(marker, index) of markers"
-        :key="index"
-        :icon="icon"
-        :position="marker.position"
-        @click="updateMapState(marker)"
-      />
-    </googlemaps-map>
-    <!-- </no-ssr> -->
+        <googlemaps-marker
+          v-for="(marker, index) of markers"
+          :key="index"
+          :icon="icon"
+          :options="markerOptions"
+          :position="marker.position"
+          @click="updateMapState(marker)"
+        />
+      </googlemaps-map>
+    </no-ssr>
   </section>
 </template>
 
@@ -41,8 +41,9 @@ export default {
   name: 'mapComponent',
   data () {
    return {
+     // center = userposition
+     // default nantes coordinates
     center: { lat: 47.218371, lng: -1.553621 },
-    userPosition: { lat: 47.218371, lng: -1.553621 }, // by default you are in Nantes
     zoom: 12,
     mapOptions: {
       draggable: true,
@@ -50,34 +51,21 @@ export default {
       mapTypeId: 'roadmap',
       styles: mapStyle
     },
+    markerOptions: {
+      optimized: false
+    },
     icon: {
       url: markerIcon,
       // This marker is 20 pixels wide by 32 pixels high.
-      // scaledSize: new google.maps.Size(20, 35)
-    },
-    propsUserPosition: {
-      // accuracy: 0,
+      scaledSize: new google.maps.Size(20, 35)
     }
    }
   },
   computed: {
     ...mapGetters({
-      markers: 'geolocation/getLocations'
-    }),
-    // TODO : display distance between places and userPosition
-    distance () {
-      let earthRadius = 6378137 //Rayon de la terre en mètre
-      let latPlace = ""
-      let lngPlace = ""
-      let latUser = Math.PI / 180 * this.userPosition.lat
-      let lngUser = Math.PI / 180 *  this.userPosition.lng
-      this.markers.forEach( function (location) {
-        latPlace = Math.PI / 180 * location.position.lat
-        lngPlace = Math.PI / 180 * location.position.lng
-        // trouver la bonne formule mathématique
-        // var angle = google.maps.geometry.spherical.computeHeading( depart, arrivee)
-      })
-    }
+      markers: 'geolocation/getLocations',
+      userPosition: 'geolocation/getUserPosition'
+    })
   },
   mounted () {
     // console.log(new google.maps.geometry.spherical);
@@ -100,6 +88,7 @@ export default {
       // console.log("user position: " , this.userPosition)
     },
     updateMapState (marker) {
+      this.zoom = Math.max(15, 12)
       this.$refs.mapRef.panTo(marker.position)
 
     }

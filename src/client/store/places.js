@@ -1,5 +1,5 @@
 import { createClient } from '~/plugins/contentful'
-import Cookies from 'js-cookie'
+import Vue from 'vue'
 // import fetch from 'node-fetch'
 
 // initialize contentful client
@@ -14,6 +14,9 @@ export const state = () => ({
 })
 
 export const getters = {
+  getEntries (state) {
+    return state.entries
+  },
   getPlacesN1 (state) {
     return state.entries.filter(function (placeN1) {
       return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
@@ -60,15 +63,14 @@ export const mutations = {
     console.log('added all places to selected')
   },
   ADD_GOOGLE_INFOS (state, {index, infos}) {
-    state.entries[index].fields.googleInfos = infos
-    console.log('add google infos to store')
+    Vue.set(state.entries[index].fields, 'googleInfos', infos)
+    // console.log('added google infos to store')
   }
 }
 
 export const actions = {
   async fetchAllPlaces ({ commit, state, dispatch }) {
       try {
-        console.log(Cookies.get('oystrPlaces'));
         commit('FETCH_ALL_PLACES_REQUEST')
         // get entries from space contentful using Sync API
         await client.sync({ initial: true })
@@ -92,7 +94,8 @@ export const actions = {
   async updateContent ({ commit }, { savedToken }) {
     try {
       // update store if changes have been made in contentful
-      await client.sync({ nextSyncToken: savedToken })
+      let token = savedToken
+      await client.sync({ nextSyncToken: token })
         .then((response) => {
           console.log('syncing with contentful ', response.entries)
           console.log(response.assets)
@@ -153,13 +156,16 @@ export const actions = {
     })
   },
   updateGoogleInfos ({ state, commit }, payload) {
-    let placesN1 = state.entries.filter(function (placeN1) {
-      return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
-    })
+    // let placesN1 = state.entries.filter(function (placeN1) {
+    //   return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
+    // })
     const infos = payload.infos
-    placesN1.forEach(function (place, index) {
-      if (payload.placeId === place.fields.googlePlaceId.fr) {
-        commit('ADD_GOOGLE_INFOS', {index, infos})
+    // placesN1.forEach(function (place, index) {
+    state.entries.forEach(function (place, index) {
+      if (place.fields.googlePlaceId !== undefined) {
+        if (payload.placeId === place.fields.googlePlaceId.fr) {
+          commit('ADD_GOOGLE_INFOS', {index, infos})
+        }
       }
     })
   }

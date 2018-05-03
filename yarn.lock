@@ -4246,6 +4246,10 @@ lodash.merge@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.0.tgz#69884ba144ac33fe699737a6086deffadd0f89c5"
 
+lodash.merge@^4.6.1:
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
+
 lodash.mergewith@^4.6.0:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
@@ -7575,6 +7579,12 @@ vue@~2.4.2:
 vuetify@^0.17.3:
   version "0.17.3"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-0.17.3.tgz#66280c5532b12d80c0ce75f4574d1d5a8c2955b9"
+
+vuex-persist@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/vuex-persist/-/vuex-persist-1.2.2.tgz#e852411d734dafca08f5530d22624a08f0312e95"
+  dependencies:
+    lodash.merge "^4.6.1"
 
 vuex-persistedstate@^2.5.2:
   version "2.5.2"

@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    
+
     <map-component></map-component>
 
     <div class="places-map__slider">
@@ -8,11 +8,11 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="place in placesN1" :key="place.id"
                 v-if="$store.state.places.selectedCategories.length === 0">
-            <place-card-map v-bind:placeN1="place.fields"></place-card-map>
+            <place-card-map v-bind:placeN1="place"></place-card-map>
           </div>
           <div class="swiper-slide" v-for="place in selectedPlaces" :key="place.id"
                 v-if="$store.state.places.selectedCategories.length !== 0">
-            <place-card-map v-bind:placeN1="place.fields"></place-card-map>
+            <place-card-map v-bind:placeN1="place"></place-card-map>
           </div>
         </div>
       </div>
@@ -57,6 +57,16 @@ export default {
       placesN1: 'places/getPlacesN1',
       selectedPlaces: 'places/getSelectedPlaces'
     })
+  },
+  mounted () {
+    this.$getLocation()
+      .then(coordinates => {
+        let userPosition = coordinates
+        this.$store.dispatch('geolocation/setUserPosition', { userPosition })
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
 }
 </script>

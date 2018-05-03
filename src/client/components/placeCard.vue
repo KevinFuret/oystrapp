@@ -18,7 +18,6 @@
                 <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> 4min</span>
             </p>
         </div>
-        <p>est-ce ouvert selon google? {{ isPlaceOpen }}</p>
         <transition name="slide-down" mode="in-out">
             <div class="placeCard__content placeCard__morecontent" v-show="isOpen">
             <p class="placeCard__description">{{ placeN1.description.fr }}</p>
@@ -44,7 +43,6 @@
             </div>
         </div>
         </transition>
-
         <div class="placeCard__toggle" @click="toggleCardOpen">
             <img class="toggle__arrow" :src="isOpen ? upArrow : downArrow" :alt="isOpen ? 'plus d\'infos' : 'moins d\'infos'">
         </div>
@@ -75,6 +73,7 @@ export default {
       downArrow,
       upArrow,
       isOpen: false,
+      isPlaceOpen: null,
       swiperOption: {
         // init:false,
         slidesPerView: 'auto',
@@ -109,21 +108,21 @@ export default {
     googleInfos () {
       return this.placeN1.googleInfos
     },
-    isPlaceOpen () {
-      if (this.googleInfos) {
-        if (!this.googleInfos.opening_hours) return 'open-dot--uncertain'
-        else if (this.placeN1.googleInfos.opening_hours.open_now) return 'open-dot--open'
-        else return 'open-dot--closed'
-      }
+    isPlaceOpenOld () {
+      /* if (this.googleInfos === undefined) console.log(this.googleInfos)
+      else if (this.googleInfos.opening_hours === undefined) return 'open-dot--uncertain'
+      else if (this.placeN1.googleInfos.opening_hours.open_now === true) return 'open-dot--open'
+      else return 'open-dot--closed' */
     }
   },
   methods: {
     toggleCardOpen () {
       this.isOpen = !this.isOpen
-      console.log('google infos', this.placeN1.googleInfos)
+      // console.log('google infos', this.placeN1.googleInfos)
     },
     getGoogleInfos () {
-      if (this.placeN1.googleInfos === undefined) {
+      // true pour recharger les infos tout le temps
+      if (this.placeN1.googleInfos === undefined || true) {
         // console.log('on fait la requete google places...', this.placeN1.googlePlaceId.fr)
         const placeId = this.placeN1.googlePlaceId.fr
         const proxyurl = 'https://cors-anywhere.herokuapp.com/'
@@ -132,18 +131,53 @@ export default {
           .then(response => response.text())
           // .then(contents => console.log('contents', contents))
           .then(contents => this.storeGoogleInfos(placeId, contents))
-          // .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
-      } else { console.log('google infos already set : ', this.placeN1.googleInfos) }
+          .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
+      }
     },
     storeGoogleInfos (placeId, infos) {
       const payload = {placeId: placeId, infos: JSON.parse(infos).result}
       this.$store.dispatch('places/updateGoogleInfos', payload)
+    },
+
+    getDistance () {
+      if ( this.placeN1.distance === undefined || true ) {
+        // origin is user Position
+        let placeId = this.placeN1.googlePlaceId.fr
+        // console.log(placeId);
+        let userPosition = this.$store.getters['geolocation/getUserPosition']
+        let origins = userPosition.lat + ',' + userPosition.lng
+        // mode can be : driving, bicycling, transit
+        let mode = 'walking'
+        const proxyurl = 'https://cors-anywhere.herokuapp.com/'
+        const url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + origins +
+                      '&destinations=place_id:' + placeId +
+                      '&key=AIzaSyD2r_aDga1pPaBBdF5bfSn2ef7YVdYsIIQ' + '&mode=' + mode
+
+        fetch( proxyurl + url )
+          .then(response => response.text())
+          .then(contents => this.storeDistance(placeId, contents))
+          .catch((e) => console.log(e))
+      }
+    },
+    async storeDistance(placeId, infos) {
+      const payload = {id: placeId, datas: JSON.parse(infos)}
+      const data = await this.$store.dispatch('geolocation/updateDistance', payload)
     }
   },
   mounted () {
-    this.getGoogleInfos()
     if (this.placeN1.googleInfos === undefined) {
-      // this.$store.dispatch('places/getGoogleInfos')
+      this.getGoogleInfos()
+    } else {
+       // console.log('google infos already set : ', this.placeN1.googleInfos)
+    }
+    // set isPlaceOpen
+    if (this.googleInfos === undefined) console.log(this.googleInfos)
+    else if (this.googleInfos.opening_hours === undefined) this.isPlaceOpen = 'open-dot--uncertain'
+    else if (this.placeN1.googleInfos.opening_hours.open_now === true) this.isPlaceOpen = 'open-dot--open'
+    else this.isPlaceOpen = 'open-dot--closed'
+
+    if(this.placeN1.distance === undefined) {
+      this.getDistance()
     }
   }
 }
@@ -255,6 +289,7 @@ export default {
         justify-content: center;
         padding:0.5rem 0;
         border-top:1px solid #f5f5f5;
+        cursor: pointer;
         //margin-top:1rem;
     }
     .my-swiper {

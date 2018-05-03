@@ -1,8 +1,13 @@
+import Vue from 'vue'
+
 export const state = () => ({
-  userPosition: {}
+  userPosition: {lat: 47.218371, lng: -1.553621} // default Nantes coordinates
 })
 
 export const getters = {
+  getUserPosition (state) {
+    return state.userPosition
+  },
   getLocations (context, state, rootState, rootGetters) {
     // return rootGetters['places/getPlacesN1']
     // return rootState.places.selectedPlaces
@@ -14,34 +19,54 @@ export const getters = {
     if (selectedPlaces.length !== 0) {
       selectedPlaces.forEach( function(place) {
         console.log("I've selected some places")
-        locations.push({position: {lat: place.fields.location.fr.lat,
+        locations.push({id: place.sys.id, position: {lat: place.fields.location.fr.lat,
           lng: place.fields.location.fr.lon}})
       })
     } else {
       console.log("all placesN1 are displayed on the map")
       placesN1.forEach( function (place) {
-        locations.push({position: {lat: place.fields.location.fr.lat,
+        locations.push({id: place.sys.id, position: {lat: place.fields.location.fr.lat,
           lng: place.fields.location.fr.lon}})
       })
     }
     return locations
+  },
+  getMeters () {
+    // TODO: display value from entries.distance
+    // if value > 1000 -> user km units. Else use meters
+  },
+  getDuration () {
+    // TODO : display duration from entries.distance
+    // if duration > 1hour uses hours. Else use minutes
   }
 }
 
 export const mutations = {
   SET_USER_POSITION (state, coordinates) {
     state.userPosition = coordinates
-    console.log(state.userPosition)
+  },
+  SET_DISTANCE (state, {index, datas, entries}) {
+    Vue.set(entries[index], 'distance', datas)
   }
 }
 
 export const actions = {
-  async setUserPosition ({ commit, state }, { userPosition }) {
+  setUserPosition ({ commit, state }, { userPosition }) {
     try {
-      console.log(userPosition);
       commit('SET_USER_POSITION', userPosition )
     } catch (e) {
       console.log(e)
     }
+  },
+  updateDistance ({ state, commit, rootState }, payload ) {
+    const datas = payload.datas
+    let entries = rootState.places.entries
+    entries.forEach( function (el, index) {
+      if ( el.fields.googlePlaceId !== undefined ) {
+        if ( payload.id === el.fields.googlePlaceId.fr ) {
+          commit('SET_DISTANCE', {index, datas, entries})
+        }
+      }
+    })
   }
 }

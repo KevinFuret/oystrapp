@@ -22,24 +22,10 @@ import placeCard from '../components/placeCard.vue'
 import filters from '../components/filters.vue'
 import { mapGetters } from 'vuex'
 
-
 export default {
   components: {
     'place-card': placeCard,
     filters
-  },
-  // populate store before page rendering
-  async fetch ({ store }) {
-    // if the store is empty
-    if (store.state.places['entries'].length === 0) {
-      // call the Contentful API to get entries and use store management
-      const data = await store.dispatch('places/fetchAllPlaces')
-    } else {
-      // sync modifications
-      let savedToken = store.state.places['token']
-      console.log('saved token', savedToken)
-      const data = await store.dispatch('places/updateContent', { savedToken })
-    }
   },
   computed: {
     ...mapGetters({
@@ -47,16 +33,35 @@ export default {
       selectedPlaces: 'places/getSelectedPlaces'
     })
   },
-  mounted () {
-    // ask user location
-    // if he accepts, we populate the store
-    // TODO : ask at the end of the onboarding
-    this.$getLocation()
-      .then(coordinates => {
-        let userPosition = coordinates
-        this.$store.dispatch('geolocation/setUserPosition', { userPosition })
-      });
-    // console.log('all space', this.$store.state.places['entries'])
+  methods: {
+    setUserPosition () {
+      // ask user location
+      // if he accepts, we populate the store
+      // TODO : ask at the end of the onboarding
+      this.$getLocation()
+        .then(coordinates => {
+          let userPosition = coordinates
+          this.$store.dispatch('geolocation/setUserPosition', { userPosition })
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+    async manageStoreContentful () {
+      if (this.$store.state.places['entries'].length === 0) {
+        // call the Contentful API to get entries and use store management
+        const data = await this.$store.dispatch('places/fetchAllPlaces')
+      } else {
+        // sync modifications
+        let savedToken = this.$store.state.places['token']
+        const data = await this.$store.dispatch('places/updateContent', { savedToken })
+      }
+    }
+  },
+  mounted: async function () {
+    this.setUserPosition()
+    this.manageStoreContentful()
+        // console.log('all space', this.$store.state.places['entries'])
   }
 }
 </script>

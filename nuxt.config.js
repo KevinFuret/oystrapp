@@ -61,7 +61,7 @@ module.exports = {
     '~/plugins/contentful.js',
     { src: '~/plugins/swiper.js', ssr: false },
     { src: '~/plugins/vue-googlemaps.js', ssr: false },
-    { src: '~/plugins/vue-browser-geolocation.js' }
+    { src: '~/plugins/vue-browser-geolocation.js', ssr: false }
   ],
   render: {
     static: {
