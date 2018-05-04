@@ -44,7 +44,10 @@ export default {
           this.$store.dispatch('geolocation/setUserPosition', { userPosition })
         })
         .catch(error => {
-          console.log(error);
+          // console.log(error);
+          // if user doesn't accept, so we locate him in Nantes
+          let userPosition = {lat: 47.218371, lng: -1.553621}
+          this.$store.dispatch('geolocation/setUserPosition', { userPosition } )
         })
     },
     async manageStoreContentful () {

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 export const state = () => ({
-  userPosition: {lat: 47.218371, lng: -1.553621} // default Nantes coordinates
+  userPosition: {} // default Nantes coordinates
 })
 
 export const getters = {
@@ -31,7 +31,7 @@ export const getters = {
     }
     return locations
   },
-  getMeters () {
+  getMeters (context, rootState, state) {
     // TODO: display value from entries.distance
     // if value > 1000 -> user km units. Else use meters
   },
@@ -46,7 +46,7 @@ export const mutations = {
     state.userPosition = coordinates
   },
   SET_DISTANCE (state, {index, datas, entries}) {
-    Vue.set(entries[index], 'distance', datas)
+    Vue.set(entries[index].fields, 'distance', datas)
   }
 }
 

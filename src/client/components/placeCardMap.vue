@@ -13,8 +13,8 @@
             <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
             <p class="placeCard__details">
-                <span class="placeCard__detail"><img :src="location" alt="Distance"> 300m </span>
-                <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> 4min</span>
+                <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }} </span>
+                <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
             </p>
         </div>
     </section>
@@ -43,6 +43,31 @@ export default {
         // this.placeN1.image.name.fr
         return image['sys']['id'] === imageId // mettre l'id de la placecard
       })
+    },
+    distance () {
+      let distanceKm = this.placeN1.fields.distance.rows[0].elements[0].distance.text
+      let distance = this.placeN1.fields.distance.rows[0].elements[0].distance.value
+      // if value > 1000 -> user km units. Else use meters
+      // console.log(this.placeN1.fields.distance.rows[0].elements)
+      if (distance >= 1000) {
+        return distanceKm
+      } else {
+        return distance + "m"
+      }
+    },
+    duration () {
+      let durationTxt = this.placeN1.fields.distance.rows[0].elements[0].duration.text
+      let duration = this.placeN1.fields.distance.rows[0].elements[0].duration.value
+      if( duration >= ( 24*3600 ) ) {
+        // if duration lasts more than one day
+        // return in days
+        return durationTxt
+      } else if ( duration >= 3600) {
+        // if duration lasts more than one hour
+        return duration / 3600 + ' h'
+      } else {
+        return Math.round(duration / 60) + ' min'
+      }
     }
   }
 }

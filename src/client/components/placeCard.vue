@@ -14,8 +14,8 @@
             <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
             <p class="placeCard__details">
-                <span class="placeCard__detail"><img :src="location" alt="Distance"> 300m</span>
-                <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> 4min</span>
+                <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }}</span>
+                <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
             </p>
         </div>
         <transition name="slide-down" mode="in-out">
@@ -113,6 +113,32 @@ export default {
       else if (this.googleInfos.opening_hours === undefined) return 'open-dot--uncertain'
       else if (this.placeN1.googleInfos.opening_hours.open_now === true) return 'open-dot--open'
       else return 'open-dot--closed' */
+    },
+    distance () {
+      // console.log(this.$store.getters['geolocation/getUserPosition']);
+      let distanceKm = this.placeN1.distance.rows[0].elements[0].distance.text
+      let distance = this.placeN1.distance.rows[0].elements[0].distance.value
+      // if value > 1000 -> user km units. Else use meters
+
+      if (distance >= 1000) {
+        return distanceKm
+      } else {
+        return distance + "m"
+      }
+    },
+    duration () {
+      let durationTxt = this.placeN1.distance.rows[0].elements[0].duration.text
+      let duration = this.placeN1.distance.rows[0].elements[0].duration.value
+      if( duration >= ( 24*3600 ) ) {
+        // if duration lasts more than one day
+        // return in days
+        return durationTxt
+      } else if ( duration >= 3600) {
+        // if duration lasts more than one hour
+        return duration / 3600 + ' h'
+      } else {
+        return Math.round(duration / 60) + ' min'
+      }
     }
   },
   methods: {
@@ -141,9 +167,8 @@ export default {
 
     getDistance () {
       if ( this.placeN1.distance === undefined || true ) {
-        // origin is user Position
         let placeId = this.placeN1.googlePlaceId.fr
-        // console.log(placeId);
+        // origin is user Position
         let userPosition = this.$store.getters['geolocation/getUserPosition']
         let origins = userPosition.lat + ',' + userPosition.lng
         // mode can be : driving, bicycling, transit
@@ -176,7 +201,7 @@ export default {
     else if (this.placeN1.googleInfos.opening_hours.open_now === true) this.isPlaceOpen = 'open-dot--open'
     else this.isPlaceOpen = 'open-dot--closed'
 
-    if(this.placeN1.distance === undefined) {
+    if (this.placeN1.distance === undefined || true) {
       this.getDistance()
     }
   }

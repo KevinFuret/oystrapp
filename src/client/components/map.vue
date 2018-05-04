@@ -75,7 +75,7 @@ export default {
     ready () {
       this.$refs.mapRef._watcher.user = true
       this.$refs.mapRef.resize()
-      console.log(this.$refs.mapRef);
+      // console.log(this.$refs.mapRef);
     },
     centerOnUser () {
       if (this.userPosition) {
