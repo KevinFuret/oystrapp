@@ -1,12 +1,19 @@
 <template>
     <div class="filters">
         <p>selected categories (all by default): {{ selectedCategories }}</p>
-        <h2>click on a category to filter the places : </h2>
+        <p>selected filters (none by default): {{ selectedFilters }}</p>
+        <h3>catégories: </h3>
         <ul class="filtersList">
             <li v-for="category in categories" class="filter" :key="category.fields.nom.fr">
-                <p><button @click="updateSelectedPlaces" :name="category.fields.slug.fr">{{ category.fields.slug.fr }}</button></p>
+                <button @click="clickCategory" :name="category.fields.slug.fr">{{ category.fields.slug.fr }}</button>
                 <!--TO SHOW IMAGE</p>-->
                 <!--<p v-if="category.fields.image">{{ category.fields.image.fr.fields.file.fr.url }}</p>-->
+            </li>
+        </ul>
+        <h3>autres filtres</h3>
+        <ul class="filtersList">
+            <li v-for="filter in filters" class="filter" :key="filter.fields.name.fr">
+                <button @click="clickFilter" :name="filter.fields.slug.fr">{{ filter.fields.slug.fr }}</button>
             </li>
         </ul>
         <hr>
@@ -26,10 +33,19 @@
       selectedCategories () {
         return this.$store.state.places['selectedCategories']
       },
+      selectedFilters () {
+        return this.$store.state.places['selectedFilters']
+      },
       categories () {
         let entries = this.entries
-        return entries.filter( function (categories) {
+        return entries.filter(function (categories) {
           return categories['sys']['contentType']['sys']['id'] === 'category'
+        })
+      },
+      filters () {
+        let entries = this.entries
+        return entries.filter(function (filters) {
+          return filters['sys']['contentType']['sys']['id'] === 'filters'
         })
       },
       placesN1 () {
@@ -40,9 +56,13 @@
       }
     },
     methods: {
-      updateSelectedPlaces (event) {
+      clickCategory (event) {
         const category = event.target.name
         this.$store.dispatch('places/toggleCategory', { category })
+      },
+      clickFilter (event) {
+        const filter = event.target.name
+        this.$store.dispatch('places/toggleFilter', { filter })
       }
     },
     mounted () {
@@ -51,5 +71,15 @@
   }
 </script>
 <style>
-
+button{
+    background: lightgrey;
+    padding:.5rem 1rem;
+}
+    .filter{
+        display:inline-block;
+        margin:0.5rem;
+    }
+    .filter p{
+        margin:0;
+    }
 </style>

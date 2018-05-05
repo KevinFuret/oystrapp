@@ -10,7 +10,8 @@ export const state = () => ({
   assets: [],
   token: '',
   selectedPlaces: [],
-  selectedCategories: []
+  selectedCategories: [],
+  selectedFilters: []
 })
 
 export const getters = {
@@ -53,6 +54,14 @@ export const mutations = {
   REMOVE_SELECTED_CATEGORY (state, categoryIndex) {
     state.selectedCategories.splice(categoryIndex, 1)
     console.log('remove category number ', categoryIndex)
+  },
+  ADD_SELECTED_FILTER (state, filter) {
+    state.selectedFilters.push(filter)
+    console.log('pushed', filter)
+  },
+  REMOVE_SELECTED_FILTER (state, filterIndex) {
+    state.selectedFilters.splice(filterIndex, 1)
+    console.log('remove filter number ', filterIndex)
   },
   UPDATE_SELECTED_PLACES (state, newEntries) {
     state.selectedPlaces = newEntries
@@ -114,6 +123,15 @@ export const actions = {
     }
     dispatch('updateSelectedEntries')
   },
+  toggleFilter ({ commit, state, dispatch }, { filter }) {
+    const index = state.selectedFilters.indexOf(filter)
+    if (index > -1) {
+      commit('REMOVE_SELECTED_FILTER', index)
+    } else {
+      commit('ADD_SELECTED_FILTER', filter)
+    }
+    dispatch('updateSelectedEntries')
+  },
   updateSelectedEntries ({commit, state}) {
     // query only N1 places
     let placesN1 = state.entries.filter(function (placeN1) {
@@ -121,12 +139,29 @@ export const actions = {
     })
     // find N1 places that have at least one of the selected categories
     let selectedEntries = placesN1.filter(function (placeN1) {
-      let isFiltered = false
+      let hasAtLeaseOneCategory = true
+      let hasAllFilters = false
+      const placeCategories = []
+      const placeFilters = []
+      /* placeN1.fields.filters.fr.forEach(function (filter) {
+        if (state.selectedFilters.indexOf(filter.fields.slug.fr) < 0) console.log('filtre nest pas présent')
+      }) */
       placeN1.fields.placeCategory.fr.forEach(function (cat) {
-        if (state.selectedCategories.indexOf(cat.fields.slug.fr) >= 0) isFiltered = true
+        placeCategories.push(cat.fields.slug.fr)
       })
-      return isFiltered
+      placeN1.fields.filters.fr.forEach(function (filter) {
+        placeFilters.push(filter.fields.slug.fr)
+      })
+      if (state.selectedCategories.length > 0) {
+        hasAtLeaseOneCategory = false
+        placeCategories.forEach(function (cat) {
+          if (state.selectedCategories.indexOf(cat) >= 0) hasAtLeaseOneCategory = true
+        })
+      }
+      hasAllFilters = state.selectedFilters.every((val) => placeFilters.includes(val))
+      return hasAllFilters && hasAtLeaseOneCategory
     })
+    console.log(selectedEntries) // j'ai les bonnes entries mais ça ne s'update pas
     commit('UPDATE_SELECTED_PLACES', selectedEntries)
   },
   addAllPlacesAsSelected ({commit, state} ) {

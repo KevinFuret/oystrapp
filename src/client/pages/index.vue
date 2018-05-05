@@ -6,10 +6,10 @@
             <filters></filters>
             <!--<button type="button" name="button" v-on:click="getlocalStorage">Click</button>-->
             <ul class="placesList">
-                <li class="place" v-for="place in selectedPlaces" :key="place.id" v-if="$store.state.places.selectedCategories.length !== 0">
+                <li class="place" v-for="place in selectedPlaces" :key="place.id" v-if="$store.state.places.selectedCategories.length !== 0 || $store.state.places.selectedFilters.length !== 0">
                     <place-card v-bind:placeN1="place.fields"></place-card>
                 </li>
-                <li class="place" v-for="place in placesN1" :key="place.id" v-if="$store.state.places.selectedCategories.length === 0">
+                <li class="place" v-for="place in placesN1" :key="place.id" v-if="$store.state.places.selectedCategories.length === 0 && $store.state.places.selectedFilters.length === 0">
                     <place-card v-bind:placeN1="place.fields"></place-card>
                 </li>
             </ul>
