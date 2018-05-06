@@ -20,7 +20,7 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    },
+    }
   },
   buildDir: 'dist/client',
   cache: true,

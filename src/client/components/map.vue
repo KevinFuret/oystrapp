@@ -17,6 +17,11 @@
         <!-- <googlemaps-user-position
           @update:position="setUserPosition"
         /> -->
+        <googlemaps-marker
+          :icon="icon"
+          :options="markerOptions"
+          :position="userPosition"
+        />
 
         <googlemaps-marker
           v-for="(marker, index) of markers"

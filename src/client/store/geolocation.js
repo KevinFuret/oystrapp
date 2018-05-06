@@ -45,6 +45,9 @@ export const mutations = {
   SET_USER_POSITION (state, coordinates) {
     state.userPosition = coordinates
   },
+  UPDATE_USER_POSITION (state, position) {
+    state.userPosition = {lat: position.coords.latitude, lng : position.coords.longitude}
+  },
   SET_DISTANCE (state, {index, datas, entries}) {
     Vue.set(entries[index].fields, 'distance', datas)
   }
@@ -57,6 +60,32 @@ export const actions = {
     } catch (e) {
       console.log(e)
     }
+  },
+  watchUserPosition ({commit, state, dispatch}) {
+    navigator.geolocation.watchPosition( function (position) {
+      // console.log("position", position.coords.latitude);
+      commit('UPDATE_USER_POSITION', position)
+    })
+  },
+  calculateDistance ({ commit, state, dispatch }, place) {
+    let placeId = place.googlePlaceId.fr
+    let userPosition = state.userPosition
+    let origins = userPosition.lat + ',' + userPosition.lng
+    // mode can be : driving, bicycling, transit
+    let mode = "walking"
+    const proxyurl = 'https://cors-anywhere.herokuapp.com/'
+    const url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + origins +
+                  '&destinations=place_id:' + placeId +
+                  '&key=AIzaSyD2r_aDga1pPaBBdF5bfSn2ef7YVdYsIIQ' + '&mode=' + mode
+
+    fetch( proxyurl + url )
+      .then(response => response.text())
+      .then(contents => {
+        const payload = {id: placeId, datas: JSON.parse(contents)}
+        dispatch('updateDistance', payload)
+      })
+      .catch((e) => console.log(e))
+
   },
   updateDistance ({ state, commit, rootState }, payload ) {
     const datas = payload.datas
