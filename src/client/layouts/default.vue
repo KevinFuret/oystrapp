@@ -5,23 +5,24 @@
       enable-resize-watcher
       disable-route-watcher
       persistent
-      :mini-variant.sync="mini"
       v-model="drawer"
-      v-if="$store.state.user.isAuthenticated"
       app>
-      <v-list class="main-list">
+      <v-list class="main-list account">
         <v-list-tile avatar tag="div">
-          <v-list-tile-avatar>
+          <v-list-tile-avatar class="account__avatar">
             <img src="https://randomuser.me/api/portraits/men/85.jpg" />
           </v-list-tile-avatar>
           <v-list-tile-content>
-            <v-list-tile-title>
-              {{name}}
+            <v-list-tile-title class="account__username">
+              {{username}}
               </v-list-tile-title>
+            <span class="account__email">
+              {{email}}
+            </span>
           </v-list-tile-content>
           <v-list-tile-action icon>
-            <v-btn icon light @click.stop="mini = !mini">
-              <v-icon light>chevron_left</v-icon>
+            <v-btn icon light @click.stop="drawer = !drawer">
+              <v-icon light>clear</v-icon>
             </v-btn>
           </v-list-tile-action>
         </v-list-tile>
@@ -48,10 +49,11 @@
             </v-list-tile-action>
           </v-list-tile>
         </v-list-group>
+        <filters></filters>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app fixed>
-      <v-toolbar-side-icon v-if="$store.state.user.isAuthenticated" light @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon light @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title >{{name}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu bottom left>
@@ -97,9 +99,14 @@
 
 <script>
 // search icons: https://material.io/icons/ asd
+import filters from '../components/filters.vue'
+
 export default {
   props: {
     source: String
+  },
+  components: {
+    filters
   },
   data () {
     return {
@@ -125,7 +132,9 @@ export default {
         }
       ],
       name: 'OYSTR',
-      mini: true,
+      username: 'John Doe',
+      email: 'johndoe@gmail.com',
+      mini: false,
       right: null
     }
   },
@@ -147,5 +156,12 @@ export default {
 <style>
   .application{
     overflow-y: hidden;
+  }
+  .account{
+    border-bottom: 1px solid #eee;
+  }
+  .account__email{
+    font-weight:normal;
+    color: #b5b5b5;
   }
 </style>
