@@ -7,11 +7,11 @@
       <div v-swiper:mySwiper="swiperOption" class="swiper-box" ref="mySwiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="place in placesN1" :key="place.id"
-                v-if="$store.state.places.selectedCategories.length === 0">
+               v-if="$store.state.places.selectedCategories.length === 0 && $store.state.places.selectedFilters.length === 0">
             <place-card-map v-bind:placeN1="place"></place-card-map>
           </div>
           <div class="swiper-slide" v-for="place in selectedPlaces" :key="place.id"
-                v-if="$store.state.places.selectedCategories.length !== 0">
+               v-if="$store.state.places.selectedCategories.length !== 0 || $store.state.places.selectedFilters.length !== 0">
             <place-card-map v-bind:placeN1="place"></place-card-map>
           </div>
         </div>
