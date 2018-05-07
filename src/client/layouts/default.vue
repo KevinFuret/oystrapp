@@ -28,6 +28,7 @@
         </v-list-tile>
       </v-list>
       <v-list>
+        <filters></filters>
         <v-list-group v-for="item in items" :value="item.active" v-bind:key="item.title">
           <v-list-tile slot="item" :ripple="!item.items" :router="!item.items" :to="item.to ? item.to : ''">
             <v-list-tile-action icon light>
@@ -49,7 +50,6 @@
             </v-list-tile-action>
           </v-list-tile>
         </v-list-group>
-        <filters></filters>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app fixed>
