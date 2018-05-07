@@ -119,7 +119,6 @@ export default {
         let distanceKm = this.placeN1.distance.rows[0].elements[0].distance.text
         let distance = this.placeN1.distance.rows[0].elements[0].distance.value
         // if value > 1000 -> user km units. Else use meters
-
         if (distance >= 1000) {
           return distanceKm
         } else {
@@ -134,6 +133,7 @@ export default {
         if( duration >= ( 24*3600 ) ) {
           // if duration lasts more than one day
           // return in days
+          console.log('Userposition is to far from the places');
           return ''
         } else if ( duration >= 3600) {
           // if duration lasts more than one hour

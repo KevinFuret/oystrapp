@@ -30,14 +30,6 @@ export const getters = {
       })
     }
     return locations
-  },
-  getMeters (context, rootState, state) {
-    // TODO: display value from entries.distance
-    // if value > 1000 -> user km units. Else use meters
-  },
-  getDuration () {
-    // TODO : display duration from entries.distance
-    // if duration > 1hour uses hours. Else use minutes
   }
 }
 

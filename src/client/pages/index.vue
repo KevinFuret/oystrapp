@@ -21,6 +21,7 @@
 import placeCard from '../components/placeCard.vue'
 import { mapGetters } from 'vuex'
 import * as VueGeolocation from 'vue-browser-geolocation'
+import { EventBus } from '~/plugins/event-bus.js';
 
 export default {
   components: {
@@ -64,6 +65,10 @@ export default {
   mounted: async function () {
     this.setUserPosition()
     this.manageStoreContentful()
+
+    // stop listening global events for map 
+    EventBus.$off('i-got-clicked');
+    EventBus.$off('i-got-swiped');
     // if (this.userPosition) {
     //   this.$store.dispatch('geolocation/watchUserPosition')
     // }

@@ -2,15 +2,16 @@
   <v-layout>
 
     <map-component></map-component>
+    <!-- <button @click="toSlide(3)">To Slide 1</button> -->
 
     <div class="places-map__slider">
       <div v-swiper:mySwiper="swiperOption" class="swiper-box" ref="mySwiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="place in placesN1" :key="place.id"
+          <div class="swiper-slide" v-for="(place, index) in placesN1" :key="place.id" v-bind:data-id="index"
                v-if="$store.state.places.selectedCategories.length === 0 && $store.state.places.selectedFilters.length === 0">
             <place-card-map v-bind:placeN1="place"></place-card-map>
           </div>
-          <div class="swiper-slide" v-for="place in selectedPlaces" :key="place.id"
+          <div class="swiper-slide" v-for="(place, index) in selectedPlaces" :key="place.id" v-bind:data-id="index"
                v-if="$store.state.places.selectedCategories.length !== 0 || $store.state.places.selectedFilters.length !== 0">
             <place-card-map v-bind:placeN1="place"></place-card-map>
           </div>
@@ -24,6 +25,7 @@
 import mapComponent from '../components/map.vue'
 import placeCardMap from '../components/placeCardMap.vue'
 import { mapGetters } from 'vuex'
+import { EventBus } from '~/plugins/event-bus.js';
 
 export default {
   components: {
@@ -42,8 +44,8 @@ export default {
         on: {
           slideChange () {
             console.log('translate', this.translate)
-            console.log('active index', this.activeIndex
-            )
+            console.log('active index', this.activeIndex)
+            EventBus.$emit('i-got-swiped', this.activeIndex)
           },
           tap () {
             console.log('onTap', this)
@@ -58,6 +60,14 @@ export default {
       selectedPlaces: 'places/getSelectedPlaces'
     })
   },
+  created () {
+    // listen on global event bus
+    // event from map.vue
+    EventBus.$on('i-got-clicked', index => {
+      console.log(`Oh, that's nice. I clicked on ${index} marker! :)`)
+      this.swipeTo(index)
+    })
+  },
   mounted () {
     this.$getLocation()
       .then(coordinates => {
@@ -67,6 +77,11 @@ export default {
       .catch(error => {
         console.log(error);
       })
+  },
+  methods: {
+    swipeTo (index) {
+      this.$refs.mySwiper.swiper.slideTo(index, 0)
+    }
   }
 }
 </script>

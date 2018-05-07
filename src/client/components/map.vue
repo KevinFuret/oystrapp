@@ -18,18 +18,20 @@
           @update:position="setUserPosition"
         /> -->
         <googlemaps-marker
-          :icon="icon"
+          :icon="iconUser"
           :options="markerOptions"
           :position="userPosition"
         />
 
         <googlemaps-marker
+          class="markerClicked"
           v-for="(marker, index) of markers"
           :key="index"
           :icon="icon"
+          :opacity="opacity"
           :options="markerOptions"
           :position="marker.position"
-          @click="updateMapState(marker)"
+          @click="updateStateMarker(marker, index)"
         />
       </googlemaps-map>
     </no-ssr>
@@ -38,9 +40,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import markerIcon from '~/assets/img/marker.svg'
+import markerUser from '~/assets/img/marker-user.svg'
+import markerIcon from '~/assets/img/location-pointer.svg'
 import mapStyle from '~/assets/json/mapStyle.json'
 import * as VueGoogleMaps from 'vue-googlemaps'
+import { EventBus } from '~/plugins/event-bus.js';
 
 export default {
   name: 'mapComponent',
@@ -57,12 +61,16 @@ export default {
       styles: mapStyle
     },
     markerOptions: {
-      optimized: false
+      optimized: false,
     },
+    opacity: 0.8,
     icon: {
       url: markerIcon,
-      // This marker is 20 pixels wide by 32 pixels high.
-      scaledSize: new google.maps.Size(20, 35)
+      scaledSize: new google.maps.Size(30, 42)
+    },
+    iconUser: {
+      url: markerUser,
+      scaledSize: new google.maps.Size(20, 32)
     }
    }
   },
@@ -72,9 +80,11 @@ export default {
       userPosition: 'geolocation/getUserPosition'
     })
   },
-  mounted () {
-    // console.log(new google.maps.geometry.spherical);
-    // console.log("Vue google maps " + JSON.stringify(VueGoogleMaps));
+  created () {
+    EventBus.$on('i-got-swiped', index => {
+      console.log(`Oh, that's nice. I swiped on ${index} ! :)`)
+      this.panToMarker(index)
+    })
   },
   methods: {
     ready () {
@@ -92,11 +102,20 @@ export default {
       this.userPosition = position
       // console.log("user position: " , this.userPosition)
     },
-    updateMapState (marker) {
+    updateStateMarker (marker, index) {
       this.zoom = Math.max(15, 12)
       this.$refs.mapRef.panTo(marker.position)
-
+      // Send the event on a channel (i-got-clicked) with a payload (index of the clicked marker.)
+      EventBus.$emit('i-got-clicked', index);
+    },
+    panToMarker (index) {
+      this.zoom = Math.max(15, 12)
+      this.$refs.mapRef.panTo(this.markers[index].position)
     }
   }
 }
 </script>
+
+<style>
+
+</style>
