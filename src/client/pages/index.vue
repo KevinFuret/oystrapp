@@ -20,6 +20,7 @@
 <script>
 import placeCard from '../components/placeCard.vue'
 import { mapGetters } from 'vuex'
+import * as VueGeolocation from 'vue-browser-geolocation'
 
 export default {
   components: {
@@ -28,7 +29,8 @@ export default {
   computed: {
     ...mapGetters({
       placesN1: 'places/getPlacesN1',
-      selectedPlaces: 'places/getSelectedPlaces'
+      selectedPlaces: 'places/getSelectedPlaces',
+      userPosition: 'geolocation/getUserPosition'
     })
   },
   methods: {
@@ -62,7 +64,15 @@ export default {
   mounted: async function () {
     this.setUserPosition()
     this.manageStoreContentful()
+    // if (this.userPosition) {
+    //   this.$store.dispatch('geolocation/watchUserPosition')
+    // }
         // console.log('all space', this.$store.state.places['entries'])
+  },
+  watch: {
+    userPosition(newPosition, oldPosition) {
+      console.log('newPosition', newPosition)
+    }
   }
 }
 </script>

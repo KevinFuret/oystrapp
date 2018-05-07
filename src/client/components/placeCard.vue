@@ -16,7 +16,7 @@
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
             <p class="placeCard__details">
                 <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }}</span>
-                <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
+                <span class="placeCard__detail" ><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
             </p>
         </div>
         <transition name="slide-down" mode="in-out">
@@ -117,29 +117,32 @@ export default {
       else return 'open-dot--closed' */
     },
     distance () {
-      // console.log(this.$store.getters['geolocation/getUserPosition']);
-      let distanceKm = this.placeN1.distance.rows[0].elements[0].distance.text
-      let distance = this.placeN1.distance.rows[0].elements[0].distance.value
-      // if value > 1000 -> user km units. Else use meters
+      if (this.placeN1.distance !== undefined ) {
+        let distanceKm = this.placeN1.distance.rows[0].elements[0].distance.text
+        let distance = this.placeN1.distance.rows[0].elements[0].distance.value
+        // if value > 1000 -> user km units. Else use meters
 
-      if (distance >= 1000) {
-        return distanceKm
-      } else {
-        return distance + "m"
+        if (distance >= 1000) {
+          return distanceKm
+        } else {
+          return distance + "m"
+        }
       }
     },
     duration () {
-      let durationTxt = this.placeN1.distance.rows[0].elements[0].duration.text
-      let duration = this.placeN1.distance.rows[0].elements[0].duration.value
-      if( duration >= ( 24*3600 ) ) {
-        // if duration lasts more than one day
-        // return in days
-        return durationTxt
-      } else if ( duration >= 3600) {
-        // if duration lasts more than one hour
-        return duration / 3600 + ' h'
-      } else {
-        return Math.round(duration / 60) + ' min'
+      if (this.placeN1.distance !== undefined) {
+        let durationTxt = this.placeN1.distance.rows[0].elements[0].duration.text
+        let duration = this.placeN1.distance.rows[0].elements[0].duration.value
+        if( duration >= ( 24*3600 ) ) {
+          // if duration lasts more than one day
+          // return in days
+          return ''
+        } else if ( duration >= 3600) {
+          // if duration lasts more than one hour
+          return duration / 3600 + ' h'
+        } else {
+          return Math.round(duration / 60) + ' min'
+        }
       }
     }
   },
@@ -165,33 +168,9 @@ export default {
     storeGoogleInfos (placeId, infos) {
       const payload = {placeId: placeId, infos: JSON.parse(infos).result}
       this.$store.dispatch('places/updateGoogleInfos', payload)
-    },
-
-    getDistance () {
-      if ( this.placeN1.distance === undefined || true ) {
-        let placeId = this.placeN1.googlePlaceId.fr
-        // origin is user Position
-        let userPosition = this.$store.getters['geolocation/getUserPosition']
-        let origins = userPosition.lat + ',' + userPosition.lng
-        // mode can be : driving, bicycling, transit
-        let mode = 'walking'
-        const proxyurl = 'https://cors-anywhere.herokuapp.com/'
-        const url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + origins +
-                      '&destinations=place_id:' + placeId +
-                      '&key=AIzaSyD2r_aDga1pPaBBdF5bfSn2ef7YVdYsIIQ' + '&mode=' + mode
-
-        fetch( proxyurl + url )
-          .then(response => response.text())
-          .then(contents => this.storeDistance(placeId, contents))
-          .catch((e) => console.log(e))
-      }
-    },
-    async storeDistance(placeId, infos) {
-      const payload = {id: placeId, datas: JSON.parse(infos)}
-      const data = await this.$store.dispatch('geolocation/updateDistance', payload)
     }
   },
-  mounted () {
+  mounted: async function () {
     if (this.placeN1.googleInfos === undefined) {
       this.getGoogleInfos()
     } else {
@@ -202,9 +181,10 @@ export default {
     else if (this.googleInfos.opening_hours === undefined) this.isPlaceOpen = 'open-dot--uncertain'
     else if (this.placeN1.googleInfos.opening_hours.open_now === true) this.isPlaceOpen = 'open-dot--open'
     else this.isPlaceOpen = 'open-dot--closed'
-
+  },
+  beforeMount () {
     if (this.placeN1.distance === undefined || true) {
-      this.getDistance()
+      this.$store.dispatch('geolocation/calculateDistance', this.placeN1)
     }
   }
 }

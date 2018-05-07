@@ -45,29 +45,38 @@ export default {
       })
     },
     distance () {
-      let distanceKm = this.placeN1.fields.distance.rows[0].elements[0].distance.text
-      let distance = this.placeN1.fields.distance.rows[0].elements[0].distance.value
-      // if value > 1000 -> user km units. Else use meters
-      // console.log(this.placeN1.fields.distance.rows[0].elements)
-      if (distance >= 1000) {
-        return distanceKm
-      } else {
-        return distance + "m"
+      if (this.placeN1.fields.distance !== undefined ) {
+        let distanceKm = this.placeN1.fields.distance.rows[0].elements[0].distance.text
+        let distance = this.placeN1.fields.distance.rows[0].elements[0].distance.value
+        // if value > 1000 -> user km units. Else use meters
+
+        if (distance >= 1000) {
+          return distanceKm
+        } else {
+          return distance + "m"
+        }
       }
     },
     duration () {
-      let durationTxt = this.placeN1.fields.distance.rows[0].elements[0].duration.text
-      let duration = this.placeN1.fields.distance.rows[0].elements[0].duration.value
-      if( duration >= ( 24*3600 ) ) {
-        // if duration lasts more than one day
-        // return in days
-        return durationTxt
-      } else if ( duration >= 3600) {
-        // if duration lasts more than one hour
-        return duration / 3600 + ' h'
-      } else {
-        return Math.round(duration / 60) + ' min'
+      if (this.placeN1.fields.distance !== undefined) {
+        let durationTxt = this.placeN1.fields.distance.rows[0].elements[0].duration.text
+        let duration = this.placeN1.fields.distance.rows[0].elements[0].duration.value
+        if( duration >= ( 24*3600 ) ) {
+          // if duration lasts more than one day
+          // return in days
+          return ''
+        } else if ( duration >= 3600) {
+          // if duration lasts more than one hour
+          return duration / 3600 + ' h'
+        } else {
+          return Math.round(duration / 60) + ' min'
+        }
       }
+    }
+  },
+  beforeMount () {
+    if (this.placeN1.fields.distance === undefined || true) {
+      this.$store.dispatch('geolocation/calculateDistance', this.placeN1.fields)
     }
   }
 }
