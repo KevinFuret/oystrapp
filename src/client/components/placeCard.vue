@@ -1,4 +1,5 @@
 <template>
+    <transition name="fade" mode="in-out">
     <section class="placeCard">
         <header class="card__header">
             <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
@@ -47,6 +48,7 @@
             <img class="toggle__arrow" :src="isOpen ? upArrow : downArrow" :alt="isOpen ? 'plus d\'infos' : 'moins d\'infos'">
         </div>
     </section>
+    </transition>
 </template>
 
 <script>
