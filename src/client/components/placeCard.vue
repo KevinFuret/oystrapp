@@ -118,26 +118,22 @@ export default {
     },
     distance () {
       if (this.placeN1.distance !== undefined ) {
+        // console.log('distance', this.placeN1.distance)
         let distanceKm = this.placeN1.distance.rows[0].elements[0].distance.text
         let distance = this.placeN1.distance.rows[0].elements[0].distance.value
         // if value > 1000 -> user km units. Else use meters
-        if (distance >= 1000) {
-          return distanceKm
-        } else {
-          return distance + "m"
-        }
+        return distance >= 1000 ? distanceKm : distance + 'm';
       }
     },
     duration () {
       if (this.placeN1.distance !== undefined) {
         let durationTxt = this.placeN1.distance.rows[0].elements[0].duration.text
         let duration = this.placeN1.distance.rows[0].elements[0].duration.value
-        if ( duration >= ( 24*3600 ) ) {
+        if (duration >= (24 * 3600)) {
           // if duration lasts more than one day
           // return in days
-          console.log('Userposition is to far from the places');
           return ''
-        } else if ( duration >= 3600) {
+        } else if (duration >= 3600) {
           // if duration lasts more than one hour
           return duration / 3600 + ' h'
         } else {
@@ -174,16 +170,17 @@ export default {
     if (this.placeN1.googleInfos === undefined) {
       this.getGoogleInfos()
     } else {
-       // console.log('google infos already set : ', this.placeN1.googleInfos)
+      // console.log('google infos already set : ', this.placeN1.googleInfos)
     }
     // set isPlaceOpen
     if (this.googleInfos === undefined) console.log(this.googleInfos)
-    else if (this.googleInfos.opening_hours === undefined) this.isPlaceOpen = 'open-dot--uncertain'
+    else if (this.googleInfos.opening_hours === undefined) this.isPlaceOpen = ''
     else if (this.placeN1.googleInfos.opening_hours.open_now === true) this.isPlaceOpen = 'open-dot--open'
     else this.isPlaceOpen = 'open-dot--closed'
   },
   beforeMount () {
-    if (this.placeN1.distance === undefined || true) {
+    if (this.placeN1.distance === undefined ) {
+      console.log('calculating distance...')
       this.$store.dispatch('geolocation/calculateDistance', this.placeN1)
     }
   }

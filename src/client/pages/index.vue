@@ -32,7 +32,12 @@ export default {
       placesN1: 'places/getPlacesN1',
       selectedPlaces: 'places/getSelectedPlaces',
       userPosition: 'geolocation/getUserPosition'
-    })
+    }),
+    sortedSelectedPlaces () {
+      if (this.placeN1.distance !== undefined) {
+
+      }
+    }
   },
   methods: {
     setUserPosition () {
@@ -72,7 +77,7 @@ export default {
     // if (this.userPosition) {
     //   this.$store.dispatch('geolocation/watchUserPosition')
     // }
-        // console.log('all space', this.$store.state.places['entries'])
+    // console.log('all space', this.$store.state.places['entries'])
   },
   watch: {
     userPosition(newPosition, oldPosition) {

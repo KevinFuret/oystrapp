@@ -67,10 +67,6 @@ export const mutations = {
     state.selectedPlaces = newEntries
     console.log('updated selected places')
   },
-  ALL_ALL_TO_SELECTED_PLACES (state, places) {
-    state.selectedPlaces = places
-    console.log('added all places to selected')
-  },
   ADD_GOOGLE_INFOS (state, {index, infos}) {
     Vue.set(state.entries[index].fields, 'googleInfos', infos)
     // console.log('added google infos to store')
@@ -132,7 +128,7 @@ export const actions = {
     }
     dispatch('updateSelectedEntries')
   },
-  updateSelectedEntries ({commit, state}) {
+  updateSelectedEntries ({commit, dispatch, state}) {
     // query only N1 places
     let placesN1 = state.entries.filter(function (placeN1) {
       return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
@@ -161,14 +157,14 @@ export const actions = {
       hasAllFilters = state.selectedFilters.every((val) => placeFilters.includes(val) || (!val || val.length === 0))
       return hasAllFilters && hasAtLeaseOneCategory
     })
-    console.log(selectedEntries) // j'ai les bonnes entries mais ça ne s'update pas
-    commit('UPDATE_SELECTED_PLACES', selectedEntries)
+    dispatch('sortPlacesByDistance', selectedEntries)
+    // commit('UPDATE_SELECTED_PLACES', selectedEntries)
   },
-  addAllPlacesAsSelected ({commit, state} ) {
+  addAllPlacesAsSelected ({commit, dispatch, state}) {
     let placesN1 = state.entries.filter(function (placeN1) {
       return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
     })
-    commit('ALL_ALL_TO_SELECTED_PLACES', placesN1)
+    dispatch('sortPlacesByDistance', placesN1)
   },
   getGoogleInfos ({state}) {
     // DEPRECATED FUNCTION //
@@ -203,5 +199,29 @@ export const actions = {
         }
       }
     })
+  },
+  sortPlacesByDistance ({commit, rootState}, placesToSort) {
+    console.log('sorting...')
+    let places = placesToSort
+    if (places === null || places === undefined) {
+      places = rootState.places.entries.filter(function (placeN1) {
+        return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
+      })
+    }
+    console.log('places to sort', places)
+    let allDistanceCalculated = places.every(hasDistance)
+    if (allDistanceCalculated) {
+      places.sort(function (a, b) {
+        return a.fields.distance.rows[0].elements[0].distance.value - b.fields.distance.rows[0].elements[0].distance.value
+      })
+      console.log('new selected places order', places)
+      commit('UPDATE_SELECTED_PLACES', places)
+    }
   }
+}
+
+function hasDistance (place) {
+  console.log('place name', place.fields.name.fr)
+  console.log('place distance', place.fields.distance.rows[0].elements[0].distance.value)
+  return place.fields !== undefined
 }

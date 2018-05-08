@@ -1,6 +1,5 @@
 <template>
     <div class="filters">
-        <p>selected filters : {{ selectedFilters }}</p>
         <div class="filter-group">
             <h3 class="filter-group__header">Mes catégories </h3>
             <ul class="filters-list">

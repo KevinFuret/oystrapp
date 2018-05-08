@@ -22,13 +22,7 @@
         return this.$store.state.places['selectedFilters']
       },
       isSelected () {
-        if (this.selectedCategories.includes(this.category.fields.slug.fr)) {
-          console.log('contains category', this.category.fields.slug.fr)
-          return true
-        } else {
-          console.log('does not contain category', this.category.fields.slug.fr)
-          return false
-        }
+        return !!this.selectedCategories.includes(this.category.fields.slug.fr)
       }
     },
     methods: {
