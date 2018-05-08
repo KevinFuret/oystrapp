@@ -16,7 +16,7 @@
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
             <p class="placeCard__details">
                 <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }}</span>
-                <span class="placeCard__detail" ><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
+                <span class="placeCard__detail" v-if="duration !== ''"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
             </p>
         </div>
         <transition name="slide-down" mode="in-out">
@@ -132,7 +132,7 @@ export default {
       if (this.placeN1.distance !== undefined) {
         let durationTxt = this.placeN1.distance.rows[0].elements[0].duration.text
         let duration = this.placeN1.distance.rows[0].elements[0].duration.value
-        if( duration >= ( 24*3600 ) ) {
+        if ( duration >= ( 24*3600 ) ) {
           // if duration lasts more than one day
           // return in days
           console.log('Userposition is to far from the places');

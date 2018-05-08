@@ -1,38 +1,32 @@
 <template>
     <div class="filters">
-        <div class="help">
-            <p>selected categories (all by default): {{ selectedCategories }}</p>
-            <p>selected filters (none by default): {{ selectedFilters }}</p>
-        </div>
+        <p>selected filters : {{ selectedFilters }}</p>
         <div class="filter-group">
             <h3 class="filter-group__header">Mes catégories </h3>
             <ul class="filters-list">
-                <filter-button v-for="category in categories" class="filter filter--big"
+                <category-filter v-for="category in categories" class="filter filter--big"
                     :key="category.fields.nom.fr" :category="category">
-                </filter-button>
+                </category-filter>
             </ul>
         </div>
         <div class="filter-group">
             <h3 class="filter-group__header">Autres filtres</h3>
             <ul class="filters-list">
-                <li v-for="filter in filters" class="filter"
-                    :key="filter.fields.name.fr"
-                    :name="filter.fields.slug.fr">
-                    <button @click="clickFilter" :name="filter.fields.slug.fr">
-                        <img v-if="filter.fields.image" :src="filter.fields.image.fr.fields.file.fr.url" class="filter__icon">
-                        {{ filter.fields.name.fr }}
-                    </button>
-                </li>
+                <filter-filter v-for="filter in filters" class="filter"
+                    :key="filter.fields.name.fr" :filter="filter">
+                </filter-filter>
             </ul>
         </div>
     </div>
 </template>
 
 <script>
-  import filter from './filter.vue'
+  import categoryFilter from './categoryFilter.vue'
+  import filterFilter from './filterFilter.vue'
   export default {
     components: {
-      'filter-button': filter
+      'category-filter': categoryFilter,
+      'filter-filter': filterFilter
     },
     computed: {
       entries () {
@@ -66,22 +60,16 @@
         })
       }
     },
-    methods: {
-      clickCategory (event) {
-        const category = event.target.name
-        this.$store.dispatch('places/toggleCategory', { category })
-      },
-      clickFilter (event) {
-        const filter = event.target.name
-        this.$store.dispatch('places/toggleFilter', { filter })
-      }
-    },
     mounted () {
       // console.log('this.entries', this.entries)
     }
   }
 </script>
 <style>
+.filters{
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
 
 .filter-group{
     padding:0.5rem;
@@ -100,6 +88,7 @@
     margin:0.5rem;
     background: white;
 }
+
 .filter button{
     background: white;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -110,6 +99,7 @@
     font-weight:bold;
     color: #4a4a4a;
     text-transform: capitalize;
+    outline:none !important;
 }
 
 .filter--big button{
@@ -126,5 +116,14 @@
 }
 .filter p{
     margin:0;
+}
+
+.filter--selected button{
+    border:1px solid #2E86DE;
+    color: #2E86DE;
+}
+.filter--selected .filter__icon {
+    /* contraste au max - on passe en blanc - puis en sépia - on ajoute couleur au max - on change de hue*/
+    filter: contrast(1000%) invert(100%) sepia(100%) saturate(1000000%) hue-rotate(178deg);
 }
 </style>

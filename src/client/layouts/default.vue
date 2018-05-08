@@ -154,6 +154,19 @@ export default {
 }
 </script>
 <style>
+  .overlay:before{
+    background-color: white;
+  }
+  .overlay--active:before{
+    opacity:0.9;
+  }
+  .navigation-drawer--is-mobile:not(.navigation-drawer--close),
+  .navigation-drawer--temporary:not(.navigation-drawer--close){
+    box-shadow: 3px 5px 10px 0 rgba(0, 0, 0, 0.11);
+  }
+  .navigation-drawer__border{
+    width:0;
+  }
   .application{
     overflow-y: hidden;
   }

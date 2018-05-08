@@ -158,7 +158,7 @@ export const actions = {
           if (state.selectedCategories.indexOf(cat) >= 0) hasAtLeaseOneCategory = true
         })
       }
-      hasAllFilters = state.selectedFilters.every((val) => placeFilters.includes(val))
+      hasAllFilters = state.selectedFilters.every((val) => placeFilters.includes(val) || (!val || val.length === 0))
       return hasAllFilters && hasAtLeaseOneCategory
     })
     console.log(selectedEntries) // j'ai les bonnes entries mais ça ne s'update pas
