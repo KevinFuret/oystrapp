@@ -106,8 +106,8 @@ export const actions = {
       let token = savedToken
       await client.sync({ nextSyncToken: token })
         .then((response) => {
-          console.log('syncing with contentful ', response.entries)
-          console.log(response.assets)
+          // console.log('syncing with contentful ', response.entries)
+          // console.log(response.assets)
           commit('SET_TOKEN', response.nextSyncToken)
         })
     } catch (e) {
