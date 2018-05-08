@@ -7,13 +7,9 @@
         <div class="filter-group">
             <h3 class="filter-group__header">Mes catégories </h3>
             <ul class="filters-list">
-                <li v-for="category in categories" class="filter filter--big"
-                    :key="category.fields.nom.fr" :name="category.fields.slug.fr">
-                    <button @click="clickCategory" :name="category.fields.slug.fr">
-                        <img v-if="category.fields.image" :src="category.fields.image.fr.fields.file.fr.url" class="filter__icon">
-                        {{ category.fields.nom.fr }}
-                    </button>
-                </li>
+                <filter-button v-for="category in categories" class="filter filter--big"
+                    :key="category.fields.nom.fr" :category="category">
+                </filter-button>
             </ul>
         </div>
         <div class="filter-group">
@@ -33,7 +29,11 @@
 </template>
 
 <script>
+  import filter from './filter.vue'
   export default {
+    components: {
+      'filter-button': filter
+    },
     computed: {
       entries () {
         return this.$store.state.places['entries']
