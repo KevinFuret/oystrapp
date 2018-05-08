@@ -99,6 +99,7 @@
     color: #4a4a4a;
     text-transform: capitalize;
     outline:none !important;
+    border:1px solid transparent
 }
 
 .filter--big button{
@@ -112,6 +113,7 @@
     height:1.375rem;
     max-width: 1.375rem;
     margin-right:1rem;
+    filter: contrast(100%) grayscale(100%);
 }
 .filter p{
     margin:0;
@@ -122,7 +124,6 @@
     color: #2E86DE;
 }
 .filter--selected .filter__icon {
-    /* contraste au max - on passe en blanc - puis en sépia - on ajoute couleur au max - on change de hue*/
-    filter: contrast(1000%) invert(100%) sepia(100%) saturate(1000000%) hue-rotate(178deg);
+    filter: none;
 }
 </style>
