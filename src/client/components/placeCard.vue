@@ -1,18 +1,20 @@
 <template>
     <transition name="fade" mode="in-out">
     <section class="placeCard">
-        <header class="card__header">
-            <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
-            <div class="card__categories">
-                <span class="card__category category-tag" v-for="category in placeN1.placeCategory.fr">
-                    {{ category.fields.nom.fr }}
-                </span>
-            </div>
-        </header>
+        <nuxt-link :to="placeN1.slug.fr">
+            <header class="card__header">
+                <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
+                <div class="card__categories">
+                    <span class="card__category category-tag" v-for="category in placeN1.placeCategory.fr">
+                        {{ category.fields.nom.fr }}
+                    </span>
+                </div>
+            </header>
+        </nuxt-link>
 
         <div class="placeCard__content">
             <span class="open-dot" :class="isPlaceOpen"></span>
-            <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
+            <h2 class="placeCard__title"><nuxt-link :to="placeN1.slug.fr">{{ placeN1.name.fr }}</nuxt-link></h2>
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
             <p class="placeCard__details">
                 <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }}</span>
@@ -58,7 +60,6 @@ import pedestrian from '~/assets/img/walk.svg'
 import downArrow from '~/assets/img/down-arrow.svg'
 import upArrow from '~/assets/img/up-arrow.svg'
 import smallCard from './smallCard.vue'
-
 import axios from 'axios'
 
 export default {
@@ -217,8 +218,9 @@ export default {
         grid-template-columns: 1.5rem 1fr 2rem;
 
     }
-    .placeCard__title{
+    .placeCard__title a{
         color:black;
+        text-decoration: none;
     }
     .open-dot{
         display: inline-block;

@@ -25,6 +25,11 @@ export const getters = {
   },
   getSelectedPlaces (state) {
     return state.selectedPlaces
+  },
+  getPlaceBySlug (state, getters) {
+    return slug => getters.getPlacesN1.filter(place => {
+      return place.fields.slug.fr === slug
+    })
   }
 }
 

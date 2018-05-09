@@ -12,10 +12,6 @@ module.exports = {
     vendor: ['vuetify', 'jwt-decode', 'axios', 'vuex-persistedstate', 'vue-googlemaps'],
     extend(config, {isDev, isClient}) {
       // extend webpack configs here
-      /* config.module.rules.push({
-        test: /\.svg$/,
-        loader: 'svg-inline-loader'
-      }) */
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
