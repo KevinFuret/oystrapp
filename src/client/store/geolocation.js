@@ -21,14 +21,24 @@ export const getters = {
     if (selectedCategories.length !== 0 || selectedFilters.length !== 0) {
       selectedPlaces.forEach( function(place) {
         console.log("I've selected some places")
-        locations.push({id: place.sys.id, position: {lat: place.fields.location.fr.lat,
-          lng: place.fields.location.fr.lon}})
+        locations.push({
+          id: place.sys.id,
+          position: {
+            lat: place.fields.location.fr.lat,
+            lng: place.fields.location.fr.lon
+          }
+        })
       })
     } else {
       console.log("all placesN1 are displayed on the map")
       placesN1.forEach( function (place) {
-        locations.push({id: place.sys.id, position: {lat: place.fields.location.fr.lat,
-          lng: place.fields.location.fr.lon}})
+        locations.push({
+          id: place.sys.id,
+          position: {
+            lat: place.fields.location.fr.lat,
+            lng: place.fields.location.fr.lon
+          }
+        })
       })
     }
     return locations
@@ -66,30 +76,31 @@ export const actions = {
     let userPosition = state.userPosition
     let origins = userPosition.lat + ',' + userPosition.lng
     // mode can be : driving, bicycling, transit
-    let mode = "walking"
+    let mode = 'walking'
     const proxyurl = 'https://cors-anywhere.herokuapp.com/'
     const url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + origins +
                   '&destinations=place_id:' + placeId +
                   '&key=AIzaSyD2r_aDga1pPaBBdF5bfSn2ef7YVdYsIIQ' + '&mode=' + mode
 
-    fetch( proxyurl + url )
+    fetch(proxyurl + url)
       .then(response => response.text())
       .then(contents => {
         const payload = {id: placeId, datas: JSON.parse(contents)}
         dispatch('updateDistance', payload)
       })
       .catch((e) => console.log(e))
-
   },
-  updateDistance ({ state, commit, rootState }, payload ) {
+  updateDistance ({ state, commit, dispatch, rootState, rootGetters }, payload) {
     const datas = payload.datas
     let entries = rootState.places.entries
-    entries.forEach( function (el, index) {
-      if ( el.fields.googlePlaceId !== undefined ) {
-        if ( payload.id === el.fields.googlePlaceId.fr ) {
+    let placesN1 = rootGetters['places/getPlacesN1']
+    entries.forEach(function (el, index) {
+      if (el.fields.googlePlaceId !== undefined) {
+        if (payload.id === el.fields.googlePlaceId.fr) {
           commit('SET_DISTANCE', {index, datas, entries})
         }
       }
     })
+    dispatch('places/sortPlacesByDistance', null, {root:true})
   }
 }

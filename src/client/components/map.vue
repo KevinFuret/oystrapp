@@ -48,7 +48,7 @@ export default {
   name: 'mapComponent',
   data () {
    return {
-     mapLoaded: true,
+     mapLoaded: false,
      // center = userposition
      // default nantes coordinates
     center: { lat: 47.218371, lng: -1.553621 },
@@ -65,11 +65,11 @@ export default {
     opacity: 0.8,
     icon: {
       url: markerIcon,
-      scaledSize: new google.maps.Size(30, 42)
+      scaledSize: new window.google.maps.Size(30, 42)
     },
     iconUser: {
       url: markerUser,
-      scaledSize: new google.maps.Size(20, 32)
+      scaledSize: new window.google.maps.Size(20, 32)
     }
    }
   },
@@ -89,7 +89,8 @@ export default {
     ready () {
       this.$refs.mapRef._watcher.user = true
       this.$refs.mapRef.resize()
-      console.log(this.$refs.mapRef);
+      this.mapLoaded = true
+      console.log(this.$refs.mapRef.zoom);
     },
     centerOnUser () {
       if (this.userPosition) {
@@ -98,18 +99,20 @@ export default {
       }
     },
     updateStateMarker (marker, index) {
-      this.zoom = Math.max(15, 12)
+      console.log(this.zoom);
+      if (this.zoom <= 12) {
+        this.zoom = Math.max(15, 12)
+      }
       this.$refs.mapRef.panTo(marker.position)
       // Send the event on a channel (i-got-clicked) with a payload (index of the clicked marker.)
       EventBus.$emit('i-got-clicked', index);
     },
     panToMarker (index) {
-      this.zoom = Math.max(15, 12)
+      if (this.zoom <= 12) {
+        this.zoom = Math.max(15, 12)
+      }
       this.$refs.mapRef.panTo(this.markers[index].position)
     }
-  },
-  mounted () {
-
   }
 }
 </script>

@@ -6,4 +6,4 @@ Vue.use(VueGoogleMaps, {
   load: {
     apiKey: 'AIzaSyAwyOOxZbuas1vybtzfp2p3sOSuPyv7sxs'
   },
-});
+})

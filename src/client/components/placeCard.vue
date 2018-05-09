@@ -1,22 +1,24 @@
 <template>
     <transition name="fade" mode="in-out">
     <section class="placeCard">
-        <header class="card__header">
-            <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
-            <div class="card__categories">
-                <span class="card__category category-tag" v-for="category in placeN1.placeCategory.fr">
-                    {{ category.fields.nom.fr }}
-                </span>
-            </div>
-        </header>
+        <nuxt-link :to="placeN1.slug.fr">
+            <header class="card__header">
+                <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
+                <div class="card__categories">
+                    <span class="card__category category-tag" v-for="category in placeN1.placeCategory.fr">
+                        {{ category.fields.nom.fr }}
+                    </span>
+                </div>
+            </header>
+        </nuxt-link>
 
         <div class="placeCard__content">
             <span class="open-dot" :class="isPlaceOpen"></span>
-            <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
+            <h2 class="placeCard__title"><nuxt-link :to="placeN1.slug.fr">{{ placeN1.name.fr }}</nuxt-link></h2>
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
             <p class="placeCard__details">
                 <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }}</span>
-                <span class="placeCard__detail" ><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
+                <span class="placeCard__detail" v-if="duration !== ''"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
             </p>
         </div>
         <transition name="slide-down" mode="in-out">
@@ -58,7 +60,6 @@ import pedestrian from '~/assets/img/walk.svg'
 import downArrow from '~/assets/img/down-arrow.svg'
 import upArrow from '~/assets/img/up-arrow.svg'
 import smallCard from './smallCard.vue'
-
 import axios from 'axios'
 
 export default {
@@ -118,26 +119,22 @@ export default {
     },
     distance () {
       if (this.placeN1.distance !== undefined ) {
+        // console.log('distance', this.placeN1.distance)
         let distanceKm = this.placeN1.distance.rows[0].elements[0].distance.text
         let distance = this.placeN1.distance.rows[0].elements[0].distance.value
         // if value > 1000 -> user km units. Else use meters
-        if (distance >= 1000) {
-          return distanceKm
-        } else {
-          return distance + "m"
-        }
+        return distance >= 1000 ? distanceKm : distance + 'm';
       }
     },
     duration () {
       if (this.placeN1.distance !== undefined) {
         let durationTxt = this.placeN1.distance.rows[0].elements[0].duration.text
         let duration = this.placeN1.distance.rows[0].elements[0].duration.value
-        if( duration >= ( 24*3600 ) ) {
+        if (duration >= (24 * 3600)) {
           // if duration lasts more than one day
           // return in days
-          console.log('Userposition is to far from the places');
           return ''
-        } else if ( duration >= 3600) {
+        } else if (duration >= 3600) {
           // if duration lasts more than one hour
           return duration / 3600 + ' h'
         } else {
@@ -174,16 +171,17 @@ export default {
     if (this.placeN1.googleInfos === undefined) {
       this.getGoogleInfos()
     } else {
-       // console.log('google infos already set : ', this.placeN1.googleInfos)
+      // console.log('google infos already set : ', this.placeN1.googleInfos)
     }
     // set isPlaceOpen
     if (this.googleInfos === undefined) console.log(this.googleInfos)
-    else if (this.googleInfos.opening_hours === undefined) this.isPlaceOpen = 'open-dot--uncertain'
+    else if (this.googleInfos.opening_hours === undefined) this.isPlaceOpen = ''
     else if (this.placeN1.googleInfos.opening_hours.open_now === true) this.isPlaceOpen = 'open-dot--open'
     else this.isPlaceOpen = 'open-dot--closed'
   },
   beforeMount () {
-    if (this.placeN1.distance === undefined || true) {
+    if (this.placeN1.distance === undefined ) {
+      console.log('calculating distance...')
       this.$store.dispatch('geolocation/calculateDistance', this.placeN1)
     }
   }
@@ -220,8 +218,9 @@ export default {
         grid-template-columns: 1.5rem 1fr 2rem;
 
     }
-    .placeCard__title{
+    .placeCard__title a{
         color:black;
+        text-decoration: none;
     }
     .open-dot{
         display: inline-block;

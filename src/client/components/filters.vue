@@ -1,39 +1,32 @@
 <template>
     <div class="filters">
-        <div class="help">
-            <p>selected categories (all by default): {{ selectedCategories }}</p>
-            <p>selected filters (none by default): {{ selectedFilters }}</p>
-        </div>
         <div class="filter-group">
             <h3 class="filter-group__header">Mes catégories </h3>
             <ul class="filters-list">
-                <li v-for="category in categories" class="filter filter--big"
-                    :key="category.fields.nom.fr" :name="category.fields.slug.fr">
-                    <button @click="clickCategory" :name="category.fields.slug.fr">
-                        <img v-if="category.fields.image" :src="category.fields.image.fr.fields.file.fr.url" class="filter__icon">
-                        {{ category.fields.nom.fr }}
-                    </button>
-                </li>
+                <category-filter v-for="category in categories" class="filter filter--big"
+                    :key="category.fields.nom.fr" :category="category">
+                </category-filter>
             </ul>
         </div>
         <div class="filter-group">
             <h3 class="filter-group__header">Autres filtres</h3>
             <ul class="filters-list">
-                <li v-for="filter in filters" class="filter"
-                    :key="filter.fields.name.fr"
-                    :name="filter.fields.slug.fr">
-                    <button @click="clickFilter" :name="filter.fields.slug.fr">
-                        <img v-if="filter.fields.image" :src="filter.fields.image.fr.fields.file.fr.url" class="filter__icon">
-                        {{ filter.fields.name.fr }}
-                    </button>
-                </li>
+                <filter-filter v-for="filter in filters" class="filter"
+                    :key="filter.fields.name.fr" :filter="filter">
+                </filter-filter>
             </ul>
         </div>
     </div>
 </template>
 
 <script>
+  import categoryFilter from './categoryFilter.vue'
+  import filterFilter from './filterFilter.vue'
   export default {
+    components: {
+      'category-filter': categoryFilter,
+      'filter-filter': filterFilter
+    },
     computed: {
       entries () {
         return this.$store.state.places['entries']
@@ -66,22 +59,16 @@
         })
       }
     },
-    methods: {
-      clickCategory (event) {
-        const category = event.target.name
-        this.$store.dispatch('places/toggleCategory', { category })
-      },
-      clickFilter (event) {
-        const filter = event.target.name
-        this.$store.dispatch('places/toggleFilter', { filter })
-      }
-    },
     mounted () {
       // console.log('this.entries', this.entries)
     }
   }
 </script>
 <style>
+.filters{
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
 
 .filter-group{
     padding:0.5rem;
@@ -100,6 +87,7 @@
     margin:0.5rem;
     background: white;
 }
+
 .filter button{
     background: white;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -110,6 +98,8 @@
     font-weight:bold;
     color: #4a4a4a;
     text-transform: capitalize;
+    outline:none !important;
+    border:1px solid transparent
 }
 
 .filter--big button{
@@ -123,8 +113,17 @@
     height:1.375rem;
     max-width: 1.375rem;
     margin-right:1rem;
+    filter: contrast(100%) grayscale(100%);
 }
 .filter p{
     margin:0;
+}
+
+.filter--selected button{
+    border:1px solid #2E86DE;
+    color: #2E86DE;
+}
+.filter--selected .filter__icon {
+    filter: none;
 }
 </style>

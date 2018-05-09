@@ -2,7 +2,6 @@
     <v-layout>
         <section>
             <nuxt-link to="/mapPlaces"><h2>Map</h2></nuxt-link>
-            <!--<button type="button" name="button" v-on:click="getlocalStorage">Click</button>-->
             <ul class="placesList">
                 <li class="place" v-for="place in selectedPlaces" :key="place.id"
                     v-if="$store.state.places.selectedCategories.length !== 0 || $store.state.places.selectedFilters.length !== 0">
@@ -13,6 +12,10 @@
                     <place-card v-bind:placeN1="place.fields"></place-card>
                 </li>
             </ul>
+            <div v-if="($store.state.places.selectedCategories.length !== 0 || $store.state.places.selectedFilters.length !== 0) && selectedPlaces.length < 1">
+                <h3>Aucun résultat pour cette recherche</h3>
+                <p>Essayez de sélectionner d'autres catégories !</p>
+            </div>
         </section>
     </v-layout>
 </template>
@@ -66,13 +69,13 @@ export default {
     this.setUserPosition()
     this.manageStoreContentful()
 
-    // stop listening global events for map 
-    EventBus.$off('i-got-clicked');
-    EventBus.$off('i-got-swiped');
+    // stop listening global events for map
+    EventBus.$off('i-got-clicked')
+    EventBus.$off('i-got-swiped')
     // if (this.userPosition) {
     //   this.$store.dispatch('geolocation/watchUserPosition')
     // }
-        // console.log('all space', this.$store.state.places['entries'])
+    // console.log('all space', this.$store.state.places['entries'])
   },
   watch: {
     userPosition(newPosition, oldPosition) {
