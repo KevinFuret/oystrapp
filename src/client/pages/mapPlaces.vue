@@ -1,6 +1,5 @@
 <template>
   <v-layout>
-
     <map-component></map-component>
     <!-- <button @click="toSlide(3)">To Slide 1</button> -->
 

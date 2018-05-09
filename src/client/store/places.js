@@ -25,6 +25,12 @@ export const getters = {
   },
   getSelectedPlaces (state) {
     return state.selectedPlaces
+  },
+  getSelectedCategories (state) {
+    return state.selectedCategories
+  },
+  getSelectedFilters (state) {
+    return state.selectedFilters
   }
 }
 

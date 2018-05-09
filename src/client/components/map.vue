@@ -4,7 +4,7 @@
     <hr>
     <button type="button" :disabled="!userPosition"
       @click="centerOnUser">Find me !</button>
-    <no-ssr>
+    <!-- <no-ssr> -->
       <googlemaps-map
         ref="mapRef"
         :center.sync="center"
@@ -13,17 +13,15 @@
         @ready="ready"
         style="width: 100%; height: 80vh"
       >
-        <!-- User Position -->
-        <!-- <googlemaps-user-position
-          @update:position="setUserPosition"
-        /> -->
         <googlemaps-marker
+          v-if="mapLoaded"
           :icon="iconUser"
           :options="markerOptions"
           :position="userPosition"
         />
 
         <googlemaps-marker
+          v-if="mapLoaded"
           class="markerClicked"
           v-for="(marker, index) of markers"
           :key="index"
@@ -34,7 +32,7 @@
           @click="updateStateMarker(marker, index)"
         />
       </googlemaps-map>
-    </no-ssr>
+    <!-- </no-ssr> -->
   </section>
 </template>
 
@@ -50,6 +48,7 @@ export default {
   name: 'mapComponent',
   data () {
    return {
+     mapLoaded: true,
      // center = userposition
      // default nantes coordinates
     center: { lat: 47.218371, lng: -1.553621 },
@@ -90,17 +89,13 @@ export default {
     ready () {
       this.$refs.mapRef._watcher.user = true
       this.$refs.mapRef.resize()
-      // console.log(this.$refs.mapRef);
+      console.log(this.$refs.mapRef);
     },
     centerOnUser () {
       if (this.userPosition) {
         this.zoom = 12 // back to zoom default
         this.$refs.mapRef.panTo(this.userPosition)
       }
-    },
-    setUserPosition (position) {
-      this.userPosition = position
-      // console.log("user position: " , this.userPosition)
     },
     updateStateMarker (marker, index) {
       this.zoom = Math.max(15, 12)
@@ -112,6 +107,9 @@ export default {
       this.zoom = Math.max(15, 12)
       this.$refs.mapRef.panTo(this.markers[index].position)
     }
+  },
+  mounted () {
+
   }
 }
 </script>
