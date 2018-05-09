@@ -11,18 +11,19 @@
                 </div>
             </header>
         </nuxt-link>
-
-        <div class="placeCard__content">
-            <span class="open-dot" :class="isPlaceOpen"></span>
-            <h2 class="placeCard__title"><nuxt-link :to="placeN1.slug.fr">{{ placeN1.name.fr }}</nuxt-link></h2>
-            <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
-            <p class="placeCard__details">
-                <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }}</span>
-                <span class="placeCard__detail" v-if="duration !== ''"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
-            </p>
-        </div>
+        <nuxt-link :to="placeN1.slug.fr">
+            <div class="placeCard__content placeCard__content--preview">
+                <span class="open-dot" :class="isPlaceOpen"></span>
+                <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
+                <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
+                <p class="placeCard__details">
+                    <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }}</span>
+                    <span class="placeCard__detail" v-if="duration !== ''"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
+                </p>
+            </div>
+        </nuxt-link>
         <transition name="slide-down" mode="in-out">
-            <div class="placeCard__content placeCard__morecontent" v-show="isOpen">
+            <div class="placeCard__content placeCard__content--more" v-show="isOpen">
             <p class="placeCard__description">{{ placeN1.description.fr }}</p>
             <hr class="placeCard__separator" v-if="placeN1.lieuxN2">
             <div class="placeCard__suggestions" v-if="placeN1.lieuxN2">
@@ -218,7 +219,7 @@ export default {
         grid-template-columns: 1.5rem 1fr 2rem;
 
     }
-    .placeCard__title a{
+    .placeCard__title{
         color:black;
         text-decoration: none;
     }
