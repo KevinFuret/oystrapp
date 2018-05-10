@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>clock</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Mobile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="13.Lieu" transform="translate(-16.000000, -689.000000)" fill-rule="nonzero">
+            <g id="Horaires" transform="translate(0.000000, 687.000000)">
+                <g transform="translate(16.000000, 0.000000)" id="clock">
+                    <g transform="translate(0.000000, 2.000000)">
+                        <path d="M8,15.25 C12.0022347,15.25 15.25,11.9983591 15.25,8 C15.25,3.99776527 11.9983591,0.75 8,0.75 C4.00164089,0.75 0.75,3.99776527 0.75,8 C0.75,11.9983591 3.99776527,15.25 8,15.25 Z" id="Shape" stroke="#2E86DE" stroke-width="1.5"></path>
+                        <path d="M7.59636364,9 L10.4036364,9 C10.7381818,9 11,8.75069252 11,8.43213296 C11,8.11357341 10.7381818,7.86426593 10.4036364,7.86426593 L8.19272727,7.86426593 L8.19272727,4.56786704 C8.19272727,4.24930748 7.93090909,4 7.59636364,4 C7.26181818,4 7,4.24930748 7,4.56786704 L7,8.43213296 C7,8.75069252 7.26181818,9 7.59636364,9 Z" id="Shape" fill="#2E86DE"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
