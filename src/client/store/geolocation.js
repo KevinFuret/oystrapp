@@ -13,12 +13,14 @@ export const getters = {
     // return rootState.places.selectedPlaces
     let locations = []
     let selectedPlaces = rootGetters['places/getSelectedPlaces']
+    let selectedCategories = rootGetters['places/getSelectedCategories']
+    let selectedFilters = rootGetters['places/getSelectedFilters']
     let placesN1 = rootGetters['places/getPlacesN1']
     // if no filters were selected
     // else all filters are selected by default
-    if (selectedPlaces.length !== 0) {
-      selectedPlaces.forEach(function(place) {
-        // console.log("I've selected some places")
+    if (selectedCategories.length !== 0 || selectedFilters.length !== 0) {
+      selectedPlaces.forEach( function(place) {
+        console.log("I've selected some places")
         locations.push({
           id: place.sys.id,
           position: {
@@ -30,8 +32,13 @@ export const getters = {
     } else {
       console.log("all placesN1 are displayed on the map")
       placesN1.forEach( function (place) {
-        locations.push({id: place.sys.id, position: {lat: place.fields.location.fr.lat,
-          lng: place.fields.location.fr.lon}})
+        locations.push({
+          id: place.sys.id,
+          position: {
+            lat: place.fields.location.fr.lat,
+            lng: place.fields.location.fr.lon
+          }
+        })
       })
     }
     return locations
