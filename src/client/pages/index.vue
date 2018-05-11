@@ -72,10 +72,6 @@ export default {
     // stop listening global events for map
     EventBus.$off('i-got-clicked')
     EventBus.$off('i-got-swiped')
-    // if (this.userPosition) {
-    //   this.$store.dispatch('geolocation/watchUserPosition')
-    // }
-    // console.log('all space', this.$store.state.places['entries'])
   },
   watch: {
     userPosition(newPosition, oldPosition) {

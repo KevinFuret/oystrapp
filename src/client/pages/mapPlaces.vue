@@ -39,11 +39,11 @@ export default {
         grabCursor: true,
         mousewheel: true,
         spaceBetween: 10,
-        slidesOffsetAfter: 80, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
+        slidesOffsetAfter: 200, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
         on: {
           slideChange () {
-            console.log('translate', this.translate)
-            console.log('active index', this.activeIndex)
+            // console.log('translate', this.translate)
+            // console.log('active index', this.activeIndex)
             EventBus.$emit('i-got-swiped', this.activeIndex)
           },
           tap () {
@@ -63,7 +63,7 @@ export default {
     // listen on global event bus
     // event from map.vue
     EventBus.$on('i-got-clicked', index => {
-      console.log(`Oh, that's nice. I clicked on ${index} marker! :)`)
+      // console.log(`Oh, that's nice. I clicked on ${index} marker! :)`)
       this.swipeTo(index)
     })
   },
