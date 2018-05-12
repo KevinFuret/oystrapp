@@ -1,5 +1,5 @@
 <template>
-    <div class="place-info-block" :class="this.type">
+    <div class="place-info-block" :class="this.type" @click.stop="isOpen = !isOpen">
         <div class="place-info-block__icon">
             <img :src="icon" :alt="icon">
         </div>
@@ -7,12 +7,13 @@
              v-html="content.contentOpen">
         </div>
         <div class="place-info-block__text place-info-block__text--closed" v-else>
-            <span class="place-info-block__opennow">{{ contentOpen }}</span>
+            <span class="place-info-block__opennow" :class="openNowClass">{{ contentOpen }}</span>
             <transition name="slide-down" mode="in-out">
                 <div class="place-info-block--more" v-if="canBeOpened" v-show="isOpen">
-                    <span v-for="day in days" class="hours__day">
-                        {{ day }}
-                    </span>
+                    <p v-for="day in days" class="opening-hours__line">
+                        <span class="opening-hours__day">{{ day[0] }}</span>
+                        <span class="opening-hours__hours">{{ day[1] }}</span>
+                    </p>
 
                 </div>
             </transition>
@@ -22,7 +23,7 @@
                 <img :src="itinerary" alt="Cliquer pour lancer l'itinéraire" >
             </a>
         </div>
-        <div class="place-info-block__toggle" v-if="this.type === 'hours'" @click.stop="isOpen = !isOpen">
+        <div class="place-info-block__toggle" v-if="this.type === 'hours'" >
             <img class="toggle__arrow" :src="isOpen ? upArrow : downArrow" :alt="isOpen ? 'plus d\'infos' : 'moins d\'infos'">
         </div>
 
@@ -77,12 +78,32 @@ export default {
     },
     days () {
       if (this.type === 'hours') {
-        return this.content.contentClosed
+        let days = []
+        this.content.contentClosed.forEach(function (day) {
+          days.push(day.split(/: (.+)/))
+        })
+        return days
       }
     },
     mapsLink () {
       return ''
     }
+  },
+  methods: {
+    getGoogleInfos () {
+      // true pour recharger les infos tout le temps
+      if (this.placeDetails.googleInfos === undefined) {
+        // console.log('on fait la requete google places...', this.placeN1.googlePlaceId.fr)
+        const placeId = this.placeN1.googlePlaceId.fr
+        const proxyurl = 'https://cors-anywhere.herokuapp.com/'
+        const url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeId + '&key=AIzaSyAbP1t4UE9cfSuNYsmOXkRaHLVMJQHV2rQ'
+        fetch(proxyurl + url)
+          .then(response => response.text())
+          // .then(contents => console.log('contents', contents))
+          .then(contents => this.storeGoogleInfos(placeId, contents))
+          .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
+      }
+    },
   }
 }
 </script>
@@ -107,7 +128,7 @@ export default {
 }
 
 .place-info-block.price .place-info-block__text{
-    white-space: pre;
+    white-space: pre-line;
 }
 .place-info-block__more{
     justify-self: end;
@@ -129,9 +150,18 @@ export default {
     font-weight:bold;
 }
 .place-info-block__opennow--open{
-    color:green;
+    color:#74A741;
 }
 .place-info-block__opennow--closed{
-    color:darkred;
+    color:#C42D2D;
+}
+.opening-hours__line{
+    margin-bottom:0.1rem;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    text-align: left;
+}
+.opening-hours__day{
+    font-weight:bold;
 }
 </style>

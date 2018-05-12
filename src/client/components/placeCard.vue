@@ -151,7 +151,7 @@ export default {
     },
     getGoogleInfos () {
       // true pour recharger les infos tout le temps
-      if (this.placeN1.googleInfos === undefined || true) {
+      if (this.placeN1.googleInfos === undefined) {
         // console.log('on fait la requete google places...', this.placeN1.googlePlaceId.fr)
         const placeId = this.placeN1.googlePlaceId.fr
         const proxyurl = 'https://cors-anywhere.herokuapp.com/'

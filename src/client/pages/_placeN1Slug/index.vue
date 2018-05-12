@@ -19,7 +19,8 @@
         </div>
         <div class="infos-blocks">
             <info-block v-for="placeInfo in placeInfos" :key="placeInfo.type"
-                        :type="placeInfo.type" :content="placeInfo.content" :canBeOpened="placeInfo.canBeOpened">
+                        :type="placeInfo.type" :content="placeInfo.content" :canBeOpened="placeInfo.canBeOpened"
+                        v-if="placeInfo.type !== 'hours' || (placeInfo.type === 'hours' && placeDetails.googleInfos.opening_hours)">
             </info-block>
         </div>
         <div class="tickets">
@@ -47,7 +48,9 @@ export default {
     return {
       slug: this.$route.params.placeN1Slug,
       placeDetails: '',
-      share
+      share,
+      isPlaceOpen: null,
+      placeOpeningHoursText: null
     }
   },
   computed: {
@@ -82,8 +85,8 @@ export default {
           type: 'hours',
           canBeOpened: true,
           content: {
-            'contentOpen': this.placeDetails.googleInfos.opening_hours.open_now,
-            'contentClosed': this.placeDetails.googleInfos.opening_hours.weekday_text
+            'contentOpen': this.isPlaceOpen,
+            'contentClosed': this.placeOpeningHoursText
           }
         }]
       }
@@ -99,6 +102,20 @@ export default {
   },
   mounted () {
     this.getPlaceDetails()
+    if (this.placeDetails.googleInfos === undefined) {
+      this.getGoogleInfos()
+    } else {
+      // console.log('google infos already set : ', this.placeN1.googleInfos)
+    }
+    // set isPlaceOpen
+    if (this.placeDetails.googleInfos === undefined) console.log(this.googleInfos)
+    else if (this.placeDetails.googleInfos.opening_hours === undefined) this.isPlaceOpen = null
+    else if (this.placeDetails.googleInfos.opening_hours.open_now === true) {
+      this.isPlaceOpen = true
+      this.placeOpeningHoursText = this.placeDetails.googleInfos.opening_hours.weekday_text
+    } else {
+      this.placeOpeningHoursText = this.placeDetails.googleInfos.opening_hours.weekday_text
+    } this.isPlaceOpen = false
   }
 }
 </script>
