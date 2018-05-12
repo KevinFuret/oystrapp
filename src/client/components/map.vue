@@ -1,7 +1,6 @@
 <template>
   <section style="width: 100%">
     <nuxt-link to="/"><h2>Liste</h2></nuxt-link>
-    <hr>
     <button type="button" :disabled="!userPosition"
       @click="centerOnUser">Find me !</button>
     <!-- <no-ssr> -->
@@ -81,7 +80,7 @@ export default {
   },
   created () {
     EventBus.$on('i-got-swiped', index => {
-      console.log(`Oh, that's nice. I swiped on ${index} ! :)`)
+      // console.log(`Oh, that's nice. I swiped on ${index} ! :)`)
       this.panToMarker(index)
     })
   },
@@ -90,16 +89,17 @@ export default {
       this.$refs.mapRef._watcher.user = true
       this.$refs.mapRef.resize()
       this.mapLoaded = true
-      console.log(this.$refs.mapRef.zoom);
+      // console.log(this.$refs.mapRef.zoom);
     },
     centerOnUser () {
       if (this.userPosition) {
         this.zoom = 12 // back to zoom default
-        this.$refs.mapRef.panTo(this.userPosition)
+        this.center = this.userPosition
+        // this.$refs.mapRef.panTo(this.userPosition)
       }
     },
     updateStateMarker (marker, index) {
-      console.log(this.zoom);
+      // console.log(this.zoom);
       if (this.zoom <= 12) {
         this.zoom = Math.max(15, 12)
       }
@@ -111,7 +111,8 @@ export default {
       if (this.zoom <= 12) {
         this.zoom = Math.max(15, 12)
       }
-      this.$refs.mapRef.panTo(this.markers[index].position)
+      this.center = this.markers[index].position
+      // this.$refs.mapRef.panTo(this.markers[index].position)
     }
   }
 }

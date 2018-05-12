@@ -75,7 +75,8 @@ export default {
     }
   },
   beforeMount () {
-    if (this.placeN1.fields.distance === undefined || true) {
+    if (this.placeN1.fields.distance === undefined) {
+      // console.log("calculate distance");
       this.$store.dispatch('geolocation/calculateDistance', this.placeN1.fields)
     }
   }
