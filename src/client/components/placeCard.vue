@@ -15,7 +15,7 @@
             <div class="placeCard__content placeCard__content--preview">
                 <span class="open-dot" :class="isPlaceOpen"></span>
                 <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
-                <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
+                <span class="share-button"><img :src="share" alt="Partager"></span>
                 <p class="placeCard__details">
                     <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }}</span>
                     <span class="placeCard__detail" v-if="duration !== ''"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import heart from '~/assets/img/heart.svg'
+import share from '~/assets/img/share.svg'
 import location from '~/assets/img/location.svg'
 import pedestrian from '~/assets/img/walk.svg'
 import downArrow from '~/assets/img/down-arrow.svg'
@@ -71,7 +71,7 @@ export default {
   },
   data () {
     return {
-      heart,
+      share,
       location,
       pedestrian,
       downArrow,
@@ -248,7 +248,7 @@ export default {
     .card__image{
         width:100%;
     }
-    .favorite-button{
+    .share-button{
         align-self: center;
     }
     .placeCard__details{

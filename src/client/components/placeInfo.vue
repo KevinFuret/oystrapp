@@ -116,7 +116,7 @@ export default {
 </script>
 <style>
 .place-info-block{
-    border-bottom:1px solid #b5b5b5;
+    border-bottom:1px solid #e1e1e1;
     margin-left:-0.5rem;
     margin-right:-0.5rem;
 
@@ -126,7 +126,7 @@ export default {
     font-size:16px;
 }
 .place-info-block:first-child{
-    border-top:1px solid #b5b5b5;
+    border-top:1px solid #e1e1e1;
 }
 
 .place-info-block__text,

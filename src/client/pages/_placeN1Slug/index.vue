@@ -26,8 +26,24 @@
         <div class="tickets">
             <custom-button link="#" large="true">Acheter un billet</custom-button>
         </div>
-        <footer>
-
+        <footer class="related-places" v-if="placeDetails.lieuxN2">
+            <h3 class="related-places__title">D'autres perles aux alentours</h3>
+            <div class="suggestions__slider">
+                <div v-swiper:mySwiper="swiperOption" class="my-swiper" v-if="placeDetails.lieuxN2.fr.length > 1">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" v-for="place in placeDetails.lieuxN2.fr">
+                            <small-card :placeDetails="place"></small-card>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-swiper--notswiper" v-else>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" v-for="place in placeDetails.lieuxN2.fr">
+                            <small-card :placeDetails="place"></small-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </footer>
 
     </div>
@@ -37,12 +53,14 @@ import { mapGetters } from 'vuex'
 import share from '~/assets/img/share.svg'
 import button from '~/components/button.vue'
 import placeInfo from '~/components/placeInfo.vue'
+import placeN2Card from '~/components/placeN2Card.vue'
 
 export default {
   layout: 'fullscreen',
   components: {
     'custom-button': button,
-    'info-block': placeInfo
+    'info-block': placeInfo,
+    'small-card': placeN2Card
   },
   data () {
     return {
@@ -50,7 +68,24 @@ export default {
       placeDetails: '',
       share,
       isPlaceOpen: null,
-      placeOpeningHoursText: null
+      placeOpeningHoursText: null,
+      swiperOption: {
+        // init:false,
+        slidesPerView: 'auto',
+        spaceBetween: 0,
+        freeMode: true,
+        slidesOffsetAfter: 85, // empêche que le slider s'arrête au milieu de la dernière card
+        on: {
+          slideChange () {
+            console.log('translate', this.translate)
+            console.log('active index', this.activeIndex
+            )
+          },
+          tap () {
+            console.log('onTap', this)
+          }
+        }
+      }
     }
   },
   computed: {
@@ -164,5 +199,40 @@ export default {
         margin:1rem 0;
         font-size:16px;
         /*grid-column: 1 / -1;*/
+    }
+    .tickets{
+        margin:2rem 0;
+    }
+    .related-places{
+        padding: .5rem;
+    }
+    .related-places__title{
+        font-size:16px;
+        margin-bottom:1rem;
+    }
+    .my-swiper {
+        height: auto;
+        width: 100%;
+    }
+    .my-swiper--notswiper{
+        position: absolute;
+    }
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width:auto;
+    }
+    .swiper-container{
+        overflow: visible;
+        position: absolute;
+    }
+    .slider__container{
+        position: relative;
+        display: flex;
+        align-items:center;
+    }
+    .slider__element{
+        margin-right:0.5rem;
     }
 </style>
