@@ -12,7 +12,11 @@
                 <div class="place-info-block--more" v-if="canBeOpened" v-show="isOpen">
                     <p v-for="day in days" class="opening-hours__line">
                         <span class="opening-hours__day">{{ day[0] }}</span>
-                        <span class="opening-hours__hours">{{ day[1] }}</span>
+                        <span class="opening-hours__hours">
+                            <span v-for="period in day[1]" class="opening-hours__period">
+                                {{ period }}
+                            </span>
+                        </span>
                     </p>
 
                 </div>
@@ -82,6 +86,9 @@ export default {
         this.content.contentClosed.forEach(function (day) {
           days.push(day.split(/: (.+)/))
         })
+        days.forEach(function (day){
+          day[1] = day[1].split(/, /)
+        })
         return days
       }
     },
@@ -130,8 +137,9 @@ export default {
 .place-info-block.price .place-info-block__text{
     white-space: pre-line;
 }
-.place-info-block__more{
+.place-info-block--more{
     justify-self: end;
+    margin-top: 1rem;
 }
 .place-info-block__map,
 .map__link,
@@ -148,6 +156,8 @@ export default {
 }
 .place-info-block__opennow{
     font-weight:bold;
+
+    display: inline-block;
 }
 .place-info-block__opennow--open{
     color:#74A741;
@@ -156,12 +166,15 @@ export default {
     color:#C42D2D;
 }
 .opening-hours__line{
-    margin-bottom:0.1rem;
+    margin-bottom:0.5rem;
     display: grid;
-    grid-template-columns: 80px 1fr;
+    grid-template-columns: 90px 1fr;
     text-align: left;
 }
 .opening-hours__day{
     font-weight:bold;
+}
+.opening-hours__period{
+    display: block;
 }
 </style>

@@ -89,6 +89,7 @@ export default {
         max-width: 100%;
         list-style-type: none;
     }
+
     .application a{
         text-decoration: none;
     }

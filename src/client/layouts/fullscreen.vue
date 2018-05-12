@@ -41,4 +41,9 @@
     .container{
         position: relative;
     }
+
+    .application.theme--light,
+    body .application--wrap{
+        background: white;
+    }
 </style>
