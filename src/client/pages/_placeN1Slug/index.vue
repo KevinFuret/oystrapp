@@ -28,17 +28,17 @@
         </div>
         <footer class="related-places" v-if="placeDetails.lieuxN2">
             <h3 class="related-places__title">D'autres perles aux alentours</h3>
-            <div class="suggestions__slider">
-                <div v-swiper:mySwiper="swiperOption" class="my-swiper" v-if="placeDetails.lieuxN2.fr.length > 1">
+            <div class="related-places__slider">
+                <div v-swiper:mySwiper="swiperOption" class="my-swiperN2" v-if="placeDetails.lieuxN2.fr.length > 1">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide" v-for="place in placeDetails.lieuxN2.fr">
                             <small-card :placeDetails="place"></small-card>
                         </div>
                     </div>
                 </div>
-                <div class="my-swiper--notswiper" v-else>
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="place in placeDetails.lieuxN2.fr">
+                <div class="my-swiperN2--notswiper" v-else>
+                    <div class="swiperN2-wrapper">
+                        <div class="swiperN2-slide" v-for="place in placeDetails.lieuxN2.fr">
                             <small-card :placeDetails="place"></small-card>
                         </div>
                     </div>
@@ -210,22 +210,19 @@ export default {
         font-size:16px;
         margin-bottom:1rem;
     }
-    .my-swiper {
+    .my-swiperN2.swiper-container {
         height: auto;
         width: 100%;
+        position: relative;
     }
-    .my-swiper--notswiper{
-        position: absolute;
+    .my-swiperN2--notswiper{
+        position: relative;
     }
     .swiper-slide {
         display: flex;
         justify-content: center;
         align-items: center;
         width:auto;
-    }
-    .swiper-container{
-        overflow: visible;
-        position: absolute;
     }
     .slider__container{
         position: relative;
