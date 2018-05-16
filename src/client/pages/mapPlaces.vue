@@ -81,6 +81,11 @@ export default {
     swipeTo (index) {
       this.$refs.mySwiper.swiper.slideTo(index, 0)
     }
+  },
+  watch: {
+    userPosition(newPosition, oldPosition) {
+      console.log('newPosition', newPosition)
+    }
   }
 }
 </script>

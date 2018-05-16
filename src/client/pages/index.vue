@@ -67,7 +67,7 @@ export default {
   },
   mounted: async function () {
     this.setUserPosition()
-    this.manageStoreContentful()
+    this.manageStoreContentful() // put in beforeMount ?
 
     // stop listening global events for map
     EventBus.$off('i-got-clicked')

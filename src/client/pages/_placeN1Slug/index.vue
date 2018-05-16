@@ -54,6 +54,7 @@ import share from '~/assets/img/share.svg'
 import button from '~/components/button.vue'
 import placeInfo from '~/components/placeInfo.vue'
 import placeN2Card from '~/components/placeN2Card.vue'
+import { EventBus } from '~/plugins/event-bus.js';
 
 export default {
   layout: 'fullscreen',
@@ -136,6 +137,9 @@ export default {
     }
   },
   mounted () {
+    EventBus.$off('i-got-clicked')
+    EventBus.$off('i-got-swiped')
+
     this.getPlaceDetails()
     if (this.placeDetails.googleInfos === undefined) {
       this.getGoogleInfos()

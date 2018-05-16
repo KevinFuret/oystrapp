@@ -1,22 +1,26 @@
 <template>
     <section class="placeCardMap">
-        <header class="card__header">
-            <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
-            <div class="card__categories">
-                <span class="card__category category-tag" v-for="category in placeN1.fields.placeCategory.fr">
-                    {{ category.fields.nom.fr }}
-                </span>
+        <nuxt-link :to="placeN1.fields.slug.fr">
+          <header class="card__header">
+              <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
+              <div class="card__categories">
+                  <span class="card__category category-tag" v-for="category in placeN1.fields.placeCategory.fr">
+                      {{ category.fields.nom.fr }}
+                  </span>
+              </div>
+          </header>
+        </nuxt-link>
+        <nuxt-link :to="placeN1.fields.slug.fr">
+            <div class="placeCard__content">
+                <span class="open-dot open-dot--open"></span>
+                <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
+                <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
+                <p class="placeCard__details">
+                    <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }} </span>
+                    <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
+                </p>
             </div>
-        </header>
-        <div class="placeCard__content">
-            <span class="open-dot open-dot--open"></span>
-            <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
-            <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
-            <p class="placeCard__details">
-                <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }} </span>
-                <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
-            </p>
-        </div>
+        </nuxt-link>
     </section>
 </template>
 

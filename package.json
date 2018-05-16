@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@nuxtjs/component-cache": "^1.1.1",
-    "@nuxtjs/localforage": "^1.0.2",
     "@nuxtjs/pwa": "^2.0.3",
     "axios": "^0.17.1",
     "bcryptjs": "^2.4.3",
@@ -64,10 +63,10 @@
     "vue-browser-geolocation": "^1.0.1",
     "vue-googlemaps": "^0.0.6",
     "vue-router": "^3.0.1",
+    "vue-simple-suggest": "^1.6.4",
     "vue2-google-maps": "^0.9.6",
     "vuetify": "^0.17.3",
     "vuex": "^3.0.1",
-    "vuex-persist": "^1.2.2",
     "vuex-persistedstate": "^2.5.2"
   },
   "devDependencies": {
