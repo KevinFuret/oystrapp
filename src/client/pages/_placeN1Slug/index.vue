@@ -20,7 +20,7 @@
         <div class="infos-blocks">
             <info-block v-for="placeInfo in placeInfos" :key="placeInfo.type"
                         :type="placeInfo.type" :content="placeInfo.content" :canBeOpened="placeInfo.canBeOpened"
-                        v-if="placeInfo.type !== 'hours' || (placeInfo.type === 'hours' && placeDetails.googleInfos.opening_hours)">
+                        v-if="placeInfo.type !== 'hours' || (placeInfo.type === 'hours' && placeDetails.googleInfos.opening_hours && placeDetails.isOpenNow !== null)">
             </info-block>
         </div>
         <div class="tickets">
@@ -121,7 +121,7 @@ export default {
           type: 'hours',
           canBeOpened: true,
           content: {
-            'contentOpen': this.isPlaceOpen,
+            'contentOpen': this.placeDetails.isOpenNow,
             'contentClosed': this.placeOpeningHoursText
           }
         }]
@@ -133,7 +133,10 @@ export default {
       let place = this.getPlaceBySlug(this.slug)
       place = place[0].fields
       this.placeDetails = place
-      console.log(place)
+      console.log('place', place)
+    },
+    recalculateIsOpenNow () {
+      this.$store.dispatch('places/recalculateIsOpenNow', this.slug)
     }
   },
   mounted () {
@@ -144,17 +147,14 @@ export default {
     if (this.placeDetails.googleInfos === undefined) {
       this.getGoogleInfos()
     } else {
-      // console.log('google infos already set : ', this.placeN1.googleInfos)
+      console.log('google infos already set : ', this.placeDetails.googleInfos)
     }
-    // set isPlaceOpen
-    if (this.placeDetails.googleInfos === undefined) console.log(this.googleInfos)
+    this.recalculateIsOpenNow()
+    if (this.placeDetails.googleInfos === undefined) console.log('google infos undefined', this.googleInfos)
     else if (this.placeDetails.googleInfos.opening_hours === undefined) this.isPlaceOpen = null
-    else if (this.placeDetails.googleInfos.opening_hours.open_now === true) {
-      this.isPlaceOpen = true
+    else {
       this.placeOpeningHoursText = this.placeDetails.googleInfos.opening_hours.weekday_text
-    } else {
-      this.placeOpeningHoursText = this.placeDetails.googleInfos.opening_hours.weekday_text
-    } this.isPlaceOpen = false
+    }
   }
 }
 </script>

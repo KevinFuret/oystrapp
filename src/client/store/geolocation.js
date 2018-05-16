@@ -50,7 +50,7 @@ export const mutations = {
     state.userPosition = coordinates
   },
   UPDATE_USER_POSITION (state, position) {
-    state.userPosition = {lat: position.coords.latitude, lng : position.coords.longitude}
+    state.userPosition = {lat: position.coords.latitude, lng: position.coords.longitude}
   },
   SET_DISTANCE (state, {index, datas, entries}) {
     Vue.set(entries[index].fields, 'distance', datas)
@@ -60,7 +60,7 @@ export const mutations = {
 export const actions = {
   setUserPosition ({ commit, state }, { userPosition }) {
     try {
-      commit('SET_USER_POSITION', userPosition )
+      commit('SET_USER_POSITION', userPosition)
     } catch (e) {
       console.log(e)
     }
@@ -101,6 +101,6 @@ export const actions = {
         }
       }
     })
-    dispatch('places/sortPlacesByDistance', null, {root:true})
+    dispatch('places/sortPlacesByDistance', null, {root: true})
   }
 }

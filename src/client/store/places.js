@@ -81,6 +81,10 @@ export const mutations = {
   ADD_GOOGLE_INFOS (state, {index, infos}) {
     Vue.set(state.entries[index].fields, 'googleInfos', infos)
     // console.log('added google infos to store')
+  },
+  SET_IS_OPEN_NOW (state, {index, isOpenNow}) {
+    Vue.set(state.entries[index].fields, 'isOpenNow', isOpenNow)
+    console.log('set isOpenNow', state.entries[index].fields)
   }
 }
 
@@ -139,7 +143,7 @@ export const actions = {
     }
     dispatch('updateSelectedEntries')
   },
-  updateSelectedEntries ({commit, dispatch, state}) {
+  updateSelectedEntries: function ({commit, dispatch, state}) {
     // query only N1 places
     let placesN1 = state.entries.filter(function (placeN1) {
       return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
@@ -228,6 +232,53 @@ export const actions = {
       console.log('new selected places order', places)
       commit('UPDATE_SELECTED_PLACES', places)
     }
+  },
+  recalculateIsOpenNow ({state, commit, getters}, placeSlug) {
+    console.log('recalculating..', placeSlug)
+    let place = getters.getPlaceBySlug(placeSlug)[0].fields
+    let isOpenNow = null
+    if (place.googleInfos && place.googleInfos.opening_hours) {
+      const periods = place.googleInfos.opening_hours.periods
+      let d = new Date()
+      let day = d.getDay()
+      // let day = 2 // mardi
+      let hour = d.getHours()
+      // precede hour and minute by a zero to match with google syntax, if number is below 10
+      if (hour < 10) {
+        hour = '0' + hour
+      }
+      let minutes = d.getMinutes()
+      if (minutes < 10) {
+        minutes = '0' + minutes
+      }
+      let time = '' + hour + minutes
+      isOpenNow = false
+      // console.log('day', day)
+      // console.log('time', time)
+      // find only the day corresponsing to today
+      let dayPeriods = periods.filter(x => x.open.day === day)
+      if (dayPeriods.length === 0) console.log('no hours specified')
+      else {
+        // forEach period in googleInfos of the right day, check if the current time is between opening and closing hour
+        dayPeriods.forEach(function(period) {
+          if (time > period.open.time && time < period.close.time) isOpenNow = true
+        })
+      }
+      console.log('day', day)
+      console.log('time', time)
+      console.log('isOpenNow', isOpenNow)
+    } else {
+      console.log('no google infos or opening hours')
+    }
+    const placeId = place.googlePlaceId
+    // find the right place in the state tree and update isOpenNow
+    state.entries.forEach(function (statePlace, index) {
+      if (statePlace.fields.googlePlaceId !== undefined) {
+        if (placeId.fr === statePlace.fields.googlePlaceId.fr) {
+          commit('SET_IS_OPEN_NOW', {index, isOpenNow})
+        }
+      }
+    })
   }
 }
 

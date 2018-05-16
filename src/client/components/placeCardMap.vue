@@ -11,21 +11,21 @@
           </header>
         </nuxt-link>
         <nuxt-link :to="placeN1.fields.slug.fr">
-            <div class="placeCard__content">
-                <span class="open-dot open-dot--open"></span>
-                <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
-                <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
-                <p class="placeCard__details">
-                    <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }} </span>
-                    <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
-                </p>
-            </div>
-        </nuxt-link>
+          <div class="placeCard__content">
+              <span class="open-dot" :class="isPlaceOpen"></span>
+              <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
+              <span class="favorite-button"><img :src="share" alt="Partager"></span>
+              <p class="placeCard__details">
+                  <span class="placeCard__detail" v-if="distance !== null"><img :src="location" alt="Distance"> {{ distance }} </span>
+                  <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
+              </p>
+          </div>
+      </nuxt-link>
     </section>
 </template>
 
 <script>
-import heart from '~/assets/img/heart.svg'
+import share from '~/assets/img/share.svg'
 import location from '~/assets/img/location.svg'
 import pedestrian from '~/assets/img/walk.svg'
 
@@ -34,7 +34,7 @@ export default {
   props: ['redirect', 'placeN1'],
   data () {
     return {
-      heart,
+      share,
       location,
       pedestrian
     }
@@ -48,33 +48,37 @@ export default {
         return image['sys']['id'] === imageId // mettre l'id de la placecard
       })
     },
+    isPlaceOpen () {
+      if (this.placeN1.fields.isOpenNow === undefined) console.log(this.googleInfos)
+      else if (this.placeN1.fields.isOpenNow === null) return ''
+      else if (this.placeN1.fields.isOpenNow) return 'open-dot--open'
+      else return 'open-dot--closed'
+    },
     distance () {
-      if (this.placeN1.fields.distance !== undefined ) {
-        let distanceKm = this.placeN1.fields.distance.rows[0].elements[0].distance.text
-        let distance = this.placeN1.fields.distance.rows[0].elements[0].distance.value
-        // if value > 1000 -> user km units. Else use meters
-
-        if (distance >= 1000) {
-          return distanceKm
-        } else {
-          return distance + "m"
-        }
+      if (this.placeN1.fields.distance !== undefined) {
+        if (this.placeN1.fields.distance.rows[0].elements[0].status !== 'NOT_FOUND') {
+          let distanceKm = this.placeN1.fields.distance.rows[0].elements[0].distance.text
+          let distance = this.placeN1.fields.distance.rows[0].elements[0].distance.value
+          // if value > 1000 -> user km units. Else use meters
+          return distance >= 1000 ? distanceKm : distance + 'm';
+        } else return null
       }
     },
     duration () {
       if (this.placeN1.fields.distance !== undefined) {
-        let durationTxt = this.placeN1.fields.distance.rows[0].elements[0].duration.text
-        let duration = this.placeN1.fields.distance.rows[0].elements[0].duration.value
-        if( duration >= ( 24*3600 ) ) {
-          // if duration lasts more than one day
-          // return in days
-          return ''
-        } else if ( duration >= 3600) {
-          // if duration lasts more than one hour
-          return duration / 3600 + ' h'
-        } else {
-          return Math.round(duration / 60) + ' min'
-        }
+        if (this.placeN1.fields.distance.rows[0].elements[0].status !== 'NOT_FOUND') {
+          let duration = this.placeN1.fields.distance.rows[0].elements[0].duration.value
+          if (duration >= (24 * 3600)) {
+            // if duration lasts more than one day
+            // return in days
+            return null
+          } else if (duration >= 3600) {
+            // if duration lasts more than one hour
+            return duration / 3600 + ' h'
+          } else {
+            return Math.round(duration / 60) + ' min'
+          }
+        } else return null
       }
     }
   },
@@ -82,6 +86,14 @@ export default {
     if (this.placeN1.fields.distance === undefined) {
       // console.log("calculate distance");
       this.$store.dispatch('geolocation/calculateDistance', this.placeN1.fields)
+    }
+  },
+  mounted () {
+    this.recalculateIsOpenNow()
+  },
+  methods: {
+    recalculateIsOpenNow () {
+      this.$store.dispatch('places/recalculateIsOpenNow', this.placeN1.fields.slug.fr)
     }
   }
 }
