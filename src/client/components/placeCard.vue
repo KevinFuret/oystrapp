@@ -17,8 +17,8 @@
                 <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
                 <span class="share-button"><img :src="share" alt="Partager"></span>
                 <p class="placeCard__details">
-                    <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }}</span>
-                    <span class="placeCard__detail" v-if="duration !== ''"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
+                    <span class="placeCard__detail" v-if="distance !== null"><img :src="location" alt="Distance" > {{ distance }}</span>
+                    <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
                 </p>
             </div>
         </nuxt-link>
@@ -127,7 +127,7 @@ export default {
           // if value > 1000 -> user km units. Else use meters
           return distance >= 1000 ? distanceKm : distance + 'm'
         } else {
-          return 'notfound'
+          return null
         }
       }
     },
@@ -147,7 +147,7 @@ export default {
             return Math.round(duration / 60) + ' min'
           }
         } else {
-          return 'notfound'
+          return null
         }
       }
     }

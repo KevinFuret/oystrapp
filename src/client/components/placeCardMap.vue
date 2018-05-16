@@ -11,17 +11,17 @@
         <div class="placeCard__content">
             <span class="open-dot" :class="isPlaceOpen"></span>
             <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
-            <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
+            <span class="favorite-button"><img :src="share" alt="Partager"></span>
             <p class="placeCard__details">
-                <span class="placeCard__detail"><img :src="location" alt="Distance"> {{ distance }} </span>
-                <span class="placeCard__detail"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
+                <span class="placeCard__detail" v-if="distance !== null"><img :src="location" alt="Distance"> {{ distance }} </span>
+                <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
             </p>
         </div>
     </section>
 </template>
 
 <script>
-import heart from '~/assets/img/heart.svg'
+import share from '~/assets/img/share.svg'
 import location from '~/assets/img/location.svg'
 import pedestrian from '~/assets/img/walk.svg'
 
@@ -30,7 +30,7 @@ export default {
   props: ['redirect', 'placeN1'],
   data () {
     return {
-      heart,
+      share,
       location,
       pedestrian
     }
@@ -56,31 +56,25 @@ export default {
           let distanceKm = this.placeN1.fields.distance.rows[0].elements[0].distance.text
           let distance = this.placeN1.fields.distance.rows[0].elements[0].distance.value
           // if value > 1000 -> user km units. Else use meters
-
-          if (distance >= 1000) {
-            return distanceKm
-          } else {
-            return distance + 'm'
-          }
-        }
+          return distance >= 1000 ? distanceKm : distance + 'm';
+        } else return null
       }
     },
     duration () {
       if (this.placeN1.fields.distance !== undefined) {
         if (this.placeN1.fields.distance.rows[0].elements[0].status !== 'NOT_FOUND') {
-          let durationTxt = this.placeN1.fields.distance.rows[0].elements[0].duration.text
           let duration = this.placeN1.fields.distance.rows[0].elements[0].duration.value
           if (duration >= (24 * 3600)) {
             // if duration lasts more than one day
             // return in days
-            return ''
+            return null
           } else if (duration >= 3600) {
             // if duration lasts more than one hour
             return duration / 3600 + ' h'
           } else {
             return Math.round(duration / 60) + ' min'
           }
-        }
+        } else return null
       }
     }
   },

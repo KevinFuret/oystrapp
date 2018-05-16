@@ -169,6 +169,8 @@ export default {
   }
   .application{
     overflow-y: hidden;
+    overflow-x: hidden;
+    width: 100vw;
   }
   .account{
     border-bottom: 1px solid #eee;

@@ -240,8 +240,8 @@ export const actions = {
     if (place.googleInfos && place.googleInfos.opening_hours) {
       const periods = place.googleInfos.opening_hours.periods
       let d = new Date()
-      // let day = d.getDay()
-      let day = 2 // mardi
+      let day = d.getDay()
+      // let day = 2 // mardi
       let hour = d.getHours()
       // precede hour and minute by a zero to match with google syntax, if number is below 10
       if (hour < 10) {
