@@ -9,7 +9,7 @@
             </div>
         </header>
         <div class="placeCard__content">
-            <span class="open-dot open-dot--open"></span>
+            <span class="open-dot" :class="isPlaceOpen"></span>
             <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
             <span class="favorite-button"><img :src="heart" alt="Ajouter/Supprimer des favoris"></span>
             <p class="placeCard__details">
@@ -44,32 +44,42 @@ export default {
         return image['sys']['id'] === imageId // mettre l'id de la placecard
       })
     },
+    isPlaceOpen () {
+      if (this.placeN1.fields.isOpenNow === undefined) console.log(this.googleInfos)
+      else if (this.placeN1.fields.isOpenNow === null) return ''
+      else if (this.placeN1.fields.isOpenNow) return 'open-dot--open'
+      else return 'open-dot--closed'
+    },
     distance () {
-      if (this.placeN1.fields.distance !== undefined ) {
-        let distanceKm = this.placeN1.fields.distance.rows[0].elements[0].distance.text
-        let distance = this.placeN1.fields.distance.rows[0].elements[0].distance.value
-        // if value > 1000 -> user km units. Else use meters
+      if (this.placeN1.fields.distance !== undefined) {
+        if (this.placeN1.fields.distance.rows[0].elements[0].status !== 'NOT_FOUND') {
+          let distanceKm = this.placeN1.fields.distance.rows[0].elements[0].distance.text
+          let distance = this.placeN1.fields.distance.rows[0].elements[0].distance.value
+          // if value > 1000 -> user km units. Else use meters
 
-        if (distance >= 1000) {
-          return distanceKm
-        } else {
-          return distance + "m"
+          if (distance >= 1000) {
+            return distanceKm
+          } else {
+            return distance + 'm'
+          }
         }
       }
     },
     duration () {
       if (this.placeN1.fields.distance !== undefined) {
-        let durationTxt = this.placeN1.fields.distance.rows[0].elements[0].duration.text
-        let duration = this.placeN1.fields.distance.rows[0].elements[0].duration.value
-        if( duration >= ( 24*3600 ) ) {
-          // if duration lasts more than one day
-          // return in days
-          return ''
-        } else if ( duration >= 3600) {
-          // if duration lasts more than one hour
-          return duration / 3600 + ' h'
-        } else {
-          return Math.round(duration / 60) + ' min'
+        if (this.placeN1.fields.distance.rows[0].elements[0].status !== 'NOT_FOUND') {
+          let durationTxt = this.placeN1.fields.distance.rows[0].elements[0].duration.text
+          let duration = this.placeN1.fields.distance.rows[0].elements[0].duration.value
+          if (duration >= (24 * 3600)) {
+            // if duration lasts more than one day
+            // return in days
+            return ''
+          } else if (duration >= 3600) {
+            // if duration lasts more than one hour
+            return duration / 3600 + ' h'
+          } else {
+            return Math.round(duration / 60) + ' min'
+          }
         }
       }
     }
@@ -78,6 +88,14 @@ export default {
     if (this.placeN1.fields.distance === undefined) {
       // console.log("calculate distance");
       this.$store.dispatch('geolocation/calculateDistance', this.placeN1.fields)
+    }
+  },
+  mounted () {
+    this.recalculateIsOpenNow()
+  },
+  methods: {
+    recalculateIsOpenNow () {
+      this.$store.dispatch('places/recalculateIsOpenNow', this.placeN1.fields.slug.fr)
     }
   }
 }

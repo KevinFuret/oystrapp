@@ -77,7 +77,7 @@ export default {
       downArrow,
       upArrow,
       isOpen: false,
-      isPlaceOpen: null,
+      // isPlaceOpen: '',
       swiperOption: {
         // init:false,
         slidesPerView: 'auto',
@@ -112,34 +112,42 @@ export default {
     googleInfos () {
       return this.placeN1.googleInfos
     },
-    isPlaceOpenOld () {
-      /* if (this.googleInfos === undefined) console.log(this.googleInfos)
-      else if (this.googleInfos.opening_hours === undefined) return 'open-dot--uncertain'
-      else if (this.placeN1.googleInfos.opening_hours.open_now === true) return 'open-dot--open'
-      else return 'open-dot--closed' */
+    isPlaceOpen () {
+      if (this.placeN1.isOpenNow === undefined) console.log(this.googleInfos)
+      else if (this.placeN1.isOpenNow === null) return ''
+      else if (this.placeN1.isOpenNow) return 'open-dot--open'
+      else return 'open-dot--closed'
     },
     distance () {
-      if (this.placeN1.distance !== undefined ) {
+      if (this.placeN1.distance !== undefined) {
         // console.log('distance', this.placeN1.distance)
-        let distanceKm = this.placeN1.distance.rows[0].elements[0].distance.text
-        let distance = this.placeN1.distance.rows[0].elements[0].distance.value
-        // if value > 1000 -> user km units. Else use meters
-        return distance >= 1000 ? distanceKm : distance + 'm';
+        if (this.placeN1.distance.rows[0].elements[0].status !== 'NOT_FOUND') {
+          let distanceKm = this.placeN1.distance.rows[0].elements[0].distance.text
+          let distance = this.placeN1.distance.rows[0].elements[0].distance.value
+          // if value > 1000 -> user km units. Else use meters
+          return distance >= 1000 ? distanceKm : distance + 'm'
+        } else {
+          return 'notfound'
+        }
       }
     },
     duration () {
       if (this.placeN1.distance !== undefined) {
-        let durationTxt = this.placeN1.distance.rows[0].elements[0].duration.text
-        let duration = this.placeN1.distance.rows[0].elements[0].duration.value
-        if (duration >= (24 * 3600)) {
-          // if duration lasts more than one day
-          // return in days
-          return ''
-        } else if (duration >= 3600) {
-          // if duration lasts more than one hour
-          return duration / 3600 + ' h'
+        if (this.placeN1.distance.rows[0].elements[0].status !== 'NOT_FOUND') {
+          let durationTxt = this.placeN1.distance.rows[0].elements[0].duration.text
+          let duration = this.placeN1.distance.rows[0].elements[0].duration.value
+          if (duration >= (24 * 3600)) {
+            // if duration lasts more than one day
+            // return in days
+            return ''
+          } else if (duration >= 3600) {
+            // if duration lasts more than one hour
+            return duration / 3600 + ' h'
+          } else {
+            return Math.round(duration / 60) + ' min'
+          }
         } else {
-          return Math.round(duration / 60) + ' min'
+          return 'notfound'
         }
       }
     }
@@ -166,6 +174,9 @@ export default {
     storeGoogleInfos (placeId, infos) {
       const payload = {placeId: placeId, infos: JSON.parse(infos).result}
       this.$store.dispatch('places/updateGoogleInfos', payload)
+    },
+    recalculateIsOpenNow () {
+      this.$store.dispatch('places/recalculateIsOpenNow', this.placeN1.slug.fr)
     }
   },
   mounted: async function () {
@@ -175,10 +186,7 @@ export default {
       // console.log('google infos already set : ', this.placeN1.googleInfos)
     }
     // set isPlaceOpen
-    if (this.googleInfos === undefined) console.log(this.googleInfos)
-    else if (this.googleInfos.opening_hours === undefined) this.isPlaceOpen = ''
-    else if (this.placeN1.googleInfos.opening_hours.open_now === true) this.isPlaceOpen = 'open-dot--open'
-    else this.isPlaceOpen = 'open-dot--closed'
+    this.recalculateIsOpenNow()
   },
   beforeMount () {
     if (this.placeN1.distance === undefined ) {
