@@ -56,7 +56,12 @@
       <v-toolbar-side-icon light @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title >{{name}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-menu bottom left>
+
+      <search-bar></search-bar>
+      <v-btn icon>
+        <v-icon>search</v-icon>
+      </v-btn>
+      <!-- <v-menu bottom left>
         <v-btn icon="icon" slot="activator" light>
           <v-icon>more_vert</v-icon>
         </v-btn>
@@ -77,7 +82,7 @@
             <v-list-tile-title>Admin</v-list-tile-title>
           </v-list-tile>
         </v-list>
-      </v-menu>
+      </v-menu> -->
     </v-toolbar>
     <v-content app clipped-left>
       <v-container fluid>
@@ -100,13 +105,15 @@
 <script>
 // search icons: https://material.io/icons/ asd
 import filters from '../components/filters.vue'
+import searchBar from '../components/searchBar.vue'
 
 export default {
   props: {
     source: String
   },
   components: {
-    filters
+    filters,
+    'search-bar': searchBar
   },
   data () {
     return {

@@ -1,7 +1,7 @@
 <template>
   <section style="width: 100%">
     <nuxt-link to="/"><h2>Liste</h2></nuxt-link>
-    <button type="button" :disabled="!userPosition"
+    <button type="button" v-if="isLocated" :disabled="!userPosition"
       @click="centerOnUser">Find me !</button>
     <!-- <no-ssr> -->
       <googlemaps-map
@@ -13,14 +13,14 @@
         style="width: 100%; height: 80vh"
       >
         <googlemaps-marker
-          v-if="mapLoaded"
+          v-if="isLocated"
           :icon="iconUser"
           :options="markerOptions"
           :position="userPosition"
         />
 
         <googlemaps-marker
-          v-if="mapLoaded"
+          v-if="mapLoaded "
           class="markerClicked"
           v-for="(marker, index) of markers"
           :key="index"
@@ -75,7 +75,8 @@ export default {
   computed: {
     ...mapGetters({
       markers: 'geolocation/getLocations',
-      userPosition: 'geolocation/getUserPosition'
+      userPosition: 'geolocation/getUserPosition',
+      isLocated: 'geolocation/getIsLocated'
     })
   },
   created () {
@@ -89,7 +90,6 @@ export default {
       this.$refs.mapRef._watcher.user = true
       this.$refs.mapRef.resize()
       this.mapLoaded = true
-      // console.log(this.$refs.mapRef.zoom);
     },
     centerOnUser () {
       if (this.userPosition) {

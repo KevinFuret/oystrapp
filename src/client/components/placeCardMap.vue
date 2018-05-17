@@ -15,7 +15,7 @@
               <span class="open-dot" :class="isPlaceOpen"></span>
               <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
               <span class="favorite-button"><img :src="share" alt="Partager"></span>
-              <p class="placeCard__details">
+              <p class="placeCard__details" v-if="isLocated === true">
                   <span class="placeCard__detail" v-if="distance !== null"><img :src="location" alt="Distance"> {{ distance }} </span>
                   <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
               </p>
@@ -80,16 +80,22 @@ export default {
           }
         } else return null
       }
+    },
+    isLocated () {
+      return this.$store.state.geolocation['isLocated']
     }
   },
   beforeMount () {
-    if (this.placeN1.fields.distance === undefined) {
-      // console.log("calculate distance");
-      this.$store.dispatch('geolocation/calculateDistance', this.placeN1.fields)
-    }
+    // if (this.placeN1.fields.distance === undefined || true) {
+    //   this.$store.dispatch('geolocation/calculateDistance', this.placeN1.fields)
+    // }
   },
   mounted () {
     this.recalculateIsOpenNow()
+
+    if ((this.placeN1.distance === undefined || true) && this.isLocated === true) {
+      this.$store.dispatch('geolocation/calculateDistance', this.placeN1.fields)
+    }
   },
   methods: {
     recalculateIsOpenNow () {

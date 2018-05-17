@@ -42,18 +42,25 @@ export default {
       // ask user location
       // if he accepts, we populate the store
       // TODO : ask at the end of the onboarding
+
+      // navigator.geolocation.getCurrentPosition(e => {
+      //   console.log(e)
+      //   let userPosition = e
+      //   this.$store.dispatch('geolocation/setUserPosition', { userPosition })
+      //
+      // })
+
       this.$getLocation()
         .then(coordinates => {
           let userPosition = coordinates
           this.$store.dispatch('geolocation/setUserPosition', { userPosition })
         })
         .catch(error => {
-          // console.log(error);
-          // if user doesn't accept, so we locate him in Nantes
-          let userPosition = {lat: 47.218371, lng: -1.553621}
-          this.$store.dispatch('geolocation/setUserPosition', { userPosition } )
+          // console.log(error)
+          this.$store.dispatch('geolocation/displayDistance', false )
         })
     },
+
     async manageStoreContentful () {
       if (this.$store.state.places['entries'].length === 0) {
         // call the Contentful API to get entries and use store management
@@ -76,6 +83,7 @@ export default {
   watch: {
     userPosition(newPosition, oldPosition) {
       console.log('newPosition', newPosition)
+      // this.$store.dispatch('geolocation/watchUserPosition', { newPosition } )
     }
   }
 }

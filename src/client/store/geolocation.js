@@ -1,7 +1,8 @@
 import Vue from 'vue'
 
 export const state = () => ({
-  userPosition: {} // default Nantes coordinates
+  userPosition: {},
+  isLocated: false
 })
 
 export const getters = {
@@ -42,6 +43,9 @@ export const getters = {
       })
     }
     return locations
+  },
+  getIsLocated (state) {
+    return state.isLocated
   }
 }
 
@@ -54,6 +58,9 @@ export const mutations = {
   },
   SET_DISTANCE (state, {index, datas, entries}) {
     Vue.set(entries[index].fields, 'distance', datas)
+  },
+  DISPLAY_DISTANCE (state, bool) {
+    state.isLocated = bool
   }
 }
 
@@ -61,9 +68,14 @@ export const actions = {
   setUserPosition ({ commit, state }, { userPosition }) {
     try {
       commit('SET_USER_POSITION', userPosition)
+      commit('DISPLAY_DISTANCE', true)
+      // commit('UPDATE_USER_POSITION', userPosition)
     } catch (e) {
       console.log(e)
     }
+  },
+  displayDistance ({ commit }, { bool }) {
+    commit('DISPLAY_DISTANCE', bool)
   },
   watchUserPosition ({commit, state, dispatch}) {
     navigator.geolocation.watchPosition( function (position) {
