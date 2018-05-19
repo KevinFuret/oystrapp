@@ -1,5 +1,5 @@
 <template lang="html">
-  <!-- <div> -->
+  <div class="searchbar__container">
     <!-- <h1>Vue-autosuggest 🔮</h1> -->
     <!-- <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected '{{JSON.stringify(selected,null,2)}}'</span></div> -->
         <vue-autosuggest
@@ -10,10 +10,14 @@
             :renderSuggestion="renderSuggestion"
             :getSuggestionValue="getSuggestionValue"
             :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Essayer Planétarium'}"/>
-  <!-- </div> -->
+        <v-btn icon class="searchbar__clear-input" @click="clearInput">
+          <v-icon>clear</v-icon>
+        </v-btn>
+  </div>
 </template>
 
 <script>
+// search icons: https://material.io/icons/ asd
 import { VueAutosuggest } from 'vue-autosuggest'
 
 export default {
@@ -35,6 +39,9 @@ computed: {
   }
 },
 methods: {
+  clearInput() {
+    document.querySelector('#autosuggest__input').value = ""
+  },
   onInputChange(text, oldText) {
     if (text === null) {
       /* Maybe the text is null but you wanna do
@@ -55,7 +62,8 @@ methods: {
     // items are selected by default on click, but you can add some more behavior here!
   },
   onSelected(item) {
-    this.selected = item.item.fields;
+    this.selectedUrl = item.item.fields.slug.fr
+    this.$router.push(this.selectedUrl)
   },
   renderSuggestion(suggestion) {
     /* You will need babel-plugin-transform-vue-jsx for this kind of full customizable
@@ -88,11 +96,25 @@ methods: {
 </script>
 
 <style>
+.searchbar__container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchbar__clear-input {
+  margin-right: 0;
+}
+
+#autosuggest {
+  width: 100%;
+}
+
 #autosuggest__input {
   outline: none;
   position: relative;
   display: block;
-  border: 1px solid #c4c4c4;
   padding: 10px;
   width: 100%;
   box-sizing: border-box;
@@ -106,17 +128,16 @@ methods: {
 }
 
 .autosuggest__results-container {
-  position: relative;
+  /* position: relative; */
   width: 100%;
 }
 
 .autosuggest__results {
-  font-weight: 300;
   margin: 0;
   position: absolute;
+  left: -1px;
   z-index: 10000001;
   width: 100%;
-  border: 1px solid #e0e0e0;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   background: white;
@@ -133,7 +154,8 @@ methods: {
 
 .autosuggest__results .autosuggest__results_item {
   cursor: pointer;
-  padding: 15px;
+  border-bottom: 1px solid #f9f9f9;
+  padding: 15px 32px;
 }
 
 #autosuggest ul:nth-child(1) > .autosuggest__results_title {

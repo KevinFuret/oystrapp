@@ -53,14 +53,14 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app fixed>
-      <v-toolbar-side-icon light @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title >{{name}}</v-toolbar-title>
-      <v-spacer></v-spacer>
-
-      <search-bar></search-bar>
-      <v-btn icon>
-        <v-icon>search</v-icon>
+      <v-toolbar-side-icon light @click.stop="drawer = !drawer" v-if="!isRevealed"></v-toolbar-side-icon>
+      <v-toolbar-title v-if="!isRevealed">{{name}}</v-toolbar-title>
+      <v-spacer v-if="!isRevealed"></v-spacer>
+      <v-btn icon @click="revealSearchBar">
+        <v-icon v-if="isRevealed">arrow_back</v-icon>
+        <v-icon v-if="!isRevealed">search</v-icon>
       </v-btn>
+      <search-bar v-if="isRevealed"></search-bar>
       <!-- <v-menu bottom left>
         <v-btn icon="icon" slot="activator" light>
           <v-icon>more_vert</v-icon>
@@ -142,7 +142,8 @@ export default {
       username: 'John Doe',
       email: 'johndoe@gmail.com',
       mini: false,
-      right: null
+      right: null,
+      isRevealed: false
     }
   },
   computed: {
@@ -157,10 +158,18 @@ export default {
     snackbarColor () {
       return this.$store.state.notification.context
     }
+  },
+  methods: {
+    revealSearchBar () {
+      this.isRevealed = !this.isRevealed
+    }
   }
 }
 </script>
 <style>
+  .toolbar__content {
+    position: relative;
+  }
   .overlay:before{
     background-color: white;
   }
