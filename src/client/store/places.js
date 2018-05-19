@@ -18,6 +18,11 @@ export const getters = {
   getEntries (state) {
     return state.entries
   },
+  getSelections (state) {
+    return state.entries.filter(function (entry) {
+      return entry['sys']['contentType']['sys']['id'] === 'selection'
+    })
+  },
   getPlaces (state) {
     return state.entries.filter(function (place) {
       return place['sys']['contentType']['sys']['id'] === 'lieuN1' || place['sys']['contentType']['sys']['id'] === 'lieuN2'

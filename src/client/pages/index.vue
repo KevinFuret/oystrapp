@@ -66,6 +66,7 @@ export default {
         const data = await this.$store.dispatch('places/fetchAllPlaces')
       } else {
         // sync modifications
+        console.log('syncing ?')
         let savedToken = this.$store.state.places['token']
         const data = await this.$store.dispatch('places/updateContent', { savedToken })
       }
