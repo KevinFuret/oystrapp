@@ -10,14 +10,11 @@
       <v-list class="main-list account">
         <v-list-tile avatar tag="div">
           <v-list-tile-avatar class="account__avatar">
-            <img src="https://randomuser.me/api/portraits/men/85.jpg" />
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title class="account__username">
-              {{username}}
               </v-list-tile-title>
             <span class="account__email">
-              {{email}}
             </span>
           </v-list-tile-content>
           <v-list-tile-action icon>
@@ -54,7 +51,9 @@
     </v-navigation-drawer>
     <v-toolbar app fixed>
       <v-toolbar-side-icon light @click.stop="drawer = !drawer" v-if="!isRevealed"></v-toolbar-side-icon>
-      <v-toolbar-title v-if="!isRevealed">{{name}}</v-toolbar-title>
+      <v-toolbar-title v-if="!isRevealed">
+        <img :src="logo" alt="OYSTR" class="toolbar__logo">
+      </v-toolbar-title>
       <v-spacer v-if="!isRevealed"></v-spacer>
       <v-btn icon @click="revealSearchBar">
         <v-icon v-if="isRevealed">arrow_back</v-icon>
@@ -85,6 +84,11 @@
       </v-menu> -->
     </v-toolbar>
     <v-content app clipped-left @click.stop="drawer = !drawer">
+      <div class="app_menu">
+        <nuxt-link class="app_menu__link" to="/selections">Sélections</nuxt-link>
+        <nuxt-link class="app_menu__link" to="/">Liste</nuxt-link>
+        <nuxt-link class="app_menu__link" to="/mapPlaces">Carte</nuxt-link>
+      </div>
       <v-container fluid>
           <nuxt></nuxt>
       </v-container>
@@ -106,6 +110,7 @@
 // search icons: https://material.io/icons/ asd
 import filters from '../components/filters.vue'
 import searchBar from '../components/searchBar.vue'
+import logo from '~/assets/img/logo.png'
 
 export default {
   props: {
@@ -118,6 +123,7 @@ export default {
   data () {
     return {
       drawer: null,
+      logo,
       items: [
         {
           action: 'android',
@@ -167,6 +173,12 @@ export default {
 }
 </script>
 <style>
+  .application .theme--light.toolbar,
+  .theme--light .toolbar,
+  .application.theme--light{
+    background:white;
+    box-shadow: none;
+  }
   .toolbar__content {
     position: relative;
   }
@@ -183,6 +195,14 @@ export default {
   .navigation-drawer__border{
     width:0;
   }
+  .toolbar__title{
+    width: 100%;
+    text-align: center;
+    margin-left: 0;
+  }
+  .toolbar__logo{
+    width:90px;
+  }
   .application{
     overflow-y: hidden;
     overflow-x: hidden;
@@ -194,5 +214,22 @@ export default {
   .account__email{
     font-weight:normal;
     color: #b5b5b5;
+  }
+  .app_menu{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .app_menu .app_menu__link{
+    text-transform: uppercase;
+    font-size:1rem;
+    color: #C7C7CC;
+    text-align: center;
+    border-bottom:2px solid #C7C7CC;
+    padding:0.5rem;
+    text-decoration: none;
+  }
+  .app_menu .nuxt-link-exact-active{
+    color: black;
+    border-color: black;
   }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <section style="width: 100%">
-    <nuxt-link to="/"><h2>Liste</h2></nuxt-link>
     <button type="button" v-if="isLocated" :disabled="!userPosition"
       @click="centerOnUser">Find me !</button>
     <!-- <no-ssr> -->

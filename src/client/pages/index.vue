@@ -1,7 +1,6 @@
 <template>
     <v-layout>
         <section>
-            <nuxt-link to="/mapPlaces"><h2>Map</h2></nuxt-link>
             <ul class="placesList">
                 <li class="place" v-for="place in selectedPlaces" :key="place.id"
                     v-if="$store.state.places.selectedCategories.length !== 0 || $store.state.places.selectedFilters.length !== 0">
