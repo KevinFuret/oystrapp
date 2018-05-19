@@ -18,9 +18,19 @@ export const getters = {
   getEntries (state) {
     return state.entries
   },
+  getPlaces (state) {
+    return state.entries.filter(function (place) {
+      return place['sys']['contentType']['sys']['id'] === 'lieuN1' || place['sys']['contentType']['sys']['id'] === 'lieuN2'
+    })
+  },
   getPlacesN1 (state) {
     return state.entries.filter(function (placeN1) {
       return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
+    })
+  },
+  getPlacesN2 (state) {
+    return state.entries.filter(function (placeN2) {
+      return placeN2['sys']['contentType']['sys']['id'] === 'lieuN2'
     })
   },
   getSelectedPlaces (state) {
@@ -33,7 +43,17 @@ export const getters = {
     return state.selectedFilters
   },
   getPlaceBySlug (state, getters) {
+    return slug => getters.getPlaces.filter(place => {
+      return place.fields.slug.fr === slug
+    })
+  },
+  getPlaceN1BySlug (state, getters) {
     return slug => getters.getPlacesN1.filter(place => {
+      return place.fields.slug.fr === slug
+    })
+  },
+  getPlaceN2BySlug (state, getters) {
+    return slug => getters.getPlacesN2.filter(place => {
       return place.fields.slug.fr === slug
     })
   }
@@ -181,27 +201,18 @@ export const actions = {
     })
     dispatch('sortPlacesByDistance', placesN1)
   },
-  getGoogleInfos ({state}) {
-    // DEPRECATED FUNCTION //
-    // get only places of type lieuN1
-    let placesN1 = state.entries.filter(function (placeN1) {
-      return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
-    })
-    // for each lieuN1 type of place, get google infos via google places api
-    placesN1.forEach(function (element) {
-      // check if googleInfos is set or not, query if not set, log it if set
-      if (element.fields.googleInfos === undefined) {
-        const proxyurl = 'https://cors-anywhere.herokuapp.com/'
-        const url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + element.fields.googlePlaceId.fr + '&key=AIzaSyAbP1t4UE9cfSuNYsmOXkRaHLVMJQHV2rQ'
-        fetch(proxyurl + url, )
-          .then(response => response.text())
-          .then(contents => console.log('contents', contents))
-          // .then(contents => element.fields.googleInfos = JSON.parse(contents).result)
-          // .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
-      } else { console.log(element.fields.googleInfos) }
-    })
+  getGoogleInfos ({state, commit, dispatch}, payload) {
+    console.log('getting google infos in store')
+    const placeID = payload.placeId
+    const proxyurl = 'https://cors-anywhere.herokuapp.com/'
+    const url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeID + '&key=AIzaSyAbP1t4UE9cfSuNYsmOXkRaHLVMJQHV2rQ'
+    fetch(proxyurl + url)
+      .then(response => response.text())
+      // .then(contents => console.log('contents', contents))
+      .then(contents => dispatch('updateGoogleInfos', {placeId: placeID, infos: JSON.parse(contents).result}))
+      .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
   },
-  updateGoogleInfos ({ state, commit }, payload) {
+  updateGoogleInfos ({ state, commit, dispatch }, payload) {
     // let placesN1 = state.entries.filter(function (placeN1) {
     //   return placeN1['sys']['contentType']['sys']['id'] === 'lieuN1'
     // })
@@ -211,6 +222,7 @@ export const actions = {
       if (place.fields.googlePlaceId !== undefined) {
         if (payload.placeId === place.fields.googlePlaceId.fr) {
           commit('ADD_GOOGLE_INFOS', {index, infos})
+          dispatch('recalculateIsOpenNow', place.fields.slug.fr)
         }
       }
     })

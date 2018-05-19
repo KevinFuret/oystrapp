@@ -1,19 +1,21 @@
 <template>
     <div class="placeN2Card">
-        <header class="card__header">
-            <img class="card__image placeN2Card__image" :src="image[0].fields.file.fr.url" alt="Image du lieu">
-            <div class="card__categories">
-                <span class="card__category category-tag">{{ placeDetails.fields.category.fr.fields.name.fr }}</span>
+        <nuxt-link :to="link" class="placeN2Card__link">
+            <header class="card__header">
+                <img class="card__image placeN2Card__image" :src="image[0].fields.file.fr.url" alt="Image du lieu">
+                <div class="card__categories">
+                    <span class="card__category category-tag">{{ placeDetails.fields.category.fr.fields.name.fr }}</span>
+                </div>
+            </header>
+            <div class="placeN2Card__content">
+                <span class="open-dot open-dot--open"></span>
+                <h4 class="placeN2Card__title">{{ placeDetails.fields.name.fr }}</h4>
+                <a href="" alt="share" class="details__share share-button">
+                    <img :src="share" class="share-button__image" alt="Partager ce lieu avec vos amis">
+                </a>
+                <div class="placeN2Card__description">{{ placeDetails.fields.description.fr }}</div>
             </div>
-        </header>
-        <div class="placeN2Card__content">
-            <span class="open-dot open-dot--open"></span>
-            <h4 class="placeN2Card__title">{{ placeDetails.fields.name.fr }}</h4>
-            <a href="" alt="share" class="details__share share-button">
-                <img :src="share" class="share-button__image" alt="Partager ce lieu avec vos amis">
-            </a>
-            <div class="placeN2Card__description">{{ placeDetails.fields.description.fr }}</div>
-        </div>
+        </nuxt-link>
     </div>
 </template>
 <script>
@@ -26,7 +28,8 @@
     data () {
       return {
         smallImagePlaceholder,
-        share
+        share,
+        link: '/autres-lieux/' + this.placeDetails.fields.slug.fr
       }
     },
     mounted () {
@@ -47,6 +50,7 @@
 <style>
     .card__header{
         position: relative;
+        text-decoration: none;
     }
     .card__categories{
         position: absolute;
@@ -71,6 +75,7 @@
         display: grid;
         grid-template-rows: auto auto auto auto auto;
         grid-template-columns: 1.5rem 1fr 2rem;
+        text-decoration: none;
     }
     .placeN2Card__title{
         color:black;
@@ -105,5 +110,9 @@
     .placeN2Card__description{
         grid-column: 2 / -2;
         margin-bottom: 1rem;
+        text-decoration: none;
+    }
+    .placeN2Card__link{
+        text-decoration: none;
     }
 </style>

@@ -8,7 +8,7 @@
             <v-toolbar-title> {{ name }} </v-toolbar-title>
             <v-spacer></v-spacer>
         </v-toolbar>
-        <v-content app clipped-left>
+        <v-content app clipped-left @click.stop="drawer = !drawer">
             <v-container fluid>
                 <nuxt></nuxt>
             </v-container>

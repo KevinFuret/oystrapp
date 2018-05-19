@@ -161,22 +161,8 @@ export default {
       // console.log('google infos', this.placeN1.googleInfos)
     },
     getGoogleInfos () {
-      // true pour recharger les infos tout le temps
-      if (this.placeN1.googleInfos === undefined) {
-        // console.log('on fait la requete google places...', this.placeN1.googlePlaceId.fr)
-        const placeId = this.placeN1.googlePlaceId.fr
-        const proxyurl = 'https://cors-anywhere.herokuapp.com/'
-        const url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + placeId + '&key=AIzaSyAbP1t4UE9cfSuNYsmOXkRaHLVMJQHV2rQ'
-        fetch(proxyurl + url)
-          .then(response => response.text())
-          // .then(contents => console.log('contents', contents))
-          .then(contents => this.storeGoogleInfos(placeId, contents))
-          .catch(() => console.log('Can’t access ' + url + ' response. Blocked by browser?'))
-      }
-    },
-    storeGoogleInfos (placeId, infos) {
-      const payload = {placeId: placeId, infos: JSON.parse(infos).result}
-      this.$store.dispatch('places/updateGoogleInfos', payload)
+      let payload = {placeId: this.placeN1.googlePlaceId.fr}
+      this.$store.dispatch('places/getGoogleInfos', payload)
     },
     recalculateIsOpenNow () {
       this.$store.dispatch('places/recalculateIsOpenNow', this.placeN1.slug.fr)
@@ -189,9 +175,11 @@ export default {
       // console.log('google infos already set : ', this.placeN1.googleInfos)
     }
     // set isPlaceOpen
-    this.recalculateIsOpenNow()
-
-    if ((this.placeN1.distance === undefined || true) && this.isLocated === true) {
+    console.log('slug', this.placeN1.slug)
+    if (this.placeN1.slug !== undefined) {
+      this.recalculateIsOpenNow()
+    }
+    if ((this.placeN1.distance === undefined) && this.isLocated === true) {
       console.log('calculating distance...')
       this.$store.dispatch('geolocation/calculateDistance', this.placeN1)
     }

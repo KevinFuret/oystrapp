@@ -1,15 +1,17 @@
 <template>
     <div class="smallCard placeCard">
-        <header class="card__header">
-            <img class="card__image smallCard__image" :src="image[0].fields.file.fr.url" alt="Image du lieu">
-            <div class="card__categories">
-                <span class="card__category category-tag">{{ placeDetails.fields.category.fr.fields.name.fr }}</span>
+        <nuxt-link :to="link" class="placeN2Card__link">
+            <header class="card__header">
+                <img class="card__image smallCard__image" :src="image[0].fields.file.fr.url" alt="Image du lieu">
+                <div class="card__categories">
+                    <span class="card__category category-tag">{{ placeDetails.fields.category.fr.fields.name.fr }}</span>
+                </div>
+            </header>
+            <div class="smallCard__content">
+                <span class="open-dot open-dot--open"></span>
+                <p class="smallCard__title">{{ placeDetails.fields.name.fr }}</p>
             </div>
-        </header>
-        <div class="smallCard__content">
-            <span class="open-dot open-dot--open"></span>
-            <p class="smallCard__title">{{ placeDetails.fields.name.fr }}</p>
-        </div>
+        </nuxt-link>
     </div>
 </template>
 <script>
@@ -19,7 +21,8 @@
     props: ['placeDetails'],
     data () {
       return {
-        smallImagePlaceholder
+        smallImagePlaceholder,
+        link: '/autres-lieux/' + this.placeDetails.fields.slug.fr
       }
     },
     mounted () {
@@ -60,5 +63,8 @@
         overflow: hidden;
         text-overflow: ellipsis;
         margin:0;
+    }
+    .placeN2Card__link{
+        text-decoration: none;
     }
 </style>

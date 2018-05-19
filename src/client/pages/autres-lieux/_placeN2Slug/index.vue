@@ -1,10 +1,10 @@
 <template>
     <div v-if="placeDetails">
         <header class="header header--place">
-            <img class="header__image" :src="image[0].fields.file.fr.url" alt="Image du lieu">
+            <img class="header__image" :src="image" alt="Image du lieu">
             <div class="header__categories">
-                <span class="card__category category-tag" v-for="category in placeDetails.placeCategory.fr">
-                    {{ category.fields.nom.fr }}
+                <span class="card__category category-tag">
+                    {{ placeDetails.category.fr.fields.name.fr }}
                 </span>
             </div>
         </header>
@@ -23,29 +23,6 @@
                         v-if="placeInfo.type !== 'hours' || (placeInfo.type === 'hours' && placeDetails.googleInfos.opening_hours && placeDetails.isOpenNow !== null)">
             </info-block>
         </div>
-        <div class="tickets">
-            <custom-button link="#" large="true">Acheter un billet</custom-button>
-        </div>
-        <footer class="related-places" v-if="placeDetails.lieuxN2">
-            <h3 class="related-places__title">D'autres perles aux alentours</h3>
-            <div class="related-places__slider">
-                <div v-swiper:mySwiper="swiperOption" class="my-swiperN2" v-if="placeDetails.lieuxN2.fr.length > 1">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="place in placeDetails.lieuxN2.fr">
-                            <small-card :placeDetails="place"></small-card>
-                        </div>
-                    </div>
-                </div>
-                <div class="my-swiperN2--notswiper" v-else>
-                    <div class="swiperN2-wrapper">
-                        <div class="swiperN2-slide" v-for="place in placeDetails.lieuxN2.fr">
-                            <small-card :placeDetails="place"></small-card>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
     </div>
 </template>
 <script>
@@ -65,42 +42,20 @@ export default {
   },
   data () {
     return {
-      slug: this.$route.params.placeN1Slug,
+      slug: this.$route.params.placeN2Slug,
       placeDetails: '',
       share,
       isPlaceOpen: null,
-      placeOpeningHoursText: null,
-      swiperOption: {
-        // init:false,
-        slidesPerView: 'auto',
-        spaceBetween: 0,
-        freeMode: true,
-        slidesOffsetAfter: 85, // empêche que le slider s'arrête au milieu de la dernière card
-        on: {
-          slideChange () {
-            console.log('translate', this.translate)
-            console.log('active index', this.activeIndex
-            )
-          },
-          tap () {
-            console.log('onTap', this)
-          }
-        }
-      }
+      placeOpeningHoursText: null
     }
   },
   computed: {
     ...mapGetters({
       placesN1: 'places/getPlacesN1',
-      getPlaceBySlug: 'places/getPlaceBySlug'
+      getPlaceN2BySlug: 'places/getPlaceN2BySlug'
     }),
     image () {
-      let assets = this.$store.state.places['assets']
-      const imageId = this.placeDetails.images.fr[0].sys.id
-      return assets.filter(function (image) {
-        // this.placeN1.image.name.fr
-        return image['sys']['id'] === imageId // mettre l'id de la placecard
-      })
+      return this.placeDetails.image.fr[0].fields.file.fr.url
     },
     placeInfos () {
       if (this.placeDetails) {
@@ -110,12 +65,6 @@ export default {
           content: {
             'contentOpen': this.placeDetails.googleInfos.adr_address,
             'urlMap': 'https://www.google.com/maps/dir/?api=1&destination=' + this.placeDetails.location.fr.lat + ',' + this.placeDetails.location.fr.lon + '&destination_place_id=' + this.placeDetails.googlePlaceId.fr
-          }
-        }, {
-          type: 'price',
-          canBeOpened: false,
-          content: {
-            'contentOpen': this.placeDetails.prices.fr
           }
         }, {
           type: 'hours',
@@ -130,7 +79,7 @@ export default {
   },
   methods: {
     getPlaceDetails () {
-      let place = this.getPlaceBySlug(this.slug)
+      let place = this.getPlaceN2BySlug(this.slug)
       place = place[0].fields
       this.placeDetails = place
       console.log('place', place)

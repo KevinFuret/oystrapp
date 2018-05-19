@@ -4,7 +4,7 @@
       fixed
       enable-resize-watcher
       disable-route-watcher
-      persistent
+      temporary
       v-model="drawer"
       app>
       <v-list class="main-list account">
@@ -84,7 +84,7 @@
         </v-list>
       </v-menu> -->
     </v-toolbar>
-    <v-content app clipped-left>
+    <v-content app clipped-left @click.stop="drawer = !drawer">
       <v-container fluid>
           <nuxt></nuxt>
       </v-container>
