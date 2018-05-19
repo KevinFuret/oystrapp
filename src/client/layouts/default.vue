@@ -50,7 +50,9 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app fixed>
-      <v-toolbar-side-icon light @click.stop="drawer = !drawer" v-if="!isRevealed"></v-toolbar-side-icon>
+      <div @click.stop="drawer = !drawer" v-if="!isRevealed">
+        <img :src="burgerIcon" alt="ouvrir le menu" class="burger-menu__icon">
+      </div>
       <v-toolbar-title v-if="!isRevealed">
         <img :src="logo" alt="OYSTR" class="toolbar__logo">
       </v-toolbar-title>
@@ -111,6 +113,7 @@
 import filters from '../components/filters.vue'
 import searchBar from '../components/searchBar.vue'
 import logo from '~/assets/img/logo.png'
+import burgerIcon from '~/assets/img/menu_filter.png'
 
 export default {
   props: {
@@ -124,6 +127,7 @@ export default {
     return {
       drawer: null,
       logo,
+      burgerIcon,
       items: [
         {
           action: 'android',
@@ -199,6 +203,9 @@ export default {
     width: 100%;
     text-align: center;
     margin-left: 0;
+  }
+  .burger-menu__icon{
+    width:24px;
   }
   .toolbar__logo{
     width:90px;
