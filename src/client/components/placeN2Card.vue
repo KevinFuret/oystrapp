@@ -29,7 +29,7 @@
       return {
         smallImagePlaceholder,
         share,
-        link: '/autres-lieux/' + this.placeDetails.fields.slug.fr
+        link: '/et-apres/' + this.placeDetails.fields.slug.fr
       }
     },
     mounted () {

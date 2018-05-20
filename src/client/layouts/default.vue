@@ -87,7 +87,7 @@
     </v-toolbar>
     <v-content app clipped-left @click.stop="drawer = !drawer">
       <div class="app_menu">
-        <nuxt-link class="app_menu__link" to="/selections">Sélections</nuxt-link>
+        <nuxt-link class="app_menu__link" to="/selection">Sélections</nuxt-link>
         <nuxt-link class="app_menu__link" to="/">Liste</nuxt-link>
         <nuxt-link class="app_menu__link" to="/mapPlaces">Carte</nuxt-link>
       </div>

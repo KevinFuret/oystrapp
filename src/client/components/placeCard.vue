@@ -1,7 +1,7 @@
 <template>
     <transition name="fade" mode="in-out">
     <section class="placeCard">
-        <nuxt-link :to="placeN1.slug.fr">
+        <nuxt-link :to="link">
             <header class="card__header">
                 <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
                 <div class="card__categories">
@@ -11,7 +11,7 @@
                 </div>
             </header>
         </nuxt-link>
-        <nuxt-link :to="placeN1.slug.fr">
+        <nuxt-link :to="link">
             <div class="placeCard__content placeCard__content--preview">
                 <span class="open-dot" :class="isPlaceOpen"></span>
                 <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
@@ -76,6 +76,7 @@ export default {
       pedestrian,
       downArrow,
       upArrow,
+      link: '/lieu/' + this.placeN1.slug.fr,
       isOpen: false,
       // isPlaceOpen: '',
       swiperOption: {

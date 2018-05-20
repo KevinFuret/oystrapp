@@ -47,6 +47,11 @@ export const getters = {
   getSelectedFilters (state) {
     return state.selectedFilters
   },
+  getSelectionBySlug (state, getters) {
+    return slug => getters.getSelections.filter(selection => {
+      return selection.fields.slug.fr === slug
+    })
+  },
   getPlaceBySlug (state, getters) {
     return slug => getters.getPlaces.filter(place => {
       return place.fields.slug.fr === slug
