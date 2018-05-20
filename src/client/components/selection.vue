@@ -51,30 +51,34 @@
   }
 </script>
 <style>
-    .smallCard{
-        width: 125px;
-        box-sizing: border-box;
-        margin-right:0.5rem;
-    }
-    .smallCard__image{
-        width:100%;
-        height: 5.6rem;
-        object-fit: cover;
-    }
-    .smallCard__content{
-        display: flex;
-        align-items:center;
-        padding: 0 .5rem .5rem;
-    }
-    .smallCard__title{
-        color:black;
-        width:100%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin:0;
-    }
-    .placeN2Card__link{
+    .selection__link{
         text-decoration: none;
+        color: inherit;
+    }
+    .selection__header{
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto auto;
+        width:100%;
+
+    }
+    .selection__title{
+        color: black;
+    }
+    .selection__link-text{
+        align-self: center;
+        justify-self: end;
+        margin:0;
+        color: #C7C7CC;
+    }
+    .selection__author{
+        grid-row: 2 / -1;
+        color: #C7C7CC;
+    }
+    .author__name{
+        color:black;
+    }
+    .selection__places{
+        position: absolute;
     }
 </style>

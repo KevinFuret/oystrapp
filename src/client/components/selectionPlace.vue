@@ -1,13 +1,11 @@
 <template>
-    <div class="selection__place">
-        <p>ouvert ?
-            <span class="open-dot" :class="isPlaceOpen"></span>
-            {{isPlaceOpen}}
-        </p>
-        <p>nom : {{ place.fields.name.fr }}</p>
-        <p>image :
+    <div class="selection-place">
+        <div class="selection-place__image">
+            <img :src="image[0].fields.file.fr.url">
+        </div>
+        <span class="selection-place__open open-dot" :class="isPlaceOpen"> open?</span>
+        <h3 class="selection-place__title">{{ place.fields.name.fr }}</h3>
 
-        </p>
     </div>
 </template>
 <script>
@@ -57,3 +55,24 @@ export default {
   }
 }
 </script>
+<style>
+    .selection-place{
+        width: 150px;
+        box-sizing: border-box;
+        margin-right:0.5rem;
+    }
+    .selection-place__image img{
+        width:100%;
+        height: 6.5rem;
+        object-fit: cover;
+    }
+    .selection-place__title{
+        font-weight:bold;
+        font-size:1rem;
+    }
+    .selection-place__open{
+        font-size:0.8rem;
+        text-transform: uppercase;
+        color: #76bb71;
+    }
+</style>

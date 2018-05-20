@@ -1,14 +1,12 @@
 <template>
     <v-layout>
-        <section>
-            <ul class="selectionsList">
-                <selection class="selection"
-                v-for="selection in selections"
-                :key="selection.sys.id"
-                :selection="selection">
-                </selection>
-            </ul>
-        </section>
+        <ul class="selectionsList">
+            <selection class="selection"
+            v-for="selection in selections"
+            :key="selection.sys.id"
+            :selection="selection">
+            </selection>
+        </ul>
     </v-layout>
 </template>
 <script>
@@ -49,5 +47,8 @@ export default {
 }
 </script>
 <style>
-
+.selectionsList{
+    width:100%;
+    margin-top:1rem;
+}
 </style>
