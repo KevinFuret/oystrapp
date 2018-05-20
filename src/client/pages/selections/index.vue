@@ -2,20 +2,22 @@
     <v-layout>
         <section>
             <ul class="selectionsList">
-                <li class="selection"
+                <selection class="selection"
                 v-for="selection in selections"
-                :key="selection.id">
-                    nom : {{ selection.fields.name.fr }}
-                    auteur : {{ selection.fields.authorName.fr }}
-                </li>
+                :key="selection.sys.id"
+                :selection="selection">
+                </selection>
             </ul>
-        selections {{ hello }}
         </section>
     </v-layout>
 </template>
 <script>
   import { mapGetters } from 'vuex'
+  import selection from '~/components/selection.vue'
 export default {
+    components: {
+      selection
+    },
     data () {
       return {
         hello: 'hello!'
@@ -23,7 +25,8 @@ export default {
     },
     computed: {
       ...mapGetters({
-        selections: 'places/getSelections',
+        selections: 'places/getSelections', // TODO : n'est pas réactif je ne comprend pas
+        placesN1: 'places/getPlacesN1',
         userPosition: 'geolocation/getUserPosition'
       })
     },

@@ -232,7 +232,7 @@ export const actions = {
       }
     })
   },
-  sortPlacesByDistance ({commit, rootState}, placesToSort) {
+  sortPlacesByDistance ({commit, dispatch, rootState}, placesToSort) {
     console.log('sorting...')
     let places = placesToSort
     if (places === null || places === undefined) {
@@ -252,7 +252,8 @@ export const actions = {
   },
   recalculateIsOpenNow ({state, commit, getters}, placeSlug) {
     console.log('recalculating..', placeSlug)
-    let place = getters.getPlaceBySlug(placeSlug)[0].fields
+    const place = getters.getPlaceBySlug(placeSlug)[0].fields
+    const placeId = place.googlePlaceId
     let isOpenNow = null
     if (place.googleInfos && place.googleInfos.opening_hours) {
       const periods = place.googleInfos.opening_hours.periods
@@ -281,13 +282,10 @@ export const actions = {
           if (time > period.open.time && time < period.close.time) isOpenNow = true
         })
       }
-      console.log('day', day)
-      console.log('time', time)
-      console.log('isOpenNow', isOpenNow)
     } else {
       console.log('no google infos or opening hours')
     }
-    const placeId = place.googlePlaceId
+
     // find the right place in the state tree and update isOpenNow
     state.entries.forEach(function (statePlace, index) {
       if (statePlace.fields.googlePlaceId !== undefined) {
