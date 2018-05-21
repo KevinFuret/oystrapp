@@ -21,7 +21,7 @@ export const getters = {
     // else all filters are selected by default
     if (selectedCategories.length !== 0 || selectedFilters.length !== 0) {
       selectedPlaces.forEach( function(place) {
-        console.log("I've selected some places")
+        // console.log("I've selected some places")
         locations.push({
           id: place.sys.id,
           position: {
@@ -31,7 +31,7 @@ export const getters = {
         })
       })
     } else {
-      console.log("all placesN1 are displayed on the map")
+      // console.log("all placesN1 are displayed on the map")
       placesN1.forEach( function (place) {
         locations.push({
           id: place.sys.id,

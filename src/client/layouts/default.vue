@@ -206,6 +206,7 @@ export default {
   }
   .burger-menu__icon{
     width:24px;
+    cursor: pointer;
   }
   .toolbar__logo{
     width:90px;

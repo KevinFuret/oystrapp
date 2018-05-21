@@ -1,6 +1,6 @@
 <template>
-  <section style="width: 100%">
-    <button type="button" v-if="isLocated" :disabled="!userPosition"
+  <section style="width: 100%" class="map">
+    <button v-if="isLocated" :disabled="!userPosition"
       @click="centerOnUser">Find me !</button>
     <!-- <no-ssr> -->
       <googlemaps-map
@@ -11,44 +11,35 @@
         @ready="ready"
         style="width: 100%; height: 80vh"
       >
-        <googlemaps-marker
+        <marker-user
           v-if="isLocated"
-          :icon="iconUser"
-          :options="markerOptions"
-          :position="userPosition"
-        />
+          v-bind:userPosition="userPosition"
+        >
+        </marker-user>
 
-        <googlemaps-marker
-          v-if="mapLoaded "
-          class="markerClicked"
+        <markers-places
           v-for="(marker, index) of markers"
           :key="index"
-          :icon="icon"
-          :opacity="opacity"
-          :options="markerOptions"
-          :position="marker.position"
+          v-bind:marker="marker"
           @click="updateStateMarker(marker, index)"
-        />
+        >
+        </markers-places>
       </googlemaps-map>
     <!-- </no-ssr> -->
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import markerUser from '~/assets/img/marker-user.svg'
-import markerIcon from '~/assets/img/location-pointer.svg'
 import mapStyle from '~/assets/json/mapStyle.json'
 import * as VueGoogleMaps from 'vue-googlemaps'
-import { EventBus } from '~/plugins/event-bus.js';
+import { EventBus } from '~/plugins/event-bus.js'
+import markersPlaces from './markersPlaces.vue'
+import markerUser from './markerUser.vue'
 
 export default {
   name: 'mapComponent',
   data () {
    return {
-     mapLoaded: false,
-     // center = userposition
-     // default nantes coordinates
     center: { lat: 47.218371, lng: -1.553621 },
     zoom: 12,
     mapOptions: {
@@ -56,39 +47,32 @@ export default {
       zoomControl: true,
       mapTypeId: 'roadmap',
       styles: mapStyle
-    },
-    markerOptions: {
-      optimized: false,
-    },
-    opacity: 0.8,
-    icon: {
-      url: markerIcon,
-      scaledSize: new window.google.maps.Size(30, 42)
-    },
-    iconUser: {
-      url: markerUser,
-      scaledSize: new window.google.maps.Size(20, 32)
     }
    }
   },
+  components: {
+    'markers-places': markersPlaces,
+    'marker-user': markerUser
+  },
   computed: {
-    ...mapGetters({
-      markers: 'geolocation/getLocations',
-      userPosition: 'geolocation/getUserPosition',
-      isLocated: 'geolocation/getIsLocated'
-    })
+    markers() {
+      return this.$store.getters['geolocation/getLocations']
+    },
+    userPosition() {
+      return this.$store.getters['geolocation/getUserPosition']
+    },
+    isLocated() {
+      return this.$store.getters['geolocation/getIsLocated']
+    }
   },
   created () {
     EventBus.$on('i-got-swiped', index => {
-      // console.log(`Oh, that's nice. I swiped on ${index} ! :)`)
       this.panToMarker(index)
     })
   },
   methods: {
     ready () {
-      this.$refs.mapRef._watcher.user = true
       this.$refs.mapRef.resize()
-      this.mapLoaded = true
     },
     centerOnUser () {
       if (this.userPosition) {
@@ -118,5 +102,7 @@ export default {
 </script>
 
 <style>
-
+.map {
+  position: relative;
+}
 </style>

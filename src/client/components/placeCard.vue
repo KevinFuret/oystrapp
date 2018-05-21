@@ -87,12 +87,11 @@ export default {
         slidesOffsetAfter: 85, // empêche que le slider s'arrête au milieu de la dernière card
         on: {
           slideChange () {
-            console.log('translate', this.translate)
-            console.log('active index', this.activeIndex
-            )
+            // console.log('translate', this.translate)
+            // console.log('active index', this.activeIndex)
           },
           tap () {
-            console.log('onTap', this)
+            // console.log('onTap', this)
           }
         }
       }
@@ -176,7 +175,7 @@ export default {
       // console.log('google infos already set : ', this.placeN1.googleInfos)
     }
     // set isPlaceOpen
-    console.log('slug', this.placeN1.slug)
+    // console.log('slug', this.placeN1.slug)
     if (this.placeN1.slug !== undefined) {
       this.recalculateIsOpenNow()
     }

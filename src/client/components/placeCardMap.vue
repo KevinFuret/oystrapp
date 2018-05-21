@@ -1,6 +1,6 @@
 <template>
     <section class="placeCardMap">
-        <nuxt-link :to="placeN1.fields.slug.fr">
+        <nuxt-link :to="link">
           <header class="card__header">
               <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
               <div class="card__categories">
@@ -10,8 +10,8 @@
               </div>
           </header>
         </nuxt-link>
-        <nuxt-link :to="placeN1.fields.slug.fr">
-          <div class="placeCard__content">
+        <nuxt-link :to="link">
+          <div class="placeCard__content placeCard__content--preview">
               <span class="open-dot" :class="isPlaceOpen"></span>
               <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
               <span class="favorite-button"><img :src="share" alt="Partager"></span>
@@ -36,7 +36,8 @@ export default {
     return {
       share,
       location,
-      pedestrian
+      pedestrian,
+      link: '/lieu/' + this.placeN1.fields.slug.fr,
     }
   },
   computed: {
@@ -104,13 +105,72 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   .placeCardMap {
       background:white;
       box-shadow:0 2px 4px 0 rgba(0, 0, 0, 0.05);
       margin-bottom: 0;
   }
-  .placeCard__content {
-    min-height: 80px;
+  .card__header{
+      position: relative;
+  }
+  .card__categories{
+      position: absolute;
+      bottom:1rem;
+  }
+  .category-tag{
+      background: white;
+      margin:0 0.5rem;
+      padding:.35rem .75rem .25rem;
+      font-size:0.8rem;
+      display: inline-block;
+      vertical-align: middle;
+      color: black;
+  }
+  .placeCard__content{
+      padding:0.5rem;
+      color: #b5b5b5;
+      display: grid;
+      grid-template-rows: auto auto auto auto auto;
+      grid-template-columns: 1.5rem 1fr 2rem;
+  }
+  .placeCard__title{
+      color:black;
+      text-decoration: none;
+  }
+  .open-dot{
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 100%;
+      align-self: center;
+      margin-right:0.5rem;
+      background:lightgrey;
+  }
+  .open-dot--open{
+      background:#76bb71;
+  }
+  .open-dot--uncertain{
+      background:darkorange;
+  }
+  .open-dot--closed{
+      background:red;
+  }
+  .card__image--big {
+      height: 10rem;
+      object-fit: cover;
+  }
+  .card__image{
+      width: 100%;
+  }
+  .share-button{
+      align-self: center;
+  }
+  .placeCard__details{
+      grid-column: 2 / -2;
+      margin-bottom: 0;
+  }
+  .placeCard__detail{
+      margin-right:1rem;
   }
 </style>

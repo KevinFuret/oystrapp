@@ -63,7 +63,8 @@ methods: {
   },
   onSelected(item) {
     this.selectedUrl = item.item.fields.slug.fr
-    this.$router.push(this.selectedUrl)
+    // on click, redirection towards place details
+    this.$router.push('lieu/' + this.selectedUrl)
   },
   renderSuggestion(suggestion) {
     /* You will need babel-plugin-transform-vue-jsx for this kind of full customizable

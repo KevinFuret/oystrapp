@@ -1,10 +1,9 @@
 <template>
   <v-layout>
     <map-component></map-component>
-    <!-- <button @click="toSlide(3)">To Slide 1</button> -->
 
     <div class="places-map__slider">
-      <div v-swiper:mySwiper="swiperOption" class="swiper-box" ref="mySwiper">
+      <div v-swiper:mySwiperMap="swiperOption" class="swiper-box">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(place, index) in placesN1" :key="place.id" v-bind:data-id="index"
                v-if="$store.state.places.selectedCategories.length === 0 && $store.state.places.selectedFilters.length === 0">
@@ -38,8 +37,8 @@ export default {
         slidesPerView: 'auto',
         grabCursor: true,
         mousewheel: true,
-        spaceBetween: 10,
-        slidesOffsetAfter: 200, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
+        spaceBetween: 20,
+        slidesOffsetAfter: 1200, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
         on: {
           slideChange () {
             // console.log('translate', this.translate)
@@ -79,7 +78,7 @@ export default {
   },
   methods: {
     swipeTo (index) {
-      this.$refs.mySwiper.swiper.slideTo(index, 0)
+      this.mySwiperMap.slideTo(index, 0)
     }
   },
   watch: {
@@ -90,19 +89,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .places-map__slider {
-    display: flex;
-    align-self: flex-end;
-    padding-bottom: 18rem;
+    position: absolute;
+    bottom: 3rem;
   }
+  .swiper-wrapper {
+    width: 25%;
+}
   .swiper-box {
-    transform: translateX(-85%);
     width: 100%;
     margin: 0 auto;
   }
-  .swiper-slide {
-    width: 80%;
-    align-items: flex-end;
-  }
+
 </style>
