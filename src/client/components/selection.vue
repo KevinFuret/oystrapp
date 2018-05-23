@@ -42,6 +42,15 @@
           spaceBetween: 0,
           freeMode: true,
           slidesOffsetAfter: 85, // empêche que le slider s'arrête au milieu de la dernière card
+          on: {
+            slideChange () {
+              console.log('translate', this.translate)
+              // console.log('active index', this.activeIndex)
+            },
+            tap () {
+              console.log('onTap', this)
+            }
+          }
         }
       }
     },

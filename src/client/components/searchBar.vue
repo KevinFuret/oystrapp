@@ -10,9 +10,9 @@
             :renderSuggestion="renderSuggestion"
             :getSuggestionValue="getSuggestionValue"
             :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Essayer Planétarium'}"/>
-        <v-btn icon class="searchbar__clear-input" @click="clearInput">
+        <!-- <v-btn icon class="searchbar__clear-input" @click="clearInput">
           <v-icon>clear</v-icon>
-        </v-btn>
+        </v-btn> -->
   </div>
 </template>
 
