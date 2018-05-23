@@ -113,6 +113,6 @@ export const actions = {
         }
       }
     })
-    dispatch('places/sortPlacesByDistance', null, {root: true})
+    // dispatch('places/sortPlacesByDistance', null, {root: true})
   }
 }

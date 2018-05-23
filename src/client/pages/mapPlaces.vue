@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <map-component></map-component>
+    <map-component v-bind:markers="markersPlaces"></map-component>
 
     <div class="places-map__slider">
       <div v-swiper:mySwiperMap="swiperOption" class="swiper-box">
@@ -55,7 +55,8 @@ export default {
   computed: {
     ...mapGetters({
       placesN1: 'places/getPlacesN1',
-      selectedPlaces: 'places/getSelectedPlaces'
+      selectedPlaces: 'places/getSelectedPlaces',
+      markersPlaces: 'geolocation/getLocations'
     })
   },
   created () {
@@ -92,7 +93,7 @@ export default {
 <style scoped>
   .places-map__slider {
     position: absolute;
-    bottom: 3rem;
+    bottom: 1rem;
   }
   .swiper-wrapper {
     width: 25%;

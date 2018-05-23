@@ -50,14 +50,12 @@ export default {
     }
    }
   },
+  props: ['markers'],
   components: {
     'markers-places': markersPlaces,
     'marker-user': markerUser
   },
   computed: {
-    markers() {
-      return this.$store.getters['geolocation/getLocations']
-    },
     userPosition() {
       return this.$store.getters['geolocation/getUserPosition']
     },

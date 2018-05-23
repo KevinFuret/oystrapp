@@ -90,23 +90,23 @@ export const mutations = {
   },
   ADD_SELECTED_CATEGORY (state, category) {
     state.selectedCategories.push(category)
-    console.log('pushed', category)
+    // console.log('pushed', category)
   },
   REMOVE_SELECTED_CATEGORY (state, categoryIndex) {
     state.selectedCategories.splice(categoryIndex, 1)
-    console.log('remove category number ', categoryIndex)
+    // console.log('remove category number ', categoryIndex)
   },
   ADD_SELECTED_FILTER (state, filter) {
     state.selectedFilters.push(filter)
-    console.log('pushed', filter)
+    // console.log('pushed', filter)
   },
   REMOVE_SELECTED_FILTER (state, filterIndex) {
     state.selectedFilters.splice(filterIndex, 1)
-    console.log('remove filter number ', filterIndex)
+    // console.log('remove filter number ', filterIndex)
   },
   UPDATE_SELECTED_PLACES (state, newEntries) {
     state.selectedPlaces = newEntries
-    console.log('updated selected places')
+    // console.log('updated selected places')
   },
   ADD_GOOGLE_INFOS (state, {index, infos}) {
     Vue.set(state.entries[index].fields, 'googleInfos', infos)
@@ -114,7 +114,7 @@ export const mutations = {
   },
   SET_IS_OPEN_NOW (state, {index, isOpenNow}) {
     Vue.set(state.entries[index].fields, 'isOpenNow', isOpenNow)
-    console.log('set isOpenNow', state.entries[index].fields)
+    // console.log('set isOpenNow', state.entries[index].fields)
   }
 }
 
@@ -238,7 +238,7 @@ export const actions = {
     })
   },
   sortPlacesByDistance ({commit, dispatch, rootState}, placesToSort) {
-    console.log('sorting...')
+    // console.log('sorting...')
     let places = placesToSort
     if (places === null || places === undefined) {
       places = rootState.places.entries.filter(function (placeN1) {
@@ -251,7 +251,7 @@ export const actions = {
       places.sort(function (a, b) {
         return a.fields.distance.rows[0].elements[0].distance.value - b.fields.distance.rows[0].elements[0].distance.value
       })
-      console.log('new selected places order', places)
+      // console.log('new selected places order', places)
       commit('UPDATE_SELECTED_PLACES', places)
     }
   },
@@ -303,7 +303,7 @@ export const actions = {
 }
 
 function hasDistance (place) {
-  console.log('place name', place.fields.name.fr)
-  console.log('place distance', place.fields.distance.rows[0].elements[0].distance.value)
+  // console.log('place name', place.fields.name.fr)
+  // console.log('place distance', place.fields.distance.rows[0].elements[0].distance.value)
   return place.fields !== undefined
 }
