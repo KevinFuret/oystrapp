@@ -1,7 +1,7 @@
 <template>
     <transition name="fade" mode="in-out">
     <section class="placeCard">
-        <nuxt-link :to="link">
+        <nuxt-link :to="link" class="placeCard__link">
             <header class="card__header">
                 <img class="card__image card__image--big" :src="image[0].fields.file.fr.url" alt="Image du lieu">
                 <div class="card__categories">
@@ -197,6 +197,10 @@ export default {
         background:white;
         box-shadow:0 2px 4px 0 rgba(0, 0, 0, 0.05);
         margin-bottom:1rem;
+    }
+    .placeCard__link,
+    .placeCard a{
+        text-decoration: none !important;
     }
     .card__header{
         position: relative;
