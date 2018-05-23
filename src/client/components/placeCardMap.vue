@@ -63,7 +63,7 @@ export default {
           // if value > 1000 -> user km units. Else use meters
           return distance >= 1000 ? distanceKm : distance + 'm';
         } else return null
-      }
+      } else return null
     },
     duration () {
       if (this.placeN1.fields.distance !== undefined) {
@@ -71,7 +71,7 @@ export default {
           let duration = this.placeN1.fields.distance.rows[0].elements[0].duration.value
           if (duration >= (24 * 3600)) {
             // if duration lasts more than one day
-            // return in days
+            // return nothing
             return null
           } else if (duration >= 3600) {
             // if duration lasts more than one hour
@@ -80,16 +80,11 @@ export default {
             return Math.round(duration / 60) + ' min'
           }
         } else return null
-      }
+      } else return null
     },
     isLocated () {
       return this.$store.state.geolocation['isLocated']
     }
-  },
-  beforeMount () {
-    // if (this.placeN1.fields.distance === undefined || true) {
-    //   this.$store.dispatch('geolocation/calculateDistance', this.placeN1.fields)
-    // }
   },
   mounted () {
     this.recalculateIsOpenNow()
@@ -162,6 +157,7 @@ export default {
   }
   .card__image{
       width: 100%;
+      object-fit: cover;
   }
   .share-button{
       align-self: center;

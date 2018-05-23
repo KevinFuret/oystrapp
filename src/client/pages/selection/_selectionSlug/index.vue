@@ -19,7 +19,8 @@
         <div class="selection-details__places">
             <h4>Lieux ({{ placesNb }})</h4>
             <ul class="placesList">
-                <li class="place" v-for="place in selectionDetails.places.fr" :key="place.id">
+                <li class="place" v-if="places.length > 0"
+                    v-for="place in places" :key="place.sys.id" >
                     <place-card v-bind:placeN1="place.fields"></place-card>
                 </li>
             </ul>
@@ -32,6 +33,7 @@
   import { mapGetters } from 'vuex'
   import share from '~/assets/img/share.svg'
   import placeCard from '~/components/placeCard.vue'
+  import * as VueGeolocation from 'vue-browser-geolocation'
 
   export default {
     layout: 'fullscreen',
@@ -42,30 +44,16 @@
       return {
         slug: this.$route.params.selectionSlug,
         selectionDetails: '',
-        share
-        /* swiperOption: {
-          // init:false,
-          slidesPerView: 'auto',
-          spaceBetween: 0,
-          freeMode: true,
-          slidesOffsetAfter: 85, // empêche que le slider s'arrête au milieu de la dernière card
-          on: {
-            slideChange () {
-              console.log('translate', this.translate)
-              console.log('active index', this.activeIndex
-              )
-            },
-            tap () {
-              console.log('onTap', this)
-            }
-          }
-        } */
+        share,
+        places: []
       }
     },
     computed: {
       ...mapGetters({
         selections: 'places/getSelections',
-        getSelectionBySlug: 'places/getSelectionBySlug'
+        placesN1: 'places/getPlacesN1',
+        getSelectionBySlug: 'places/getSelectionBySlug',
+        getPlaceBySlug: 'places/getPlaceN1BySlug'
       }),
       image () {
         return this.selectionDetails.image.fr.fields.file.fr.url
@@ -79,15 +67,61 @@
         let selection = this.getSelectionBySlug(this.slug)
         selection = selection[0].fields
         this.selectionDetails = selection
-        console.log('selection', selection)
+        const vm = this // to use this keyword in foreach
+        selection.places.fr.forEach(function(el) {
+          console.log(vm.getPlaceBySlug(el.fields.slug.fr)[0])
+          vm.places.push(vm.getPlaceBySlug(el.fields.slug.fr)[0])
+        })
+      },
+      setUserPosition () {
+        // ask user location
+        // if he accepts, we populate the store
+        // TODO : ask at the end of the onboarding
+
+        // navigator.geolocation.getCurrentPosition(e => {
+        //   console.log(e)
+        //   let userPosition = e
+        //   this.$store.dispatch('geolocation/setUserPosition', { userPosition })
+        //
+        // })
+
+        this.$getLocation()
+          .then(coordinates => {
+            let userPosition = coordinates
+            this.$store.dispatch('geolocation/setUserPosition', { userPosition })
+          })
+          .catch(error => {
+            // console.log(error)
+            this.$store.dispatch('geolocation/displayDistance', false )
+          })
+      },
+      async manageStoreContentful () {
+        if (this.$store.state.places['entries'].length === 0) {
+          // call the Contentful API to get entries and use store management
+          const data = await this.$store.dispatch('places/fetchAllPlaces')
+        } else {
+          // sync modifications
+          console.log('syncing ?')
+          let savedToken = this.$store.state.places['token']
+          const data = await this.$store.dispatch('places/updateContent', { savedToken })
+        }
       }
     },
-    mounted () {
+    mounted: async function () {
+      this.setUserPosition()
+      this.manageStoreContentful() // put in beforeMount ?
       this.getSelectionDetails()
+      console.log(this.places.length)
+    },
+    watch: {
+      userPosition(newPosition, oldPosition) {
+        console.log('newPosition', newPosition)
+        // this.$store.dispatch('geolocation/watchUserPosition', { newPosition } )
+      }
     }
   }
 </script>
-<style>
+<style scoped>
     .header{
         width:100vw;
         height:auto;

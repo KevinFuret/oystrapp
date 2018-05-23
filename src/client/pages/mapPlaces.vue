@@ -37,8 +37,8 @@ export default {
         slidesPerView: 'auto',
         grabCursor: true,
         mousewheel: true,
-        spaceBetween: 20,
-        slidesOffsetAfter: 1200, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
+        spaceBetween: 10,
+        slidesOffsetAfter: 2500, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
         on: {
           slideChange () {
             // console.log('translate', this.translate)
@@ -93,14 +93,17 @@ export default {
 <style scoped>
   .places-map__slider {
     position: absolute;
-    bottom: 1rem;
+    bottom: 0;
   }
-  .swiper-wrapper {
-    width: 25%;
-}
-  .swiper-box {
-    width: 100%;
-    margin: 0 auto;
+
+  .swiper-slide {
+      width: 25rem;
+      box-sizing: border-box;
+      /* transform: translateX(20%); */
+  }
+
+  .application a {
+    text-decoration: none;
   }
 
 </style>

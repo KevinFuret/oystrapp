@@ -10,18 +10,19 @@
                 </p>
             </header>
         </nuxt-link>
-        <div class="selection__places">
-            <div v-swiper:mySwiper="swiperOption" class="my-swiper" v-if="selection.fields.places.fr.length > 1">
-                <div class="swiper-wrapper">
-                    <selection-place class="swiper-slide"
-                                     v-for="place in selection.fields.places.fr"
-                                     :key="place.sys.id"
-                                     :place="place">
-                    </selection-place>
+        <div class="selection__places__container">
+            <div class="selection__places">
+                <div v-swiper:mySwiper="swiperOption" class="" v-if="selection.fields.places.fr.length > 2">
+                    <div class="swiper-wrapper">
+                        <selection-place class="swiper-slide"
+                                         v-for="place in selection.fields.places.fr"
+                                         :key="place.sys.id"
+                                         :place="place">
+                        </selection-place>
+                    </div>
                 </div>
             </div>
         </div>
-
     </li>
 </template>
 <script>
@@ -41,11 +42,12 @@
           slidesPerView: 'auto',
           spaceBetween: 0,
           freeMode: true,
-          slidesOffsetAfter: 85, // empêche que le slider s'arrête au milieu de la dernière card
+          slidesOffsetAfter: 150, // empêche que le slider s'arrête au milieu de la dernière card,
           on: {
             slideChange () {
               console.log('translate', this.translate)
-              // console.log('active index', this.activeIndex)
+              console.log('active index', this.activeIndex
+              )
             },
             tap () {
               console.log('onTap', this)
@@ -88,6 +90,6 @@
         color:black;
     }
     .selection__places{
-        position: absolute;
+        /*position: absolute;*/
     }
 </style>
