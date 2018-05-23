@@ -16,6 +16,14 @@
                 {{ selectionDetails.description.fr }}
             </div>
         </div>
+        <div class="selection-details__places">
+            <h4>Lieux ({{ placesNb }})</h4>
+            <ul class="placesList">
+                <li class="place" v-for="place in selectionDetails.places.fr" :key="place.id">
+                    <place-card v-bind:placeN1="place.fields"></place-card>
+                </li>
+            </ul>
+        </div>
 
 
     </div>
@@ -61,6 +69,9 @@
       }),
       image () {
         return this.selectionDetails.image.fr.fields.file.fr.url
+      },
+      placesNb () {
+        return this.selectionDetails.places.fr.length
       }
     },
     methods: {
@@ -125,5 +136,19 @@
         margin:1rem 0;
         font-size:16px;
         grid-column: 1 / -1;
+    }
+    .selection-details__places{
+        border-top:1px solid #c7c7c7;
+        margin-left:-0.6rem;
+        margin-right:-0.6rem;
+        padding:1rem;
+    }
+    .placesList{
+        max-width: 100%;
+        list-style-type: none;
+        margin-top:1rem;
+    }
+    .placesList a{
+        text-decoration: none;
     }
 </style>
