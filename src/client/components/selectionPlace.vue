@@ -1,15 +1,16 @@
 <template>
     <div class="selection-place" v-if="placeDetails">
-        <div class="selection-place__image">
-            <img :src="image[0].fields.file.fr.url">
-        </div>
-        <p class="selection-place__open open-dot" :class="isPlaceOpen"
-           v-if="isPlaceOpen !== undefined">
-            <span class="open-dot__text" v-if="isPlaceOpen === 'open-dot--open'">Ouvert</span>
-            <span class="open-dot__text" v-if="isPlaceOpen === 'open-dot--closed'">Fermé</span>
-        </p>
-        <h3 class="selection-place__title">{{ place.fields.name.fr }}</h3>
-
+        <nuxt-link :to="link" class="selectionPlace__link">
+            <div class="selection-place__image">
+                <img :src="image[0].fields.file.fr.url">
+            </div>
+            <p class="selection-place__open open-dot" :class="isPlaceOpen"
+               v-if="isPlaceOpen !== undefined">
+                <span class="open-dot__text" v-if="isPlaceOpen === 'open-dot--open'">Ouvert</span>
+                <span class="open-dot__text" v-if="isPlaceOpen === 'open-dot--closed'">Fermé</span>
+            </p>
+            <h3 class="selection-place__title">{{ place.fields.name.fr }}</h3>
+        </nuxt-link>
     </div>
 </template>
 <script>
@@ -18,7 +19,8 @@ export default {
   data () {
     return {
       hello: 'coucou',
-      placeDetails: ''
+      placeDetails: '',
+      link:'/lieu/' + this.place.fields.slug.fr
     }
   },
   props: [
@@ -70,6 +72,10 @@ export default {
 }
 </script>
 <style>
+    a.selectionPlace__link{
+        text-decoration: none;
+        color: black;
+    }
     .selection-place{
         width: 150px;
         box-sizing: border-box;

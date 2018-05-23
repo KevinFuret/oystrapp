@@ -41,6 +41,23 @@
   }
 </script>
 <style>
+    .card__header{
+        position: relative;
+    }
+    .card__categories{
+        position: absolute;
+        bottom:1rem;
+    }
+
+    .category-tag{
+        background: white;
+        margin:0 0.5rem;
+        padding:.35rem .75rem .25rem;
+        font-size:0.8rem;
+        display: inline-block;
+        vertical-align: middle;
+        color: black;
+    }
     .smallCard{
         width: 125px;
         box-sizing: border-box;
