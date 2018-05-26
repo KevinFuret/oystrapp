@@ -23,7 +23,6 @@
                     <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }} </span>
                 </nuxt-link>
             </p>
-            </nuxt-link>
         </div>
 
         <transition name="slide-down" mode="in-out">

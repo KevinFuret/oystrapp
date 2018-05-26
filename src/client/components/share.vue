@@ -8,8 +8,11 @@
                             hashtags="oystr,culture,nantes"
                             twitter-user="oystrapp"
                             v-cloak inline-template
-                            v-show="isDialogOpen === true">
-                <div class="share__dialog" >
+                            v-show="isDialogOpen === true"
+                            :class="{
+                              'share__dialog--top': isTop === true,
+                              'share__dialog--left': isLeft === true}">
+                <div class="share__dialog">
                     <network network="facebook" class="share-dialog__link">
                         <i class="fa fa-facebook"></i> Facebook
                     </network>
@@ -33,12 +36,20 @@
 <script>
 import share from '~/assets/img/share.svg'
 export default {
-  props: ['title', 'description'],
+  props: ['title', 'description', 'direction'],
   data () {
     return {
       share,
       url: document.URL,
       isDialogOpen: false
+    }
+  },
+  computed: {
+    isTop () {
+      return this.direction === 'top'
+    },
+    isLeft () {
+      return this.direction === 'left'
     }
   }
 }
@@ -57,6 +68,13 @@ export default {
         padding: .5rem 0;
         box-shadow: 1px 2px 8px 0 rgba(0,0,0,0.1);
         border-radius: 2px;
+    }
+    .share__dialog--top{
+        bottom:150%;
+    }
+    .share__dialog--left{
+        right:150%;
+        bottom:-3rem;
     }
     .share-dialog__link{
         padding: 0.25rem 2rem;
