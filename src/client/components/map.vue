@@ -1,8 +1,8 @@
 <template>
   <no-ssr>
     <section style="width: 100%" class="map">
-      <button v-if="isLocated" :disabled="!userPosition"
-        @click="centerOnUser">Find me !</button>
+      <!-- <button v-if="isLocated" :disabled="!userPosition"
+        @click="centerOnUser">Find me !</button> -->
         <googlemaps-map
           ref="mapRef"
           :center.sync="center"

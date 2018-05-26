@@ -240,4 +240,8 @@ export default {
     color: black;
     border-color: black;
   }
+
+  .app_menu + .container {
+    padding: 0;
+  }
 </style>

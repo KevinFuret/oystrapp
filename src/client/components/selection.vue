@@ -41,7 +41,7 @@
           // init:false,
           slidesPerView: 'auto',
           spaceBetween: 0,
-          freeMode: true,
+          // freeMode: true,
           slidesOffsetAfter: 150, // empêche que le slider s'arrête au milieu de la dernière card,
           on: {
             slideChange () {
@@ -62,6 +62,9 @@
   }
 </script>
 <style>
+    .selection {
+      padding: 0.5rem;
+    }
     .selection__link{
         text-decoration: none;
         color: inherit;

@@ -37,8 +37,9 @@ export default {
         slidesPerView: 'auto',
         grabCursor: true,
         mousewheel: true,
+        // centeredSlides: true,
         spaceBetween: 10,
-        slidesOffsetAfter: 2500, // empêche que le slider s'arrête au milieu de la dernière card (mobile version)
+        slidesOffsetAfter: 2500, // empêche que le slider s'arrête au milieu de la dernière card
         on: {
           slideChange () {
             // console.log('translate', this.translate)
@@ -79,7 +80,9 @@ export default {
   },
   methods: {
     swipeTo (index) {
-      this.mySwiperMap.slideTo(index, 0)
+      if(this.mySwiperMap !== undefined) {
+        this.mySwiperMap.slideTo(index, 0)
+      }
     }
   },
   watch: {
@@ -96,14 +99,15 @@ export default {
     bottom: 0;
   }
 
+  .swiper-wrapper {
+    /* transform: translate3d(185px, 0px, 0px)!important; */
+    /* align-items: flex-end; */
+  }
+
   .swiper-slide {
       width: 25rem;
       box-sizing: border-box;
       /* transform: translateX(20%); */
-  }
-
-  .application a {
-    text-decoration: none;
   }
 
 </style>

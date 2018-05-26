@@ -131,7 +131,6 @@ export default {
   }
   .placeCard__title{
       color:black;
-      text-decoration: none;
   }
   .open-dot{
       display: inline-block;
@@ -168,5 +167,9 @@ export default {
   }
   .placeCard__detail{
       margin-right:1rem;
+  }
+
+  a {
+    text-decoration: none;
   }
 </style>

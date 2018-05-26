@@ -1,5 +1,5 @@
 <template>
-    <v-layout>
+    <v-layout index>
         <section>
             <ul class="placesList">
                 <li class="place" v-for="place in selectedPlaces" :key="place.sys.id"
@@ -96,5 +96,9 @@ export default {
 
     .application a{
         text-decoration: none;
+    }
+
+    .index {
+      padding: 0.5rem;
     }
 </style>
