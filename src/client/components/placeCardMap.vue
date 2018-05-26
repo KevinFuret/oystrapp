@@ -10,34 +10,41 @@
               </div>
           </header>
         </nuxt-link>
-        <nuxt-link :to="link">
-          <div class="placeCard__content placeCard__content--preview">
-              <span class="open-dot" :class="isPlaceOpen"></span>
-              <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
-              <span class="favorite-button"><img :src="share" alt="Partager"></span>
-              <p class="placeCard__details" v-if="isLocated === true">
+
+      <div class="placeCard__content placeCard__content--preview">
+          <span class="open-dot" :class="isPlaceOpen"></span>
+          <nuxt-link :to="link">
+            <h2 class="placeCard__title">{{ placeN1.fields.name.fr }}</h2>
+          </nuxt-link>
+          <share :title="placeN1.fields.name.fr" :description="placeN1.fields.description.fr" direction="left"></share>
+          <p class="placeCard__details" v-if="isLocated === true">
+              <nuxt-link :to="link">
                   <span class="placeCard__detail" v-if="distance !== null"><img :src="location" alt="Distance"> {{ distance }} </span>
                   <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
-              </p>
-          </div>
-      </nuxt-link>
+              </nuxt-link>
+          </p>
+      </div>
+
     </section>
 </template>
 
 <script>
-import share from '~/assets/img/share.svg'
+import share from './share.vue'
 import location from '~/assets/img/location.svg'
 import pedestrian from '~/assets/img/walk.svg'
+import { SocialSharing } from '~/plugins/vue-social-sharing.js'
 
 export default {
   name: 'placeCardMap',
   props: ['redirect', 'placeN1'],
+  components: {
+    share
+  },
   data () {
     return {
-      share,
       location,
       pedestrian,
-      link: '/lieu/' + this.placeN1.fields.slug.fr,
+      link: '/lieu/' + this.placeN1.fields.slug.fr
     }
   },
   computed: {
@@ -105,6 +112,10 @@ export default {
       background:white;
       box-shadow:0 2px 4px 0 rgba(0, 0, 0, 0.05);
       margin-bottom: 0;
+  }
+  .placeCardMap a{
+      text-decoration: none !important;
+      color: inherit !important;
   }
   .card__header{
       position: relative;
