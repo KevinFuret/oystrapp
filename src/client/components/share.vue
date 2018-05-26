@@ -81,6 +81,7 @@ export default {
         margin:0.2rem 0;
         display: block;
         cursor: pointer;
+        color: #303030;
     }
     .share-dialog__link:hover,
     .share-dialog__link:active{

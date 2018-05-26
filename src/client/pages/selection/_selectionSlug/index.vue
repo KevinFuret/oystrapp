@@ -8,9 +8,9 @@
                 <img class="selection-details__author-image" :src="selectionDetails.authorImage.fr.fields.file.fr.url">
                 <span class="selection-details__author-name">{{ selectionDetails.authorName.fr }}</span> a créé
             </p>
-            <a href="" alt="share" class="selection-details__share share-button">
-                <img :src="share" class="share-button__image" alt="Partager ce lieu avec vos amis">
-            </a>
+            <share :title="selectionDetails.name.fr"
+                   :description="selectionDetails.description.fr"
+                   class="selection-details__share"></share>
             <h1 class="selection-details__title">{{ selectionDetails.name.fr }}</h1>
             <div class="selection-details__description">
                 {{ selectionDetails.description.fr }}
@@ -31,14 +31,16 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
-  import share from '~/assets/img/share.svg'
+  import share from '~/components/share.vue'
   import placeCard from '~/components/placeCard.vue'
   import * as VueGeolocation from 'vue-browser-geolocation'
+  import { SocialSharing } from '~/plugins/vue-social-sharing.js'
 
   export default {
     layout: 'fullscreen',
     components: {
-      'place-card': placeCard
+      'place-card': placeCard,
+      share
     },
     data () {
       return {

@@ -16,7 +16,10 @@
             <nuxt-link :to="link">
                 <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
             </nuxt-link>
-            <share :title="placeN1.name.fr" :description="placeN1.description.fr"></share>
+            <share :title="placeN1.name.fr"
+                   :description="placeN1.description.fr"
+                   direction="left">
+            </share>
             <p class="placeCard__details" v-if="isLocated === true">
                 <nuxt-link :to="link">
                     <span class="placeCard__detail" v-if="distance !== null"><img :src="location" alt="Distance" > {{ distance }}</span>
