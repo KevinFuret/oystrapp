@@ -1,32 +1,32 @@
 <template>
-  <section style="width: 100%" class="map">
-    <button v-if="isLocated" :disabled="!userPosition"
-      @click="centerOnUser">Find me !</button>
-    <!-- <no-ssr> -->
-      <googlemaps-map
-        ref="mapRef"
-        :center.sync="center"
-        :zoom.sync="zoom"
-        :options="mapOptions"
-        @ready="ready"
-        style="width: 100%; height: 80vh"
-      >
-        <marker-user
-          v-if="isLocated"
-          v-bind:userPosition="userPosition"
+  <no-ssr>
+    <section style="width: 100%" class="map">
+      <button v-if="isLocated" :disabled="!userPosition"
+        @click="centerOnUser">Find me !</button>
+        <googlemaps-map
+          ref="mapRef"
+          :center.sync="center"
+          :zoom.sync="zoom"
+          :options="mapOptions"
+          @ready="ready"
+          style="width: 100%; height: 80vh"
         >
-        </marker-user>
+          <marker-user
+            v-if="isLocated"
+            v-bind:userPosition="userPosition"
+          >
+          </marker-user>
 
-        <markers-places
-          v-for="(marker, index) of markers"
-          :key="index"
-          v-bind:marker="marker"
-          @click="updateStateMarker(marker, index)"
-        >
-        </markers-places>
-      </googlemaps-map>
-    <!-- </no-ssr> -->
-  </section>
+          <markers-places
+            v-for="(marker, index) of markers"
+            :key="index"
+            v-bind:marker="marker"
+            @click="updateStateMarker(marker, index)"
+          >
+          </markers-places>
+        </googlemaps-map>
+    </section>
+  </no-ssr>
 </template>
 
 <script>

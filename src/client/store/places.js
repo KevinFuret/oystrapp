@@ -86,7 +86,13 @@ export const mutations = {
   },
   SET_TOKEN (state, token) {
     state.token = token
-    console.log('Set token success !')
+    // console.log('Set token success !')
+  },
+  ADD_NEW_ENTRIES (state, data) {
+    state.entries.push(data)
+  },
+  ADD_NEW_ASSETS (state, data) {
+    state.assets.push(data)
   },
   ADD_SELECTED_CATEGORY (state, category) {
     state.selectedCategories.push(category)
@@ -147,8 +153,12 @@ export const actions = {
       let token = savedToken
       await client.sync({ nextSyncToken: token })
         .then((response) => {
-          // console.log('syncing with contentful ', response.entries)
-          // console.log(response.assets)
+          if (response.entries.length !== 0) {
+            commit('ADD_NEW_ENTRIES', response.entries)
+          }
+          if (response.assets.length !== 0) {
+            commit('ADD_NEW_ASSETS', response.assets)
+          }
           commit('SET_TOKEN', response.nextSyncToken)
         })
     } catch (e) {

@@ -9,7 +9,7 @@ require('dotenv').config({
 module.exports = {
   build: {
     extractCSS: true,
-    vendor: ['vuetify', 'jwt-decode', 'axios', 'vuex-persistedstate', 'vue-googlemaps'],
+    vendor: ['vuetify', 'jwt-decode', 'axios', 'vuex-persistedstate', 'vue-googlemaps', 'vue-social-sharing'],
     extend(config, {isDev, isClient}) {
       // extend webpack configs here
       if (isDev && isClient) {
@@ -59,6 +59,7 @@ module.exports = {
     { src: '~/plugins/persistedState.js', ssr: false },
     '~/plugins/vuetify.js',
     '~/plugins/contentful.js',
+    '~/plugins/vue-social-sharing.js',
     { src: '~/plugins/swiper.js', ssr: false },
     { src: '~/plugins/vue-googlemaps.js', ssr: false },
     { src: '~/plugins/vue-browser-geolocation.js', ssr: false }

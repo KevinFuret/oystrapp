@@ -18,7 +18,7 @@
                 <span class="share-button"><img :src="share" alt="Partager"></span>
                 <p class="placeCard__details" v-if="isLocated === true">
                     <span class="placeCard__detail" v-if="distance !== null"><img :src="location" alt="Distance" > {{ distance }}</span>
-                    <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }}</span>
+                    <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }} </span>
                 </p>
             </div>
         </nuxt-link>
@@ -126,10 +126,8 @@ export default {
           let distance = this.placeN1.distance.rows[0].elements[0].distance.value
           // if value > 1000 -> user km units. Else use meters
           return distance >= 1000 ? distanceKm : distance + 'm'
-        } else {
-          return null
-        }
-      }
+        } else return null
+      } else return null
     },
     duration () {
       if (this.placeN1.distance !== undefined) {
@@ -138,18 +136,16 @@ export default {
           let duration = this.placeN1.distance.rows[0].elements[0].duration.value
           if (duration >= (24 * 3600)) {
             // if duration lasts more than one day
-            // return in days
-            return ''
+            // return nothing
+            return null
           } else if (duration >= 3600) {
             // if duration lasts more than one hour
             return duration / 3600 + ' h'
           } else {
             return Math.round(duration / 60) + ' min'
           }
-        } else {
-          return null
-        }
-      }
+        }  else return null
+      } else return null
     },
     isLocated () {
       return this.$store.state.geolocation['isLocated']

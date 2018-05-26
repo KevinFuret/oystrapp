@@ -10,9 +10,7 @@
         </header>
         <div class="details">
             <h1 class="details__title">{{ placeDetails.name.fr }}</h1>
-            <a href="" alt="share" class="details__share share-button">
-                <img :src="share" class="share-button__image" alt="Partager ce lieu avec vos amis">
-            </a>
+            <share :title="placeDetails.name.fr" :description="placeDetails.description.fr"></share>
             <div class="details__description">
                 {{ placeDetails.description.fr }}
             </div>
@@ -50,18 +48,20 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import share from '~/assets/img/share.svg'
 import button from '~/components/button.vue'
+import share from '~/components/share.vue'
 import placeInfo from '~/components/placeInfo.vue'
 import placeN2Card from '~/components/placeN2Card.vue'
-import { EventBus } from '~/plugins/event-bus.js';
+import { EventBus } from '~/plugins/event-bus.js'
+import { SocialSharing } from '~/plugins/vue-social-sharing.js'
 
 export default {
   layout: 'fullscreen',
   components: {
     'custom-button': button,
     'info-block': placeInfo,
-    'small-card': placeN2Card
+    'small-card': placeN2Card,
+    share
   },
   data () {
     return {

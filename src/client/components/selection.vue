@@ -12,8 +12,7 @@
         </nuxt-link>
         <div class="selection__places__container">
             <div class="selection__places">
-                <div v-swiper:mySwiper="swiperOption" class="my-swiper"
-                     v-if="selection.fields.places.fr.length > 2">
+                <div v-swiper:mySwiper="swiperOption" class="my-swiper-selection" v-if="selection.fields.places.fr.length > 2">
                     <div class="swiper-wrapper">
                         <selection-place class="swiper-slide"
                                          v-for="place in selection.fields.places.fr"
@@ -43,7 +42,7 @@
           slidesPerView: 'auto',
           spaceBetween: 10,
           freeMode: false,
-          slidesOffsetAfter: 250, // empêche que le slider s'arrête au milieu de la dernière card,
+          slidesOffsetAfter: 185, // empêche que le slider s'arrête au milieu de la dernière card,
           on: {
             slideChange () {
               console.log('translate', this.translate)
