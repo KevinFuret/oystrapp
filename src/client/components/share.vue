@@ -2,7 +2,7 @@
     <div alt="share" class="details__share share-button">
         <img :src="share" class="share-button__image" alt="Partager ce lieu avec vos amis" @click="isDialogOpen = !isDialogOpen">
         <transition name="fade">
-            <social-sharing url="http://google.com"
+            <social-sharing :url="url"
                             :title="title + ', toutes les infos sur OYSTR'"
                             :description="description"
                             hashtags="oystr,culture,nantes"
@@ -40,7 +40,9 @@ export default {
   data () {
     return {
       share,
-      url: document.URL,
+      // TODO : remplacer l'URL par document.URL en production
+      url: 'http://google.com',
+      // url: document.URL,
       isDialogOpen: false
     }
   },
