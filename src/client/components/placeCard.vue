@@ -15,7 +15,7 @@
             <div class="placeCard__content placeCard__content--preview">
                 <span class="open-dot" :class="isPlaceOpen"></span>
                 <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
-                <span class="share-button"><img :src="share" alt="Partager"></span>
+                <share :title="placeDetails.name.fr" :description="placeDetails.description.fr"></share>
                 <p class="placeCard__details" v-if="isLocated === true">
                     <span class="placeCard__detail" v-if="distance !== null"><img :src="location" alt="Distance" > {{ distance }}</span>
                     <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }} </span>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import share from '~/assets/img/share.svg'
+import share from '~/components/share'
 import location from '~/assets/img/location.svg'
 import pedestrian from '~/assets/img/walk.svg'
 import downArrow from '~/assets/img/down-arrow.svg'
@@ -67,11 +67,11 @@ export default {
   name: 'placeCard',
   props: ['redirect', 'placeN1'],
   components: {
-    'small-card': smallCard
+    'small-card': smallCard,
+    share
   },
   data () {
     return {
-      share,
       location,
       pedestrian,
       downArrow,
