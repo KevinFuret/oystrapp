@@ -11,17 +11,21 @@
                 </div>
             </header>
         </nuxt-link>
-        <nuxt-link :to="link">
-            <div class="placeCard__content placeCard__content--preview">
-                <span class="open-dot" :class="isPlaceOpen"></span>
+        <div class="placeCard__content placeCard__content--preview">
+            <span class="open-dot" :class="isPlaceOpen"></span>
+            <nuxt-link :to="link">
                 <h2 class="placeCard__title">{{ placeN1.name.fr }}</h2>
-                <share :title="placeDetails.name.fr" :description="placeDetails.description.fr"></share>
-                <p class="placeCard__details" v-if="isLocated === true">
+            </nuxt-link>
+            <share :title="placeN1.name.fr" :description="placeN1.description.fr"></share>
+            <p class="placeCard__details" v-if="isLocated === true">
+                <nuxt-link :to="link">
                     <span class="placeCard__detail" v-if="distance !== null"><img :src="location" alt="Distance" > {{ distance }}</span>
                     <span class="placeCard__detail" v-if="duration !== null"><img :src="pedestrian" alt="Temps"> {{ duration }} </span>
-                </p>
-            </div>
-        </nuxt-link>
+                </nuxt-link>
+            </p>
+            </nuxt-link>
+        </div>
+
         <transition name="slide-down" mode="in-out">
             <div class="placeCard__content placeCard__content--more" v-show="isOpen">
             <p class="placeCard__description">{{ placeN1.description.fr }}</p>
@@ -55,12 +59,13 @@
 </template>
 
 <script>
-import share from '~/components/share'
+import share from './share.vue'
 import location from '~/assets/img/location.svg'
 import pedestrian from '~/assets/img/walk.svg'
 import downArrow from '~/assets/img/down-arrow.svg'
 import upArrow from '~/assets/img/up-arrow.svg'
 import smallCard from './smallCard.vue'
+import { SocialSharing } from '~/plugins/vue-social-sharing.js'
 import axios from 'axios'
 
 export default {
@@ -197,6 +202,7 @@ export default {
     .placeCard__link,
     .placeCard a{
         text-decoration: none !important;
+        color: inherit;
     }
     .card__header{
         position: relative;

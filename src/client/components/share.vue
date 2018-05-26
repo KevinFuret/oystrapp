@@ -51,6 +51,7 @@ export default {
     .share__dialog{
         background: white;
         position: absolute;
+        z-index:1;
         right: 0;
         text-align: center;
         padding: .5rem 0;
