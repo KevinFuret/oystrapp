@@ -1,16 +1,18 @@
 <template>
-    <div class="selection-place" v-if="placeDetails">
-        <nuxt-link :to="link" class="selectionPlace__link">
-            <div class="selection-place__image">
-                <img :src="image[0].fields.file.fr.url">
-            </div>
-            <p class="selection-place__open open-dot" :class="isPlaceOpen"
-               v-if="isPlaceOpen !== undefined">
-                <span class="open-dot__text" v-if="isPlaceOpen === 'open-dot--open'">Ouvert</span>
-                <span class="open-dot__text" v-if="isPlaceOpen === 'open-dot--closed'">Fermé</span>
-            </p>
-            <h3 class="selection-place__title">{{ place.fields.name.fr }}</h3>
-        </nuxt-link>
+    <div class="selection-place">
+        <div v-if="placeDetails">
+            <nuxt-link :to="link" class="selectionPlace__link">
+                <div class="selection-place__image">
+                    <img :src="image[0].fields.file.fr.url">
+                </div>
+                <p class="selection-place__open open-dot" :class="isPlaceOpen"
+                   v-if="isPlaceOpen !== undefined">
+                    <span class="open-dot__text" v-if="isPlaceOpen === 'open-dot--open'">Ouvert</span>
+                    <span class="open-dot__text" v-if="isPlaceOpen === 'open-dot--closed'">Fermé</span>
+                </p>
+                <h3 class="selection-place__title">{{ place.fields.name.fr }}</h3>
+            </nuxt-link>
+        </div>
     </div>
 </template>
 <script>

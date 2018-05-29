@@ -12,7 +12,7 @@
         </nuxt-link>
         <div class="selection__places__container">
             <div class="selection__places">
-                <div v-swiper:mySwiper="selectionSwiperOption" class="my-swiper-selection" v-if="selection.fields.places.fr.length > 2">
+                <div v-swiper:selectionSwiper="selectionSwiperOption" class="my-swiper-selection" v-if="selection.fields.places.fr.length > 2">
                     <div class="swiper-wrapper">
                         <selection-place class="swiper-slide"
                                          v-for="place in selection.fields.places.fr"
@@ -28,7 +28,7 @@
 <script>
   import smallImagePlaceholder from '~/assets/img/musee-small-placeholder.png'
   import selectionPlace from './selectionPlace.vue'
-  import { EventBus } from '~/plugins/event-bus.js';
+  import { EventBus } from '~/plugins/event-bus.js'
 
   export default {
     props: ['selection'],
@@ -42,9 +42,8 @@
         selectionSwiperOption: {
           init: true,
           slidesPerView: 'auto',
-          spaceBetween: 30,
-          freeMode: true,
-          slidesOffsetAfter: 285, // empêche que le slider s'arrête au milieu de la dernière card,
+          spaceBetween: 10,
+          slidesOffsetAfter: 0, // empêche que le slider s'arrête au milieu de la dernière card,
           on: {
             slideChange () {
               console.log('translate', this.translate)
@@ -100,8 +99,5 @@
     }
     .swiper-container{
         overflow: visible;
-        position: absolute;
-        height:auto;
-        width:100%;
     }
 </style>
