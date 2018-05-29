@@ -103,6 +103,7 @@ export default {
   .swiper-wrapper {
     /* transform: translate3d(185px, 0px, 0px)!important; */
     /* align-items: flex-end; */
+    padding-left:0.7rem;
   }
 
   .swiper-slide {
