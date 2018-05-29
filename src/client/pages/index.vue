@@ -72,7 +72,7 @@ export default {
       }
     }
   },
-  mounted: async function () {
+  mounted () {
     this.setUserPosition()
     this.manageStoreContentful() // put in beforeMount ?
 

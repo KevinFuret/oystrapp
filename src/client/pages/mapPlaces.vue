@@ -37,13 +37,13 @@ export default {
         slidesPerView: 'auto',
         grabCursor: true,
         mousewheel: true,
-        // centeredSlides: true,
+        freeMode: false,
         spaceBetween: 10,
         slidesOffsetAfter: 2500, // empêche que le slider s'arrête au milieu de la dernière card
         on: {
           slideChange () {
             // console.log('translate', this.translate)
-            // console.log('active index', this.activeIndex)
+            console.log('active index', this.activeIndex)
             EventBus.$emit('i-got-swiped', this.activeIndex)
           },
           tap () {
@@ -64,7 +64,7 @@ export default {
     // listen on global event bus
     // event from map.vue
     EventBus.$on('i-got-clicked', index => {
-      // console.log(`Oh, that's nice. I clicked on ${index} marker! :)`)
+      console.log(`Oh, that's nice. I clicked on ${index} marker! :)`)
       this.swipeTo(index)
     })
   },
@@ -81,6 +81,7 @@ export default {
   methods: {
     swipeTo (index) {
       if(this.mySwiperMap !== undefined) {
+        console.log(this.mySwiperMap);
         this.mySwiperMap.slideTo(index, 0)
       }
     }

@@ -15,6 +15,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { EventBus } from '~/plugins/event-bus.js';
+
 export default {
   data () {
     return {
@@ -56,6 +58,9 @@ export default {
       this.recalculateIsOpenNow()
       console.log('place', this.place.fields)
     }
+
+    EventBus.$off('i-got-clicked')
+    EventBus.$off('i-got-swiped')
   },
   methods: {
     getPlaceDetails () {

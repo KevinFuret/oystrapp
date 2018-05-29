@@ -28,6 +28,8 @@
 <script>
   import smallImagePlaceholder from '~/assets/img/musee-small-placeholder.png'
   import selectionPlace from './selectionPlace.vue'
+  import { EventBus } from '~/plugins/event-bus.js';
+
   export default {
     props: ['selection'],
     components: {
@@ -38,7 +40,7 @@
         smallImagePlaceholder,
         link: '/selection/' + this.selection.fields.slug.fr,
         swiperOption: {
-          // init:false,
+          init:false,
           slidesPerView: 'auto',
           spaceBetween: 10,
           freeMode: false,
@@ -57,11 +59,12 @@
       }
     },
     mounted () {
-      // console.log('place details', this.placeDetails.fields)
+      EventBus.$off('i-got-clicked')
+      EventBus.$off('i-got-swiped')
     }
   }
 </script>
-<style>
+<style scoped>
     .selection {
       padding: 0.5rem;
     }
