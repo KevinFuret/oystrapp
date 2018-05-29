@@ -1,9 +1,9 @@
 <template>
-  <v-layout>
+  <v-container>
     <map-component v-bind:markers="markersPlaces"></map-component>
 
     <!-- <div class="places-map__slider"> -->
-      <div v-swiper:mySwiperMap="swiperOption" class="swiper-box">
+      <div v-swiper:mySwiperMap="swiperOptionMap" class="swiper-box">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(place, index) in placesN1" :key="place.id" v-bind:data-id="index"
                v-if="$store.state.places.selectedCategories.length === 0 && $store.state.places.selectedFilters.length === 0">
@@ -16,7 +16,7 @@
         </div>
       </div>
     <!-- </div> -->
-  </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -32,14 +32,15 @@ export default {
   },
   data () {
     return {
-      swiperOption: {
-        // init: false,
+      swiperOptionMap: {
+        init: true,
         slidesPerView: 'auto',
-        // grabCursor: true,
-        // mousewheel: true,
+        grabCursor: true,
+        mousewheel: true,
+        centeredSlides: true,
         // freeMode: false,
         spaceBetween: 30,
-        // slidesOffsetAfter: 3300,
+        // slidesOffsetAfter: 3500, // empêche que le slider s'arrête au milieu de la dernière card
         on: {
           slideChange () {
             // console.log('translate', this.translate)
@@ -96,17 +97,15 @@ export default {
 
 <style scoped>
   .places-map__slider {
-    position: absolute;
-    bottom: 0;
-  }
-  .swiper-box {
-    /* position: absolute; */
-    /* bottom: 0; */
+    /* position: absolute;
+    left: 0;
+    bottom: 0; */
   }
 
   .swiper-wrapper {
     /* transform: translate3d(185px, 0px, 0px)!important; */
     /* align-items: flex-end; */
+    padding-left:0.7rem;
   }
 
   .swiper-slide {

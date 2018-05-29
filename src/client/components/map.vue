@@ -9,7 +9,6 @@
           :zoom.sync="zoom"
           :options="mapOptions"
           @ready="ready"
-          style="width: 100%; height: 80vh"
         >
           <marker-user
             v-if="isLocated"
@@ -105,5 +104,10 @@ export default {
 <style>
 .map {
   position: relative;
+}
+
+.vue-google-map {
+  width: 100%;
+  height: 50vh;
 }
 </style>
