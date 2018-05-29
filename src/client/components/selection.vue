@@ -40,7 +40,7 @@
         smallImagePlaceholder,
         link: '/selection/' + this.selection.fields.slug.fr,
         swiperOption: {
-          init:false,
+          // init:false,
           slidesPerView: 'auto',
           spaceBetween: 10,
           freeMode: false,

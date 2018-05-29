@@ -84,7 +84,9 @@ export default {
       if (this.zoom <= 12) {
         this.zoom = Math.max(15, 12)
       }
-      this.$refs.mapRef.panTo(marker.position)
+      if(marker !== undefined) {
+        this.$refs.mapRef.panTo(marker.position)
+      }
       // Send the event on a channel (i-got-clicked) with a payload (index of the clicked marker.)
       EventBus.$emit('i-got-clicked', index);
     },
@@ -92,8 +94,9 @@ export default {
       if (this.zoom <= 12) {
         this.zoom = Math.max(15, 12)
       }
-      this.center = this.markers[index].position
-      // this.$refs.mapRef.panTo(this.markers[index].position)
+      if(this.markers[index] !== undefined) {
+        this.center = this.markers[index].position
+      }
     }
   }
 }
