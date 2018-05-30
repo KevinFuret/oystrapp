@@ -1,8 +1,8 @@
 <template>
-  <v-container>
+  <v-layout>
     <map-component v-bind:markers="markersPlaces"></map-component>
 
-    <!-- <div class="places-map__slider"> -->
+    <div class="places-map__slider">
       <div v-swiper:mySwiperMap="swiperOptionMap" class="swiper-box">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(place, index) in placesN1" :key="place.id" v-bind:data-id="index"
@@ -15,8 +15,8 @@
           </div>
         </div>
       </div>
-    <!-- </div> -->
-  </v-container>
+    </div>
+  </v-layout>
 </template>
 
 <script>
@@ -39,7 +39,7 @@ export default {
         mousewheel: true,
         centeredSlides: true,
         // freeMode: false,
-        spaceBetween: 30,
+        spaceBetween: 8,
         // slidesOffsetAfter: 3500, // empêche que le slider s'arrête au milieu de la dernière card
         on: {
           slideChange () {
@@ -96,20 +96,28 @@ export default {
 </script>
 
 <style scoped>
+  .container {
+    padding: 0;
+  }
+
+  .swiper-box {
+    /* position: absolute; */
+    width: 100%;
+  }
+
   .places-map__slider {
-    /* position: absolute;
+    position: absolute;
+    width: 100%;
     left: 0;
-    bottom: 0; */
+    bottom: 0;
   }
 
   .swiper-wrapper {
-    /* transform: translate3d(185px, 0px, 0px)!important; */
     /* align-items: flex-end; */
-    padding-left:0.7rem;
   }
 
   .swiper-slide {
-      width: 25rem;
+      width: 22rem;
       box-sizing: border-box;
       /* transform: translateX(20%); */
   }

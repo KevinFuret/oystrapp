@@ -108,6 +108,6 @@ export default {
 
 .vue-google-map {
   width: 100%;
-  height: 50vh;
+  height: 80vh;
 }
 </style>
